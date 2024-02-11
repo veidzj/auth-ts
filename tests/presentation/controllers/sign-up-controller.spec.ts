@@ -1,13 +1,15 @@
+import { faker } from '@faker-js/faker'
+
 import { SignUpController } from '@/presentation/controllers'
 import { type AddAccount } from '@/domain/usecases'
 
 const mockRequest = (): SignUpController.Request => ({
-  username: '',
-  fullName: '',
-  email: '',
-  password: '',
-  birthdate: '',
-  profileImage: ''
+  username: faker.internet.userName(),
+  fullName: faker.person.fullName(),
+  email: faker.internet.email(),
+  password: faker.internet.password(),
+  birthdate: faker.date.anytime(),
+  profileImage: faker.internet.url()
 })
 
 describe('SignUpController', () => {
