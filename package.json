@@ -13,6 +13,7 @@
     "test:integration": "npm test -- --watch -c jest-integration.config.ts",
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
+    "test:changed": "npm test -- --changedSince=origin/main",
     "check": "ncu --interactive --format group",
     "prepare": "husky"
   },
