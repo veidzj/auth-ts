@@ -14,7 +14,7 @@ export namespace SignUpController {
     fullName: string
     email: string
     password: string
-    birthdate: string
+    birthdate: Date
     profileImage?: string
   }
 }
