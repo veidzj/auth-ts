@@ -8,6 +8,11 @@
     "Authentication"
   ],
   "scripts": {
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --no-cache",
+    "test:unit": "npm test -- --watch -c jest-unit.config.js",
+    "test:integration": "npm test -- --watch -c jest-integration.config.js",
+    "test:staged": "npm test -- --findRelatedTests",
+    "test:ci": "npm test -- --coverage",
     "check": "ncu --interactive --format group",
     "prepare": "husky"
   },
@@ -15,6 +20,8 @@
     "node": "20.x"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^4.2.0",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.17",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "eslint": "^8.56.0",
@@ -23,8 +30,10 @@
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
     "husky": "^9.0.10",
+    "jest": "^29.7.0",
     "lint-staged": "^15.2.2",
     "npm-check-updates": "^16.14.15",
+    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
