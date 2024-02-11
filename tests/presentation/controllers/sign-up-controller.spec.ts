@@ -1,7 +1,21 @@
 import { faker } from '@faker-js/faker'
 
+import { AddAccountSpy } from '@/tests/domain/mocks'
 import { SignUpController } from '@/presentation/controllers'
-import { type AddAccount } from '@/domain/usecases'
+
+interface Sut {
+  sut: SignUpController
+  addAccountSpy: AddAccountSpy
+}
+
+const makeSut = (): Sut => {
+  const addAccountSpy = new AddAccountSpy()
+  const sut = new SignUpController(addAccountSpy)
+  return {
+    sut,
+    addAccountSpy
+  }
+}
 
 const mockRequest = (): SignUpController.Request => ({
   username: faker.internet.userName(),
@@ -14,17 +28,7 @@ const mockRequest = (): SignUpController.Request => ({
 
 describe('SignUpController', () => {
   test('Should call AddAccount with correct values', async() => {
-    class AddAccountSpy implements AddAccount {
-      public input: AddAccount.Input
-      public output: AddAccount.Output
-
-      public async add(input: AddAccount.Input): Promise<AddAccount.Output> {
-        this.input = input
-        return this.output
-      }
-    }
-    const addAccountSpy = new AddAccountSpy()
-    const sut = new SignUpController(addAccountSpy)
+    const { sut, addAccountSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
     expect(addAccountSpy.input).toEqual(request)
