@@ -21,6 +21,7 @@
     "node": "20.x"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@shelf/jest-mongodb": "^4.2.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.17",
