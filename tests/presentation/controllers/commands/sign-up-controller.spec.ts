@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 
-import { AddAccountSpy } from '@/tests/domain/mocks'
-import { SignUpController } from '@/presentation/controllers'
+import { AddAccountSpy } from '@/tests/domain/mocks/commands'
+import { SignUpController } from '@/presentation/controllers/commands'
 
 interface Sut {
   sut: SignUpController
