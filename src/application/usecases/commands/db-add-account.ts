@@ -1,6 +1,7 @@
 import { type CheckAccountByEmailRepository } from '@/application/protocols/queries'
 import { type AddAccountRepository } from '@/application/protocols/commands'
 import { type AddAccount } from '@/domain/usecases/commands'
+import { AccountAlreadyExists } from '@/domain/errors'
 
 export class DbAddAccount implements AddAccount {
   constructor(
@@ -9,7 +10,10 @@ export class DbAddAccount implements AddAccount {
   ) {}
 
   public async add(input: AddAccount.Input): Promise<void> {
-    await this.checkAccountByEmailRepository.check(input.email)
+    const accountAlreadyExists = await this.checkAccountByEmailRepository.check(input.email)
+    if (accountAlreadyExists) {
+      throw new AccountAlreadyExists()
+    }
     await this.addAccountRepository.add(input)
   }
 }
