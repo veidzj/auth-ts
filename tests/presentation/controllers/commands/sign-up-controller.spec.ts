@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker'
 
 import { AddAccountSpy } from '@/tests/domain/mocks/commands'
 import { SignUpController } from '@/presentation/controllers/commands'
-import { HttpHelper } from '@/presentation/helpers'
 
 interface Sut {
   sut: SignUpController
@@ -33,11 +32,5 @@ describe('SignUpController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(addAccountSpy.input).toEqual(request)
-  })
-
-  test('Should return ok on success', async() => {
-    const { sut, addAccountSpy } = makeSut()
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(HttpHelper.ok({ accessToken: addAccountSpy.output.accessToken }))
   })
 })

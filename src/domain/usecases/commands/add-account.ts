@@ -1,5 +1,5 @@
 export interface AddAccount {
-  add: (input: AddAccount.Input) => Promise<AddAccount.Output>
+  add: (input: AddAccount.Input) => Promise<void>
 }
 
 export namespace AddAccount {
@@ -10,9 +10,5 @@ export namespace AddAccount {
     password: string
     birthdate: Date
     profileImage?: string
-  }
-
-  export interface Output {
-    accessToken: string
   }
 }

@@ -6,8 +6,8 @@ export class SignUpController implements Controller {
   constructor(private readonly addAccount: AddAccount) {}
 
   public async handle(request: SignUpController.Request): Promise<HttpResponse> {
-    const addAccountOutput = await this.addAccount.add(request)
-    return HttpHelper.ok({ accessToken: addAccountOutput.accessToken })
+    await this.addAccount.add(request)
+    return HttpHelper.ok({})
   }
 }
 
