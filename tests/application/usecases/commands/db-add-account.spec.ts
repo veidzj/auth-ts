@@ -1,8 +1,22 @@
 import { faker } from '@faker-js/faker'
 
+import { AddAccountRepositorySpy } from '@/tests/application/mocks/commands'
 import { DbAddAccount } from '@/application/usecases/commands'
-import { type AddAccountRepository } from '@/application/protocols/commands'
 import { type AddAccount } from '@/domain/usecases/commands'
+
+interface Sut {
+  sut: DbAddAccount
+  addAccountRepositorySpy: AddAccountRepositorySpy
+}
+
+const makeSut = (): Sut => {
+  const addAccountRepositorySpy = new AddAccountRepositorySpy()
+  const sut = new DbAddAccount(addAccountRepositorySpy)
+  return {
+    sut,
+    addAccountRepositorySpy
+  }
+}
 
 const mockInput = (): AddAccount.Input => ({
   username: faker.internet.userName(),
@@ -15,15 +29,7 @@ const mockInput = (): AddAccount.Input => ({
 
 describe('DbAddAccount', () => {
   test('Should call AddAccountRepository with correct values', async() => {
-    class AddAccountRepositorySpy implements AddAccountRepository {
-      public input: AddAccountRepository.Input
-
-      public async add(input: AddAccountRepository.Input): Promise<void> {
-        this.input = input
-      }
-    }
-    const addAccountRepositorySpy = new AddAccountRepositorySpy()
-    const sut = new DbAddAccount(addAccountRepositorySpy)
+    const { sut, addAccountRepositorySpy } = makeSut()
     const input = mockInput()
     await sut.add(input)
     expect(addAccountRepositorySpy.input).toEqual(input)
