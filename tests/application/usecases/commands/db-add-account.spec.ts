@@ -65,6 +65,14 @@ describe('DbAddAccount', () => {
     expect(hasherSpy.plainText).toBe(input.password)
   })
 
+  test('Should throw if Hasher throws', async() => {
+    const { sut, hasherSpy } = makeSut()
+    jest.spyOn(hasherSpy, 'hash').mockRejectedValueOnce(new Error())
+    const input = mockInput()
+    const promise = sut.add(input)
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call AddAccountRepository with correct values', async() => {
     const { sut, addAccountRepositorySpy } = makeSut()
     const input = mockInput()
