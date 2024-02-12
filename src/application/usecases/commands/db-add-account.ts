@@ -16,7 +16,7 @@ export class DbAddAccount implements AddAccount {
     if (accountAlreadyExists) {
       throw new AccountAlreadyExists()
     }
-    await this.hasher.hash(input.password)
-    await this.addAccountRepository.add(input)
+    const hashedPassword = await this.hasher.hash(input.password)
+    await this.addAccountRepository.add({ ...input, password: hashedPassword })
   }
 }
