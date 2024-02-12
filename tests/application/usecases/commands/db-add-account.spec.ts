@@ -1,19 +1,23 @@
 import { faker } from '@faker-js/faker'
 
+import { CheckAccountByEmailRepositorySpy } from '@/tests/application/mocks/queries'
 import { AddAccountRepositorySpy } from '@/tests/application/mocks/commands'
 import { DbAddAccount } from '@/application/usecases/commands'
 import { type AddAccount } from '@/domain/usecases/commands'
 
 interface Sut {
   sut: DbAddAccount
+  checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
   addAccountRepositorySpy: AddAccountRepositorySpy
 }
 
 const makeSut = (): Sut => {
+  const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
   const addAccountRepositorySpy = new AddAccountRepositorySpy()
-  const sut = new DbAddAccount(addAccountRepositorySpy)
+  const sut = new DbAddAccount(checkAccountByEmailRepositorySpy, addAccountRepositorySpy)
   return {
     sut,
+    checkAccountByEmailRepositorySpy,
     addAccountRepositorySpy
   }
 }
@@ -28,6 +32,13 @@ const mockInput = (): AddAccount.Input => ({
 })
 
 describe('DbAddAccount', () => {
+  test('Should call CheckAccountByEmailRepository with correct email', async() => {
+    const { sut, checkAccountByEmailRepositorySpy } = makeSut()
+    const input = mockInput()
+    await sut.add(input)
+    expect(checkAccountByEmailRepositorySpy.email).toEqual(input.email)
+  })
+
   test('Should call AddAccountRepository with correct values', async() => {
     const { sut, addAccountRepositorySpy } = makeSut()
     const input = mockInput()
