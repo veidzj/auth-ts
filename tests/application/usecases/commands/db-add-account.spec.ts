@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 
 import { CheckAccountByEmailRepositorySpy } from '@/tests/application/mocks/queries'
+import { HasherSpy } from '@/tests/application/mocks/cryptography/hasher-mock'
 import { AddAccountRepositorySpy } from '@/tests/application/mocks/commands'
 import { DbAddAccount } from '@/application/usecases/commands'
 import { type AddAccount } from '@/domain/usecases/commands'
@@ -8,17 +9,20 @@ import { AccountAlreadyExists } from '@/domain/errors'
 
 interface Sut {
   sut: DbAddAccount
+  hasherSpy: HasherSpy
   checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
   addAccountRepositorySpy: AddAccountRepositorySpy
 }
 
 const makeSut = (): Sut => {
   const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
+  const hasherSpy = new HasherSpy()
   const addAccountRepositorySpy = new AddAccountRepositorySpy()
-  const sut = new DbAddAccount(checkAccountByEmailRepositorySpy, addAccountRepositorySpy)
+  const sut = new DbAddAccount(checkAccountByEmailRepositorySpy, hasherSpy, addAccountRepositorySpy)
   return {
     sut,
     checkAccountByEmailRepositorySpy,
+    hasherSpy,
     addAccountRepositorySpy
   }
 }
@@ -52,6 +56,13 @@ describe('DbAddAccount', () => {
     checkAccountByEmailRepositorySpy.output = true
     const promise = sut.add(mockInput())
     await expect(promise).rejects.toThrow(new AccountAlreadyExists())
+  })
+
+  test('Should call Hasher with correct password', async() => {
+    const { sut, hasherSpy } = makeSut()
+    const input = mockInput()
+    await sut.add(input)
+    expect(hasherSpy.plainText).toBe(input.password)
   })
 
   test('Should call AddAccountRepository with correct values', async() => {
