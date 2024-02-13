@@ -1,3 +1,4 @@
+import MockDate from 'mockdate'
 import { faker } from '@faker-js/faker'
 
 import { CheckAccountByEmailRepositorySpy } from '@/tests/application/mocks/queries'
@@ -45,6 +46,14 @@ const mockInput = (): AddAccount.Input => ({
 })
 
 describe('DbAddAccount', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
+
   describe('CheckAccountByEmailRepository', () => {
     test('Should call CheckAccountByEmailRepository with correct email', async() => {
       const { sut, checkAccountByEmailRepositorySpy } = makeSut()
