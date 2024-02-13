@@ -3,7 +3,7 @@ import { type Collection } from 'mongodb'
 import { MongoHelper } from '@/infra/db/mongodb/helpers'
 import { env } from '@/main/config'
 
-const mongoHelper: MongoHelper = MongoHelper.create()
+const mongoHelper: MongoHelper = MongoHelper.getInstance()
 
 export async function connectToDatabase(): Promise<void> {
   await mongoHelper.connect(env.mongoUrl)

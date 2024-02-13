@@ -30,4 +30,10 @@ describe('CheckAccountByEmailMongoRepository', () => {
     const promise = sut.check(faker.internet.email())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return false if email does not exists', async() => {
+    const sut = makeSut()
+    const accountExists = await sut.check(faker.internet.email())
+    expect(accountExists).toBe(false)
+  })
 })
