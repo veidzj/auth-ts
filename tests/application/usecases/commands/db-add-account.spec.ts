@@ -7,6 +7,14 @@ import { DbAddAccount } from '@/application/usecases/commands'
 import { type AddAccount } from '@/domain/usecases/commands'
 import { AccountAlreadyExists } from '@/domain/errors'
 
+jest.mock('@/domain/helpers', () => ({
+  generateGUID(): string {
+    return mockedGUID
+  }
+}))
+
+const mockedGUID: string = faker.string.uuid()
+
 interface Sut {
   sut: DbAddAccount
   hasherSpy: HasherSpy
@@ -82,7 +90,13 @@ describe('DbAddAccount', () => {
       const { sut, addAccountRepositorySpy, hasherSpy } = makeSut()
       const input = mockInput()
       await sut.add(input)
-      expect(addAccountRepositorySpy.input).toEqual({ ...input, password: hasherSpy.digest })
+      expect(addAccountRepositorySpy.input).toEqual({
+        ...input,
+        password: hasherSpy.digest,
+        id: mockedGUID,
+        isActive: true,
+        createdAt: new Date()
+      })
     })
 
     test('Should throw if AddAccountRepository throws', async() => {

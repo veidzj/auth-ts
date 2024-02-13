@@ -2,6 +2,7 @@ import { type CheckAccountByEmailRepository } from '@/application/protocols/quer
 import { type Hasher } from '@/application/protocols/cryptography'
 import { type AddAccountRepository } from '@/application/protocols/commands'
 import { type AddAccount } from '@/domain/usecases/commands'
+import { generateGUID } from '@/domain/helpers'
 import { AccountAlreadyExists } from '@/domain/errors'
 
 export class DbAddAccount implements AddAccount {
@@ -17,6 +18,12 @@ export class DbAddAccount implements AddAccount {
       throw new AccountAlreadyExists()
     }
     const hashedPassword = await this.hasher.hash(input.password)
-    await this.addAccountRepository.add({ ...input, password: hashedPassword })
+    await this.addAccountRepository.add({
+      ...input,
+      password: hashedPassword,
+      id: generateGUID(),
+      isActive: true,
+      createdAt: new Date()
+    })
   }
 }
