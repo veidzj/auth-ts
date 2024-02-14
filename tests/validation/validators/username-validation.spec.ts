@@ -6,11 +6,13 @@ describe('UsernameValidation', () => {
   let shortUsername: string
   let longUsername: string
   let usernameStartsWithNumber: string
+  let usernameStartsWithSpecialCharacter: string
 
   beforeAll(() => {
     shortUsername = faker.string.alpha({ length: { min: 1, max: 2 } })
     longUsername = faker.string.alpha({ length: 17 })
     usernameStartsWithNumber = faker.string.numeric() + faker.string.alpha(2)
+    usernameStartsWithSpecialCharacter = faker.string.symbol() + faker.string.alpha(2)
   })
 
   test('Should return an error if username is less than 3 characters long', () => {
@@ -28,6 +30,12 @@ describe('UsernameValidation', () => {
   test('Should return an error if username starts with a number', () => {
     const sut = new UsernameValidation()
     const errors = sut.validate(usernameStartsWithNumber)
+    expect(errors[0]).toBe('Username must start with a letter')
+  })
+
+  test('Should return an error if username starts with a special character', () => {
+    const sut = new UsernameValidation()
+    const errors = sut.validate(usernameStartsWithSpecialCharacter)
     expect(errors[0]).toBe('Username must start with a letter')
   })
 })
