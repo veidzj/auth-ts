@@ -7,6 +7,9 @@ export class FullNameValidation implements Validation<string> {
     if (fullName.length < 3 || fullName.length > 50) {
       this.errors.push('Full name must be between 3 and 50 characters long')
     }
+    if (!/^[A-Z]/.test(fullName)) {
+      this.errors.push('Full name must start with an uppercase letter')
+    }
     return this.errors
   }
 }
