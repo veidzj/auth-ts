@@ -14,7 +14,7 @@ export class FullNameValidation implements Validation<string> {
       this.errors.push('Full name must be separated by a single space')
     }
     if (!/^[A-Za-zÀ-ÖØ-öø-ÿ\s]*[À-ÖØ-öø-ÿ][A-Za-zÀ-ÖØ-öø-ÿ\s]*$/.test(fullName)) {
-      this.errors.push('Full name can only contain letters and accents')
+      this.errors.push('Full name can only contain letters and letters with accents')
     }
     return this.errors
   }
