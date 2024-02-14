@@ -10,6 +10,9 @@ export class FullNameValidation implements Validation<string> {
     if (!/^[A-Z]/.test(fullName)) {
       this.errors.push('Full name must start with an uppercase letter')
     }
+    if (/\s{2,}|^\s|\s$/.test(fullName)) {
+      this.errors.push('Full name must be separated by a single space')
+    }
     return this.errors
   }
 }
