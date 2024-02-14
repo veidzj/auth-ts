@@ -15,25 +15,25 @@ describe('UsernameValidation', () => {
     usernameWithSpecialCharacter = faker.string.alpha() + faker.string.symbol(15)
   })
 
-  test('Should return an error if username is less than 3 characters long', () => {
+  test('Should add an error if username is less than 3 characters long', () => {
     const sut = new UsernameValidation()
     const errors = sut.validate(shortUsername)
     expect(errors[0]).toBe('Username must be between 3 and 16 characters long')
   })
 
-  test('Should return an error if username is greater than 16 characters long', () => {
+  test('Should add an error if username is greater than 16 characters long', () => {
     const sut = new UsernameValidation()
     const errors = sut.validate(longUsername)
     expect(errors[0]).toBe('Username must be between 3 and 16 characters long')
   })
 
-  test('Should return an error if username starts with a number', () => {
+  test('Should add an error if username starts with a number', () => {
     const sut = new UsernameValidation()
     const errors = sut.validate(usernameStartsWithNumber)
     expect(errors[0]).toBe('Username must start with a letter')
   })
 
-  test('Should return an error if username contains a special character', () => {
+  test('Should add an error if username contains a special character', () => {
     const sut = new UsernameValidation()
     const errors = sut.validate(usernameWithSpecialCharacter)
     expect(errors[0]).toBe('Username can only contain letters, digits, underscore, and hyphen')
