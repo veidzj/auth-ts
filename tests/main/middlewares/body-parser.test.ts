@@ -9,7 +9,7 @@ const data = {
   username: faker.internet.userName()
 }
 
-describe('BodyParserMiddleware', () => {
+describe('BodyParser Middleware', () => {
   let app: Express
 
   beforeAll(async() => {
