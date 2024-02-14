@@ -9,6 +9,7 @@ describe('FullNameValidation', () => {
   let invalidSpaceBetweenFullName: string
   let invalidSpaceAfterFullName: string
   let fullNameWithSpecialCharacter: string
+  let fullNameWithIsolatedAccent: string
 
   beforeAll(() => {
     shortFullName = faker.string.alpha({ length: { min: 1, max: 2 } })
@@ -17,6 +18,7 @@ describe('FullNameValidation', () => {
     invalidSpaceBetweenFullName = faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + '  ' + faker.string.alpha(16)
     invalidSpaceAfterFullName = faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + ' '
     fullNameWithSpecialCharacter = faker.string.alpha({ casing: 'upper' }) + faker.string.symbol(15)
+    fullNameWithIsolatedAccent = faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + '~'
   })
 
   test('Should add an error if full name is less than 3 characters long', () => {
@@ -52,6 +54,12 @@ describe('FullNameValidation', () => {
   test('Should add an error if full name contains special character', () => {
     const sut = new FullNameValidation()
     const errors = sut.validate(fullNameWithSpecialCharacter)
-    expect(errors[0]).toBe('Full name can only contain letters and accents')
+    expect(errors[0]).toBe('Full name can only contain letters and letters with accents')
+  })
+
+  test('Should add an error if full name contains an isolated accent', () => {
+    const sut = new FullNameValidation()
+    const errors = sut.validate(fullNameWithIsolatedAccent)
+    expect(errors[0]).toBe('Full name can only contain letters and letters with accents')
   })
 })
