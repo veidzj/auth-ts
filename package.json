@@ -8,6 +8,7 @@
     "Authentication"
   ],
   "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --no-cache",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit.config.ts",
@@ -39,6 +40,7 @@
     "lint-staged": "^15.2.2",
     "mockdate": "^3.0.5",
     "npm-check-updates": "^16.14.15",
+    "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
