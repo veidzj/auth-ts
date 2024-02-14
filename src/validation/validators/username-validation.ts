@@ -10,6 +10,9 @@ export class UsernameValidation implements Validation<string> {
     if (!/^[a-zA-Z]/.test(username)) {
       this.errors.push('Username must start with a letter')
     }
+    if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+      this.errors.push('Username can only contain letters, digits, underscore, and hyphen')
+    }
     return this.errors
   }
 }
