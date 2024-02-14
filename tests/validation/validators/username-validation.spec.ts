@@ -6,12 +6,14 @@ describe('UsernameValidation', () => {
   let shortUsername: string
   let longUsername: string
   let usernameStartsWithNumber: string
+  let usernameWithSpaces: string
   let usernameWithSpecialCharacter: string
 
   beforeAll(() => {
     shortUsername = faker.string.alpha({ length: { min: 1, max: 2 } })
     longUsername = faker.string.alpha({ length: 17 })
     usernameStartsWithNumber = faker.string.numeric() + faker.string.alpha(2)
+    usernameWithSpaces = faker.string.alpha({ length: { min: 2, max: 15 } }) + ' '
     usernameWithSpecialCharacter = faker.string.alpha() + faker.string.symbol(15)
   })
 
@@ -36,6 +38,12 @@ describe('UsernameValidation', () => {
   test('Should add an error if username contains a special character', () => {
     const sut = new UsernameValidation()
     const errors = sut.validate(usernameWithSpecialCharacter)
-    expect(errors[0]).toBe('Username can only contain letters, digits, underscore, and hyphen')
+    expect(errors[0]).toBe('Username can only contain letters, digits, underscore, hyphen and dot')
+  })
+
+  test('Should add an error if username contains spaces', () => {
+    const sut = new UsernameValidation()
+    const errors = sut.validate(usernameWithSpaces)
+    expect(errors[0]).toBe('Username must not contain spaces')
   })
 })
