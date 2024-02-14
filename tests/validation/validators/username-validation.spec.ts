@@ -11,7 +11,7 @@ describe('UsernameValidation', () => {
 
   test('Should return an error if username is less than 3 characters long', () => {
     const sut = new UsernameValidation()
-    const error = sut.validate(shortUsername)
-    expect(error).toEqual(new Error('Username must be at least 3 characters long'))
+    const errors = sut.validate(shortUsername)
+    expect(errors[0]).toBe('Username must be at least 3 characters long')
   })
 })
