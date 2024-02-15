@@ -9,6 +9,7 @@ describe('UsernameValidation', () => {
   let usernameWithSpaces: { username: string }
   let usernameWithSpecialCharacter: { username: string }
   let invalidUsername: { username: string }
+  let validUsername: { username: string }
 
   beforeAll(() => {
     shortUsername = {
@@ -28,6 +29,9 @@ describe('UsernameValidation', () => {
     }
     invalidUsername = {
       username: faker.string.numeric() + faker.string.alpha(16) + ' ' + faker.string.symbol()
+    }
+    validUsername = {
+      username: faker.string.alpha() + faker.string.alphanumeric(15)
     }
   })
 
@@ -69,5 +73,11 @@ describe('UsernameValidation', () => {
     expect(errors[1]).toBe('Username must start with a letter')
     expect(errors[2]).toBe('Username must not contain spaces')
     expect(errors[3]).toBe('Username can only contain letters, digits, underscore, hyphen and dot')
+  })
+
+  test('Should not add an error if username is valid', () => {
+    const sut = new UsernameValidation()
+    const errors = sut.validate(validUsername)
+    expect(errors).toEqual([])
   })
 })
