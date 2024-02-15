@@ -15,6 +15,7 @@ describe('PasswordValidation', () => {
   let passwordContainsEmail: { password: string }
   let passwordContainsBirthdate: { password: string }
   let passwordContainsAllPersonalData: { password: string }
+  let invalidPassword: { password: string }
 
   beforeAll(() => {
     shortPassword = {
@@ -55,6 +56,9 @@ describe('PasswordValidation', () => {
     }
     passwordContainsAllPersonalData = {
       password: validPassword.password + validOptions.username + validOptions.fullName + validOptions.email + validOptions.birthdate
+    }
+    invalidPassword = {
+      password: validOptions.username + faker.string.alpha(255)
     }
   })
 
@@ -116,5 +120,14 @@ describe('PasswordValidation', () => {
     const sut = new PasswordValidation()
     const errors = sut.validate(passwordContainsAllPersonalData, validOptions)
     expect(errors.length).toBe(1)
+  })
+
+  test('Should add all errors if password contains more than 1 error', () => {
+    const sut = new PasswordValidation()
+    const errors = sut.validate(invalidPassword, validOptions)
+    expect(errors.length).toBe(3)
+    expect(errors[0]).toBe('Password must be between 6 and 255 characters long')
+    expect(errors[1]).toBe('Password must contain at least 1 letter, 1 digit, and 1 special character')
+    expect(errors[2]).toBe('Password cannot contain personal data')
   })
 })
