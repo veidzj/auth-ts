@@ -21,7 +21,7 @@ describe('PasswordValidation', () => {
       username: faker.internet.userName(),
       fullName: faker.person.fullName(),
       email: faker.internet.email(),
-      birthdate: faker.date.anytime().toDateString()
+      birthdate: faker.date.anytime().toISOString()
     }
     validPassword = faker.internet.password({ length: 15 }) + faker.string.symbol()
   })
