@@ -7,12 +7,14 @@ describe('PasswordValidation', () => {
   let longPassword: string
   let passwordWithNoLetter: string
   let passwordWithNoNumber: string
+  let passwordWithNoSpecialCharacter: string
 
   beforeAll(() => {
     shortPassword = faker.string.alpha({ length: { min: 1, max: 5 } })
     longPassword = faker.string.alpha(256)
     passwordWithNoLetter = faker.string.numeric(6)
     passwordWithNoNumber = faker.string.alpha(6)
+    passwordWithNoSpecialCharacter = faker.string.alpha(3) + faker.string.numeric(3)
   })
 
   test('Should add an error if password is less than 6 characters long', () => {
@@ -36,6 +38,12 @@ describe('PasswordValidation', () => {
   test('Should add an error if password does not contains a number', () => {
     const sut = new PasswordValidation()
     const errors = sut.validate(passwordWithNoNumber)
+    expect(errors[0]).toBe('Password must contain at least 1 letter, 1 digit, and 1 special character')
+  })
+
+  test('Should add an error if password does not contains a special character', () => {
+    const sut = new PasswordValidation()
+    const errors = sut.validate(passwordWithNoSpecialCharacter)
     expect(errors[0]).toBe('Password must contain at least 1 letter, 1 digit, and 1 special character')
   })
 })
