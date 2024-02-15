@@ -7,6 +7,9 @@ export class PasswordValidation implements Validation<string> {
     if (password.length < 6 || password.length > 255) {
       this.errors.push('Password must be between 6 and 255 characters long')
     }
+    if (!/(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d])/.test(password)) {
+      this.errors.push('Password must contain at least 1 letter, 1 digit, and 1 special character')
+    }
     return this.errors
   }
 }
