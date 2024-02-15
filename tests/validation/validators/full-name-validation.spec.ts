@@ -3,24 +3,40 @@ import { faker } from '@faker-js/faker'
 import { FullNameValidation } from '@/validation/validators'
 
 describe('FullNameValidation', () => {
-  let shortFullName: string
-  let longFullName: string
-  let lowercaseFullName: string
-  let invalidSpaceBetweenFullName: string
-  let invalidSpaceAfterFullName: string
-  let fullNameWithSpecialCharacter: string
-  let fullNameWithIsolatedAccent: string
-  let invalidFullName: string
+  let shortFullName: { fullName: string }
+  let longFullName: { fullName: string }
+  let lowercaseFullName: { fullName: string }
+  let invalidSpaceBetweenFullName: { fullName: string }
+  let invalidSpaceAfterFullName: { fullName: string }
+  let fullNameWithSpecialCharacter: { fullName: string }
+  let fullNameWithIsolatedAccent: { fullName: string }
+  let invalidFullName: { fullName: string }
 
   beforeAll(() => {
-    shortFullName = faker.string.alpha({ length: { min: 1, max: 2 } })
-    longFullName = faker.string.alpha(51)
-    lowercaseFullName = faker.string.alpha({ length: 16, casing: 'lower' })
-    invalidSpaceBetweenFullName = faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + '  ' + faker.string.alpha(16)
-    invalidSpaceAfterFullName = faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + ' '
-    fullNameWithSpecialCharacter = faker.string.alpha({ casing: 'upper' }) + faker.string.symbol(15)
-    fullNameWithIsolatedAccent = faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + '~'
-    invalidFullName = faker.string.alpha({ casing: 'lower' }) + '`' + faker.string.alpha(50) + ' '
+    shortFullName = {
+      fullName: faker.string.alpha({ length: { min: 1, max: 2 } })
+    }
+    longFullName = {
+      fullName: faker.string.alpha(51)
+    }
+    lowercaseFullName = {
+      fullName: faker.string.alpha({ length: 16, casing: 'lower' })
+    }
+    invalidSpaceBetweenFullName = {
+      fullName: faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + '  ' + faker.string.alpha(16)
+    }
+    invalidSpaceAfterFullName = {
+      fullName: faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + ' '
+    }
+    fullNameWithSpecialCharacter = {
+      fullName: faker.string.alpha({ casing: 'upper' }) + faker.string.symbol(15)
+    }
+    fullNameWithIsolatedAccent = {
+      fullName: faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + '~'
+    }
+    invalidFullName = {
+      fullName: faker.string.alpha({ casing: 'lower' }) + '`' + faker.string.alpha(50) + ' '
+    }
   })
 
   test('Should add an error if full name is less than 3 characters long', () => {

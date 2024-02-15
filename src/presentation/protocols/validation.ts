@@ -1,3 +1,3 @@
-export interface Validation<T> {
-  validate: (input: T, options?: object) => string[]
+export interface Validation {
+  validate: (input: object, options?: object) => string[]
 }

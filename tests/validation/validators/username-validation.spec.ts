@@ -3,20 +3,32 @@ import { faker } from '@faker-js/faker'
 import { UsernameValidation } from '@/validation/validators'
 
 describe('UsernameValidation', () => {
-  let shortUsername: string
-  let longUsername: string
-  let usernameStartsWithNumber: string
-  let usernameWithSpaces: string
-  let usernameWithSpecialCharacter: string
-  let invalidUsername: string
+  let shortUsername: { username: string }
+  let longUsername: { username: string }
+  let usernameStartsWithNumber: { username: string }
+  let usernameWithSpaces: { username: string }
+  let usernameWithSpecialCharacter: { username: string }
+  let invalidUsername: { username: string }
 
   beforeAll(() => {
-    shortUsername = faker.string.alpha({ length: { min: 1, max: 2 } })
-    longUsername = faker.string.alpha(17)
-    usernameStartsWithNumber = faker.string.numeric() + faker.string.alpha(2)
-    usernameWithSpaces = faker.string.alpha({ length: { min: 2, max: 15 } }) + ' '
-    usernameWithSpecialCharacter = faker.string.alpha() + faker.string.symbol(15)
-    invalidUsername = faker.string.numeric() + faker.string.alpha(16) + ' ' + faker.string.symbol()
+    shortUsername = {
+      username: faker.string.alpha({ length: { min: 1, max: 2 } })
+    }
+    longUsername = {
+      username: faker.string.alpha(17)
+    }
+    usernameStartsWithNumber = {
+      username: faker.string.numeric() + faker.string.alpha(2)
+    }
+    usernameWithSpaces = {
+      username: faker.string.alpha({ length: { min: 2, max: 15 } }) + ' '
+    }
+    usernameWithSpecialCharacter = {
+      username: faker.string.alpha() + faker.string.symbol(15)
+    }
+    invalidUsername = {
+      username: faker.string.numeric() + faker.string.alpha(16) + ' ' + faker.string.symbol()
+    }
   })
 
   test('Should add an error if username is less than 3 characters long', () => {

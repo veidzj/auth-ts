@@ -3,27 +3,59 @@ import { faker } from '@faker-js/faker'
 import { PasswordValidation } from '@/validation/validators'
 
 describe('PasswordValidation', () => {
-  let shortPassword: string
-  let longPassword: string
-  let passwordWithNoLetter: string
-  let passwordWithNoNumber: string
-  let passwordWithNoSpecialCharacter: string
+  let shortPassword: { password: string }
+  let longPassword: { password: string }
+  let passwordWithNoLetter: { password: string }
+  let passwordWithNoNumber: { password: string }
+  let passwordWithNoSpecialCharacter: { password: string }
+  let validPassword: { password: string }
   let validOptions: { username: string, fullName: string, email: string, birthdate: string }
-  let validPassword: string
+  let passwordContainsUsername: { password: string }
+  let passwordContainsFullName: { password: string }
+  let passwordContainsEmail: { password: string }
+  let passwordContainsBirthdate: { password: string }
+  let passwordContainsAllPersonalData: { password: string }
 
   beforeAll(() => {
-    shortPassword = faker.string.alpha({ length: { min: 1, max: 5 } })
-    longPassword = faker.string.alpha(256)
-    passwordWithNoLetter = faker.string.numeric(6)
-    passwordWithNoNumber = faker.string.alpha(6)
-    passwordWithNoSpecialCharacter = faker.string.alpha(3) + faker.string.numeric(3)
+    shortPassword = {
+      password: faker.string.alpha({ length: { min: 1, max: 5 } })
+    }
+    longPassword = {
+      password: faker.string.alpha(256)
+    }
+    passwordWithNoLetter = {
+      password: faker.string.numeric(6)
+    }
+    passwordWithNoNumber = {
+      password: faker.string.alpha(6)
+    }
+    passwordWithNoSpecialCharacter = {
+      password: faker.string.alpha(3) + faker.string.numeric(3)
+    }
+    validPassword = {
+      password: faker.internet.password({ length: 15 }) + faker.string.symbol()
+    }
     validOptions = {
       username: faker.internet.userName(),
       fullName: faker.person.fullName(),
       email: faker.internet.email(),
       birthdate: faker.date.anytime().toISOString()
     }
-    validPassword = faker.internet.password({ length: 15 }) + faker.string.symbol()
+    passwordContainsUsername = {
+      password: validPassword.password + validOptions.username
+    }
+    passwordContainsFullName = {
+      password: validPassword.password + validOptions.fullName
+    }
+    passwordContainsEmail = {
+      password: validPassword.password + validOptions.email
+    }
+    passwordContainsBirthdate = {
+      password: validPassword.password + validOptions.birthdate
+    }
+    passwordContainsAllPersonalData = {
+      password: validPassword.password + validOptions.username + validOptions.fullName + validOptions.email + validOptions.birthdate
+    }
   })
 
   test('Should add an error if password is less than 6 characters long', () => {
@@ -58,31 +90,31 @@ describe('PasswordValidation', () => {
 
   test('Should add an error if password contains username', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(validPassword + validOptions.username, validOptions)
+    const errors = sut.validate(passwordContainsUsername, validOptions)
     expect(errors[0]).toBe('Password cannot contain personal data')
   })
 
   test('Should add an error if password contains full name', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(validPassword + validOptions.fullName, validOptions)
+    const errors = sut.validate(passwordContainsFullName, validOptions)
     expect(errors[0]).toBe('Password cannot contain personal data')
   })
 
   test('Should add an error if password contains email', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(validPassword + validOptions.email, validOptions)
+    const errors = sut.validate(passwordContainsEmail, validOptions)
     expect(errors[0]).toBe('Password cannot contain personal data')
   })
 
   test('Should add an error if password contains birthdate', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(validPassword + validOptions.birthdate, validOptions)
+    const errors = sut.validate(passwordContainsBirthdate, validOptions)
     expect(errors[0]).toBe('Password cannot contain personal data')
   })
 
   test('Should add only 1 error if password contains more than 1 personal data', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(validOptions.username + validOptions.fullName + validOptions.birthdate, validOptions)
+    const errors = sut.validate(passwordContainsAllPersonalData, validOptions)
     expect(errors.length).toBe(1)
   })
 })
