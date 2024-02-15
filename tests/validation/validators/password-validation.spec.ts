@@ -73,4 +73,10 @@ describe('PasswordValidation', () => {
     const errors = sut.validate(validPassword + validOptions.email, validOptions)
     expect(errors[0]).toBe('Password cannot contain personal data')
   })
+
+  test('Should add an error if password contains birthdate', () => {
+    const sut = new PasswordValidation()
+    const errors = sut.validate(validPassword + validOptions.birthdate, validOptions)
+    expect(errors[0]).toBe('Password cannot contain personal data')
+  })
 })
