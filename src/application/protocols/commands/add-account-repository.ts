@@ -9,7 +9,7 @@ export namespace AddAccountRepository {
     fullName: string
     email: string
     password: string
-    birthdate: Date
+    birthdate: string
     profileImage?: string
     isActive: boolean
     createdAt: Date

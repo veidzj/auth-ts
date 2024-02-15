@@ -8,7 +8,7 @@ export namespace AddAccount {
     fullName: string
     email: string
     password: string
-    birthdate: Date
+    birthdate: string
     profileImage?: string
   }
 }

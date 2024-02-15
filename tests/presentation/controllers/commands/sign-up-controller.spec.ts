@@ -22,7 +22,7 @@ const mockRequest = (): SignUpController.Request => ({
   fullName: faker.person.fullName(),
   email: faker.internet.email(),
   password: faker.internet.password(),
-  birthdate: faker.date.anytime(),
+  birthdate: faker.date.anytime().toISOString(),
   profileImage: faker.internet.url()
 })
 
