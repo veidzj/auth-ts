@@ -11,11 +11,9 @@ export class PasswordValidation implements Validation<string> {
       this.errors.push('Password must contain at least 1 letter, 1 digit, and 1 special character')
     }
     const personalData = [options.username, options.email, options.fullName, options.birthdate]
-    personalData.forEach((data: string) => {
-      if (password.toLowerCase().includes(data.toLowerCase())) {
-        this.errors.push('Password cannot contain personal data')
-      }
-    })
+    if (personalData.some((data: string) => password.toLowerCase().includes(data.toLowerCase()))) {
+      this.errors.push('Password cannot contain personal data')
+    }
     return this.errors
   }
 }
