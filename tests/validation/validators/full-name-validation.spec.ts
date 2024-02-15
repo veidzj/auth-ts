@@ -11,6 +11,7 @@ describe('FullNameValidation', () => {
   let fullNameWithSpecialCharacter: { fullName: string }
   let fullNameWithIsolatedAccent: { fullName: string }
   let invalidFullName: { fullName: string }
+  let validFullName: { fullName: string }
 
   beforeAll(() => {
     shortFullName = {
@@ -36,6 +37,9 @@ describe('FullNameValidation', () => {
     }
     invalidFullName = {
       fullName: faker.string.alpha({ casing: 'lower' }) + '`' + faker.string.alpha(50) + ' '
+    }
+    validFullName = {
+      fullName: faker.person.firstName() + ' ' + faker.person.lastName()
     }
   })
 
@@ -89,5 +93,12 @@ describe('FullNameValidation', () => {
     expect(errors[1]).toBe('Full name must start with an uppercase letter')
     expect(errors[2]).toBe('Full name must be separated by a single space')
     expect(errors[3]).toBe('Full name can only contain letters and letters with accents')
+  })
+
+  test('Should not add an error if full name is valid', () => {
+    const sut = new FullNameValidation()
+    const errors = sut.validate(validFullName)
+    console.log(validFullName)
+    expect(errors).toEqual([])
   })
 })
