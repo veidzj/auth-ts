@@ -58,7 +58,7 @@ describe('PasswordValidation', () => {
       password: validPassword.password + validOptions.username + validOptions.fullName + validOptions.email + validOptions.birthdate
     }
     invalidPassword = {
-      password: validOptions.username + faker.string.alpha(255)
+      password: validOptions.fullName + faker.string.alpha(255)
     }
   })
 
@@ -129,5 +129,11 @@ describe('PasswordValidation', () => {
     expect(errors[0]).toBe('Password must be between 6 and 255 characters long')
     expect(errors[1]).toBe('Password must contain at least 1 letter, 1 digit, and 1 special character')
     expect(errors[2]).toBe('Password cannot contain personal data')
+  })
+
+  test('Should not add an error if password is valid', () => {
+    const sut = new PasswordValidation()
+    const errors = sut.validate(validPassword, validOptions)
+    expect(errors).toEqual([])
   })
 })
