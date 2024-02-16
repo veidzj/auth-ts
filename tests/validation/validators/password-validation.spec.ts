@@ -43,22 +43,22 @@ describe('PasswordValidation', () => {
       birthdate: faker.date.anytime().toISOString()
     }
     passwordContainsUsername = {
-      password: validPassword.password + validOptions.username
+      password: `${validPassword.password}${validOptions.username}`
     }
     passwordContainsFullName = {
-      password: validPassword.password + validOptions.fullName
+      password: `${validPassword.password}${validOptions.fullName}`
     }
     passwordContainsEmail = {
-      password: validPassword.password + validOptions.email
+      password: `${validPassword.password}${validOptions.email}`
     }
     passwordContainsBirthdate = {
-      password: validPassword.password + validOptions.birthdate
+      password: `${validPassword.password}${validOptions.birthdate}`
     }
     passwordContainsAllPersonalData = {
-      password: validPassword.password + validOptions.username + validOptions.fullName + validOptions.email + validOptions.birthdate
+      password: `${validPassword.password}${validOptions.username}${validOptions.fullName}${validOptions.email}${validOptions.birthdate}`
     }
     invalidPassword = {
-      password: validOptions.fullName + faker.string.alpha(255)
+      password: `${validOptions.fullName}${faker.string.alpha(255)}`
     }
   })
 

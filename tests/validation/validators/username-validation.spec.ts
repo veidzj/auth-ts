@@ -19,19 +19,19 @@ describe('UsernameValidation', () => {
       username: faker.string.alpha(17)
     }
     usernameStartsWithNumber = {
-      username: faker.string.numeric() + faker.string.alpha(2)
+      username: `${faker.string.numeric()}${faker.string.alpha(2)}`
     }
     usernameWithSpaces = {
-      username: faker.string.alpha({ length: { min: 2, max: 15 } }) + ' '
+      username: `${faker.string.alpha({ length: { min: 2, max: 15 } })} `
     }
     usernameWithSpecialCharacter = {
-      username: faker.string.alpha() + faker.string.symbol(15)
+      username: `${faker.string.alpha()}${faker.string.symbol(15)}`
     }
     invalidUsername = {
-      username: faker.string.numeric() + faker.string.alpha(16) + ' ' + faker.string.symbol()
+      username: `${faker.string.numeric()}${faker.string.alpha(16)} ${faker.string.symbol()}`
     }
     validUsername = {
-      username: faker.string.alpha() + faker.string.alphanumeric(15)
+      username: `${faker.string.alpha()}${faker.string.alphanumeric(15)}`
     }
   })
 

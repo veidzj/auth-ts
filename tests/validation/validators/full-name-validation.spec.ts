@@ -24,22 +24,22 @@ describe('FullNameValidation', () => {
       fullName: faker.string.alpha({ length: 16, casing: 'lower' })
     }
     invalidSpaceBetweenFullName = {
-      fullName: faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + '  ' + faker.string.alpha(16)
+      fullName: `${faker.string.alpha({ casing: 'upper' })} ${faker.string.alpha(16)}   ${faker.string.alpha(16)}`
     }
     invalidSpaceAfterFullName = {
-      fullName: faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + ' '
+      fullName: `${faker.string.alpha({ casing: 'upper' })} ${faker.string.alpha(16)} `
     }
     fullNameWithSpecialCharacter = {
-      fullName: faker.string.alpha({ casing: 'upper' }) + faker.string.symbol(15)
+      fullName: `${faker.string.alpha({ casing: 'upper' })} ${faker.string.symbol(15)}`
     }
     fullNameWithIsolatedAccent = {
-      fullName: faker.string.alpha({ casing: 'upper' }) + faker.string.alpha(16) + '~'
+      fullName: `${faker.string.alpha({ casing: 'upper' })} ${faker.string.alpha(16)}~`
     }
     invalidFullName = {
-      fullName: faker.string.alpha({ casing: 'lower' }) + '`' + faker.string.alpha(50) + ' '
+      fullName: `${faker.string.alpha({ casing: 'lower' })}~${faker.string.alpha(50)} `
     }
     validFullName = {
-      fullName: faker.person.firstName() + ' ' + faker.person.lastName()
+      fullName: `${faker.person.firstName()} ${faker.person.lastName()}`
     }
   })
 
@@ -98,7 +98,6 @@ describe('FullNameValidation', () => {
   test('Should not add an error if full name is valid', () => {
     const sut = new FullNameValidation()
     const errors = sut.validate(validFullName)
-    console.log(validFullName)
     expect(errors).toEqual([])
   })
 })
