@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { AddAccountSpy } from '@/tests/domain/mocks/commands'
 import { SignUpController } from '@/presentation/controllers/commands'
+import { HttpHelper } from '@/presentation/helpers'
 
 interface Sut {
   sut: SignUpController
@@ -36,6 +37,13 @@ describe('SignUpController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(validationSpy.input).toEqual(request)
+  })
+
+  test('Should return badRequest if Validation returns at least 1 error', async() => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.errors = [faker.word.words(), faker.word.words()]
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.badRequest(validationSpy.errors))
   })
 
   test('Should call AddAccount with correct values', async() => {
