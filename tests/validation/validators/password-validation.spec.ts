@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 import { PasswordValidation } from '@/validation/validators'
 
 const mockPassword = (): PasswordValidation.Input => ({
-  password: faker.internet.password({ length: 15 }) + faker.string.symbol(),
+  password: faker.internet.password({ length: 15 }) + faker.string.numeric() + faker.string.symbol(),
   username: faker.internet.userName(),
   fullName: faker.person.fullName(),
   email: faker.internet.email(),
