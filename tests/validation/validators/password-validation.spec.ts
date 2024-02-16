@@ -2,42 +2,27 @@ import { faker } from '@faker-js/faker'
 
 import { PasswordValidation } from '@/validation/validators'
 
-interface PasswordInput {
-  password: string
-  username: string
-  fullName: string
-  email: string
-  birthdate: string
-}
-
-const mockPassword = (): PasswordInput => {
-  const password = faker.internet.password({ length: 15 }) + faker.string.symbol()
-  const username = faker.internet.userName()
-  const fullName = faker.person.fullName()
-  const email = faker.internet.email()
-  const birthdate = faker.date.anytime().toISOString()
-  return {
-    password,
-    username,
-    fullName,
-    email,
-    birthdate
-  }
-}
+const mockPassword = (): PasswordValidation.Input => ({
+  password: faker.internet.password({ length: 15 }) + faker.string.symbol(),
+  username: faker.internet.userName(),
+  fullName: faker.person.fullName(),
+  email: faker.internet.email(),
+  birthdate: faker.date.anytime().toISOString()
+})
 
 describe('PasswordValidation', () => {
-  let shortPassword: PasswordInput
-  let longPassword: PasswordInput
-  let passwordWithNoLetter: PasswordInput
-  let passwordWithNoNumber: PasswordInput
-  let passwordWithNoSpecialCharacter: PasswordInput
-  let validPassword: PasswordInput
-  let passwordContainsUsername: PasswordInput
-  let passwordContainsFullName: PasswordInput
-  let passwordContainsEmail: PasswordInput
-  let passwordContainsBirthdate: PasswordInput
-  let passwordContainsAllPersonalData: PasswordInput
-  let invalidPassword: PasswordInput
+  let shortPassword: PasswordValidation.Input
+  let longPassword: PasswordValidation.Input
+  let passwordWithNoLetter: PasswordValidation.Input
+  let passwordWithNoNumber: PasswordValidation.Input
+  let passwordWithNoSpecialCharacter: PasswordValidation.Input
+  let validPassword: PasswordValidation.Input
+  let passwordContainsUsername: PasswordValidation.Input
+  let passwordContainsFullName: PasswordValidation.Input
+  let passwordContainsEmail: PasswordValidation.Input
+  let passwordContainsBirthdate: PasswordValidation.Input
+  let passwordContainsAllPersonalData: PasswordValidation.Input
+  let invalidPassword: PasswordValidation.Input
 
   beforeAll(() => {
     validPassword = mockPassword()

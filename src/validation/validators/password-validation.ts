@@ -3,7 +3,7 @@ import { type Validation } from '@/presentation/protocols'
 export class PasswordValidation implements Validation {
   private readonly errors: string[] = []
 
-  validate(input: { password: string, username: string, fullName: string, email: string, birthdate: string }): string[] {
+  validate(input: PasswordValidation.Input): string[] {
     if (input.password.length < 6 || input.password.length > 255) {
       this.errors.push('Password must be between 6 and 255 characters long')
     }
@@ -15,5 +15,15 @@ export class PasswordValidation implements Validation {
       this.errors.push('Password cannot contain personal data')
     }
     return this.errors
+  }
+}
+
+export namespace PasswordValidation {
+  export interface Input {
+    password: string
+    username: string
+    fullName: string
+    email: string
+    birthdate: string
   }
 }

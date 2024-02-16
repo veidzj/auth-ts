@@ -3,8 +3,8 @@ import { faker } from '@faker-js/faker'
 import { EmailValidation } from '@/validation/validators'
 
 describe('EmailValidation', () => {
-  let invalidEmail: { email: string }
-  let validEmail: { email: string }
+  let invalidEmail: EmailValidation.Input
+  let validEmail: EmailValidation.Input
 
   beforeAll(() => {
     invalidEmail = {

@@ -3,7 +3,7 @@ import { type Validation } from '@/presentation/protocols'
 export class FullNameValidation implements Validation {
   private readonly errors: string[] = []
 
-  validate(input: { fullName: string }): string[] {
+  validate(input: FullNameValidation.Input): string[] {
     if (input.fullName.length < 3 || input.fullName.length > 50) {
       this.errors.push('Full name must be between 3 and 50 characters long')
     }
@@ -17,5 +17,11 @@ export class FullNameValidation implements Validation {
       this.errors.push('Full name can only contain letters and letters with accents')
     }
     return this.errors
+  }
+}
+
+export namespace FullNameValidation {
+  export interface Input {
+    fullName: string
   }
 }

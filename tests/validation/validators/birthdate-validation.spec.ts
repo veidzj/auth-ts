@@ -3,8 +3,8 @@ import { faker } from '@faker-js/faker'
 import { BirthdateValidation } from '@/validation/validators'
 
 describe('BirthdateValidation', () => {
-  let invalidBirthdate: { birthdate: string }
-  let validBirthdate: { birthdate: string }
+  let invalidBirthdate: BirthdateValidation.Input
+  let validBirthdate: BirthdateValidation.Input
 
   beforeAll(() => {
     invalidBirthdate = {

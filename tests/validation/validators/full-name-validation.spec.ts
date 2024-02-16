@@ -3,15 +3,15 @@ import { faker } from '@faker-js/faker'
 import { FullNameValidation } from '@/validation/validators'
 
 describe('FullNameValidation', () => {
-  let shortFullName: { fullName: string }
-  let longFullName: { fullName: string }
-  let lowercaseFullName: { fullName: string }
-  let invalidSpaceBetweenFullName: { fullName: string }
-  let invalidSpaceAfterFullName: { fullName: string }
-  let fullNameWithSpecialCharacter: { fullName: string }
-  let fullNameWithIsolatedAccent: { fullName: string }
-  let invalidFullName: { fullName: string }
-  let validFullName: { fullName: string }
+  let shortFullName: FullNameValidation.Input
+  let longFullName: FullNameValidation.Input
+  let lowercaseFullName: FullNameValidation.Input
+  let invalidSpaceBetweenFullName: FullNameValidation.Input
+  let invalidSpaceAfterFullName: FullNameValidation.Input
+  let fullNameWithSpecialCharacter: FullNameValidation.Input
+  let fullNameWithIsolatedAccent: FullNameValidation.Input
+  let invalidFullName: FullNameValidation.Input
+  let validFullName: FullNameValidation.Input
 
   beforeAll(() => {
     shortFullName = {

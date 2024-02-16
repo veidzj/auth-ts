@@ -3,9 +3,9 @@ import { faker } from '@faker-js/faker'
 import { ProfileImageValidation } from '@/validation/validators'
 
 describe('ProfileImageValidation', () => {
-  let invalidUrl: { profileImage: string }
-  let validUrl: { profileImage: string }
-  let undefinedProfileImage: { profileImage: undefined }
+  let invalidUrl: ProfileImageValidation.Input
+  let validUrl: ProfileImageValidation.Input
+  let undefinedProfileImage: ProfileImageValidation.Input
 
   beforeAll(() => {
     invalidUrl = {

@@ -3,7 +3,7 @@ import { type Validation } from '@/presentation/protocols'
 export class UsernameValidation implements Validation {
   private readonly errors: string[] = []
 
-  validate(input: { username: string }): string[] {
+  validate(input: UsernameValidation.Input): string[] {
     if (input.username.length < 3 || input.username.length > 16) {
       this.errors.push('Username must be between 3 and 16 characters long')
     }
@@ -17,5 +17,11 @@ export class UsernameValidation implements Validation {
       this.errors.push('Username can only contain letters, digits, underscore, hyphen and dot')
     }
     return this.errors
+  }
+}
+
+export namespace UsernameValidation {
+  export interface Input {
+    username: string
   }
 }

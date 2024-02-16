@@ -3,13 +3,13 @@ import { faker } from '@faker-js/faker'
 import { UsernameValidation } from '@/validation/validators'
 
 describe('UsernameValidation', () => {
-  let shortUsername: { username: string }
-  let longUsername: { username: string }
-  let usernameStartsWithNumber: { username: string }
-  let usernameWithSpaces: { username: string }
-  let usernameWithSpecialCharacter: { username: string }
-  let invalidUsername: { username: string }
-  let validUsername: { username: string }
+  let shortUsername: UsernameValidation.Input
+  let longUsername: UsernameValidation.Input
+  let usernameStartsWithNumber: UsernameValidation.Input
+  let usernameWithSpaces: UsernameValidation.Input
+  let usernameWithSpecialCharacter: UsernameValidation.Input
+  let invalidUsername: UsernameValidation.Input
+  let validUsername: UsernameValidation.Input
 
   beforeAll(() => {
     shortUsername = {
