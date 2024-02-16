@@ -24,4 +24,10 @@ describe('ValidationComposite', () => {
     const errors = sut.validate({ username: faker.word.words() })
     expect(errors).toEqual(validationSpies[0].errors.concat(validationSpies[1].errors))
   })
+
+  test('Should return an empty array if all validations succeeds', () => {
+    const { sut } = makeSut()
+    const errors = sut.validate({ username: faker.word.words() })
+    expect(errors).toEqual([])
+  })
 })
