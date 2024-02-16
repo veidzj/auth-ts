@@ -13,9 +13,13 @@ export class ExpressRouteAdapter {
       const httpResponse = await controller.handle(request)
       const { statusCode, body } = httpResponse
       if (statusCode >= 200 && statusCode <= 299) {
-        res.status(statusCode).json(body)
+        res.status(statusCode).json({
+          data: body
+        })
       } else {
-        res.status(statusCode).json(body)
+        res.status(statusCode).json({
+          errors: body
+        })
       }
     }
   }
