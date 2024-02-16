@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "start": "node dist/main/server.js",
+    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig.build.json",
     "test": "jest --passWithNoTests --noStackTrace --runInBand --no-cache",
     "test:verbose": "jest --passWithNoTests --runInBand",
@@ -42,6 +43,7 @@
     "jest": "^29.7.0",
     "lint-staged": "^15.2.2",
     "mockdate": "^3.0.5",
+    "nodemon": "^3.0.3",
     "npm-check-updates": "^16.14.15",
     "rimraf": "^5.0.5",
     "supertest": "^6.3.4",
