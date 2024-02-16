@@ -7,4 +7,11 @@ export class HttpHelper {
       body: data
     }
   }
+
+  public static badRequest(data: object): HttpResponse {
+    return {
+      statusCode: 400,
+      body: data
+    }
+  }
 }
