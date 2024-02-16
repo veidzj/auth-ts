@@ -1,7 +1,7 @@
 import { type Validation } from '@/presentation/protocols'
 
 export class ValidationComposite implements Validation {
-  private readonly errors: string[]
+  private errors: string[] = []
 
   constructor(private readonly validations: Validation[]) {}
 
@@ -9,7 +9,7 @@ export class ValidationComposite implements Validation {
     for (const validation of this.validations) {
       const error = validation.validate(input)
       if (error) {
-        this.errors.concat(error)
+        this.errors = this.errors.concat(error)
       }
     }
     return this.errors
