@@ -1,18 +1,22 @@
 import { faker } from '@faker-js/faker'
 
+import { ValidationSpy } from '@/tests/presentation/mocks'
 import { AddAccountSpy } from '@/tests/domain/mocks/commands'
 import { SignUpController } from '@/presentation/controllers/commands'
 
 interface Sut {
   sut: SignUpController
+  validationSpy: ValidationSpy
   addAccountSpy: AddAccountSpy
 }
 
 const makeSut = (): Sut => {
+  const validationSpy = new ValidationSpy()
   const addAccountSpy = new AddAccountSpy()
-  const sut = new SignUpController(addAccountSpy)
+  const sut = new SignUpController(validationSpy, addAccountSpy)
   return {
     sut,
+    validationSpy,
     addAccountSpy
   }
 }
@@ -27,6 +31,13 @@ const mockRequest = (): SignUpController.Request => ({
 })
 
 describe('SignUpController', () => {
+  test('Should call Validation with correct values', async() => {
+    const { sut, validationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(validationSpy.input).toEqual(request)
+  })
+
   test('Should call AddAccount with correct values', async() => {
     const { sut, addAccountSpy } = makeSut()
     const request = mockRequest()
