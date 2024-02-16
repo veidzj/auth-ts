@@ -39,7 +39,7 @@ describe('FullNameValidation', () => {
       fullName: `${faker.string.alpha({ casing: 'lower' })}~${faker.string.alpha(50)} `
     }
     validFullName = {
-      fullName: `${faker.person.firstName()} ${faker.person.lastName()}`
+      fullName: `${faker.string.alpha({ casing: 'upper' })} ${faker.string.alpha(8)} ${faker.string.alpha(8)}`
     }
   })
 
