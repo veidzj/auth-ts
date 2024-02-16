@@ -1,11 +1,15 @@
-import { type Controller, type HttpResponse } from '@/presentation/protocols'
+import { type Validation, type Controller, type HttpResponse } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
 import { type AddAccount } from '@/domain/usecases/commands'
 
 export class SignUpController implements Controller {
-  constructor(private readonly addAccount: AddAccount) {}
+  constructor(
+    private readonly validation: Validation,
+    private readonly addAccount: AddAccount
+  ) {}
 
   public async handle(request: SignUpController.Request): Promise<HttpResponse> {
+    this.validation.validate(request)
     await this.addAccount.add(request)
     return HttpHelper.ok({})
   }
