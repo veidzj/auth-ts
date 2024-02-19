@@ -6,7 +6,7 @@ export class PasswordValidation implements Validation {
     if (input.password.length < 6 || input.password.length > 255) {
       return new ValidationError('Password must be between 6 and 255 characters long')
     }
-    if (!/(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d])/.test(input.password)) {
+    if (!/(?=[a-zA-Z])(?=\D)(?=.*[^\w\d])/.test(input.password)) {
       return new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character')
     }
     const personalData = [input.username, input.email, input.fullName, input.birthdate]
