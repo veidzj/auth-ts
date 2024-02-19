@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 
 import { UsernameValidation } from '@/validation/validators'
+import { ValidationError } from '@/validation/errors'
 
 describe('UsernameValidation', () => {
   let shortUsername: UsernameValidation.Input
@@ -35,49 +36,45 @@ describe('UsernameValidation', () => {
     }
   })
 
-  test('Should add an error if username is less than 3 characters long', () => {
+  test('Should return an error if username is less than 3 characters long', () => {
     const sut = new UsernameValidation()
-    const errors = sut.validate(shortUsername)
-    expect(errors[0]).toBe('Username must be between 3 and 16 characters long')
+    const error = sut.validate(shortUsername)
+    expect(error).toEqual(new ValidationError('Username must be between 3 and 16 characters long'))
   })
 
-  test('Should add an error if username is greater than 16 characters long', () => {
+  test('Should return an error if username is greater than 16 characters long', () => {
     const sut = new UsernameValidation()
-    const errors = sut.validate(longUsername)
-    expect(errors[0]).toBe('Username must be between 3 and 16 characters long')
+    const error = sut.validate(longUsername)
+    expect(error).toEqual(new ValidationError('Username must be between 3 and 16 characters long'))
   })
 
-  test('Should add an error if username starts with a number', () => {
+  test('Should return an error if username starts with a number', () => {
     const sut = new UsernameValidation()
-    const errors = sut.validate(usernameStartsWithNumber)
-    expect(errors[0]).toBe('Username must start with a letter')
+    const error = sut.validate(usernameStartsWithNumber)
+    expect(error).toEqual(new ValidationError('Username must start with a letter'))
   })
 
-  test('Should add an error if username contains a special character', () => {
+  test('Should return an error if username contains a special character', () => {
     const sut = new UsernameValidation()
-    const errors = sut.validate(usernameWithSpecialCharacter)
-    expect(errors[0]).toBe('Username can only contain letters, digits, underscore, hyphen and dot')
+    const error = sut.validate(usernameWithSpecialCharacter)
+    expect(error).toEqual(new ValidationError('Username can only contain letters, digits, underscore, hyphen and dot'))
   })
 
-  test('Should add an error if username contains spaces', () => {
+  test('Should return an error if username contains spaces', () => {
     const sut = new UsernameValidation()
-    const errors = sut.validate(usernameWithSpaces)
-    expect(errors[0]).toBe('Username must not contain spaces')
+    const error = sut.validate(usernameWithSpaces)
+    expect(error).toEqual(new ValidationError('Username must not contain spaces'))
   })
 
-  test('Should add all errors if username contains more than 1 error', () => {
+  test('Should return only one error if username contains more than 1 error', () => {
     const sut = new UsernameValidation()
-    const errors = sut.validate(invalidUsername)
-    expect(errors.length).toBe(4)
-    expect(errors[0]).toBe('Username must be between 3 and 16 characters long')
-    expect(errors[1]).toBe('Username must start with a letter')
-    expect(errors[2]).toBe('Username must not contain spaces')
-    expect(errors[3]).toBe('Username can only contain letters, digits, underscore, hyphen and dot')
+    const error = sut.validate(invalidUsername)
+    expect(error).toEqual(new ValidationError('Username must be between 3 and 16 characters long'))
   })
 
-  test('Should not add an error if username is valid', () => {
+  test('Should return null if username is valid', () => {
     const sut = new UsernameValidation()
-    const errors = sut.validate(validUsername)
-    expect(errors).toEqual([])
+    const error = sut.validate(validUsername)
+    expect(error).toBeNull()
   })
 })

@@ -1,15 +1,14 @@
 import validator from 'validator'
 
+import { ValidationError } from '@/validation/errors'
 import { type Validation } from '@/presentation/protocols'
 
 export class EmailValidation implements Validation {
-  private readonly errors: string[] = []
-
-  validate(input: EmailValidation.Input): string[] {
+  validate(input: EmailValidation.Input): Error | null {
     if (!validator.isEmail(input.email)) {
-      this.errors.push('Email must be a valid email')
+      return new ValidationError('Email must be a valid email')
     }
-    return this.errors
+    return null
   }
 }
 

@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 
 import { PasswordValidation } from '@/validation/validators'
+import { ValidationError } from '@/validation/errors'
 
 const mockPassword = (): PasswordValidation.Input => ({
   password: faker.internet.password({ length: 15 }) + faker.string.numeric() + faker.string.symbol(),
@@ -21,7 +22,6 @@ describe('PasswordValidation', () => {
   let passwordContainsFullName: PasswordValidation.Input
   let passwordContainsEmail: PasswordValidation.Input
   let passwordContainsBirthdate: PasswordValidation.Input
-  let passwordContainsAllPersonalData: PasswordValidation.Input
   let invalidPassword: PasswordValidation.Input
 
   beforeAll(() => {
@@ -35,82 +35,72 @@ describe('PasswordValidation', () => {
     passwordContainsFullName = { ...validPassword, password: `${validPassword.password}${validPassword.fullName}` }
     passwordContainsEmail = { ...validPassword, password: `${validPassword.password}${validPassword.email}` }
     passwordContainsBirthdate = { ...validPassword, password: `${validPassword.password}${validPassword.birthdate}` }
-    passwordContainsAllPersonalData = { ...validPassword, password: `${validPassword.password}${validPassword.username}${validPassword.fullName}${validPassword.email}${validPassword.birthdate}` }
     invalidPassword = { ...validPassword, password: `${validPassword.fullName}${faker.string.alpha(255)}` }
   })
 
-  test('Should add an error if password is less than 6 characters long', () => {
+  test('Should return an error if password is less than 6 characters long', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(shortPassword)
-    expect(errors[0]).toBe('Password must be between 6 and 255 characters long')
+    const error = sut.validate(shortPassword)
+    expect(error).toEqual(new ValidationError('Password must be between 6 and 255 characters long'))
   })
 
-  test('Should add an error if password is greater than 255 characters long', () => {
+  test('Should return an error if password is greater than 255 characters long', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(longPassword)
-    expect(errors[0]).toBe('Password must be between 6 and 255 characters long')
+    const error = sut.validate(longPassword)
+    expect(error).toEqual(new ValidationError('Password must be between 6 and 255 characters long'))
   })
 
-  test('Should add an error if password does not contains a letter', () => {
+  test('Should return an error if password does not contains a letter', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(passwordWithNoLetter)
-    expect(errors[0]).toBe('Password must contain at least 1 letter, 1 digit, and 1 special character')
+    const error = sut.validate(passwordWithNoLetter)
+    expect(error).toEqual(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
   })
 
-  test('Should add an error if password does not contains a number', () => {
+  test('Should return an error if password does not contains a number', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(passwordWithNoNumber)
-    expect(errors[0]).toBe('Password must contain at least 1 letter, 1 digit, and 1 special character')
+    const error = sut.validate(passwordWithNoNumber)
+    expect(error).toEqual(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
   })
 
-  test('Should add an error if password does not contains a special character', () => {
+  test('Should return an error if password does not contains a special character', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(passwordWithNoSpecialCharacter)
-    expect(errors[0]).toBe('Password must contain at least 1 letter, 1 digit, and 1 special character')
+    const error = sut.validate(passwordWithNoSpecialCharacter)
+    expect(error).toEqual(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
   })
 
-  test('Should add an error if password contains username', () => {
+  test('Should return an error if password contains username', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(passwordContainsUsername)
-    expect(errors[0]).toBe('Password cannot contain personal data')
+    const error = sut.validate(passwordContainsUsername)
+    expect(error).toEqual(new ValidationError('Password cannot contain personal data'))
   })
 
-  test('Should add an error if password contains full name', () => {
+  test('Should return an error if password contains full name', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(passwordContainsFullName)
-    expect(errors[0]).toBe('Password cannot contain personal data')
+    const error = sut.validate(passwordContainsFullName)
+    expect(error).toEqual(new ValidationError('Password cannot contain personal data'))
   })
 
-  test('Should add an error if password contains email', () => {
+  test('Should return an error if password contains email', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(passwordContainsEmail)
-    expect(errors[0]).toBe('Password cannot contain personal data')
+    const error = sut.validate(passwordContainsEmail)
+    expect(error).toEqual(new ValidationError('Password cannot contain personal data'))
   })
 
-  test('Should add an error if password contains birthdate', () => {
+  test('Should return an error if password contains birthdate', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(passwordContainsBirthdate)
-    expect(errors[0]).toBe('Password cannot contain personal data')
+    const error = sut.validate(passwordContainsBirthdate)
+    expect(error).toEqual(new ValidationError('Password cannot contain personal data'))
   })
 
-  test('Should add only 1 error if password contains more than 1 personal data', () => {
+  test('Should return only one error if password contains more than 1 error', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(passwordContainsAllPersonalData)
-    expect(errors.length).toBe(1)
+    const error = sut.validate(invalidPassword)
+    expect(error).toEqual(new ValidationError('Password must be between 6 and 255 characters long'))
   })
 
-  test('Should add all errors if password contains more than 1 error', () => {
+  test('Should return null if password is valid', () => {
     const sut = new PasswordValidation()
-    const errors = sut.validate(invalidPassword)
-    expect(errors.length).toBe(3)
-    expect(errors[0]).toBe('Password must be between 6 and 255 characters long')
-    expect(errors[1]).toBe('Password must contain at least 1 letter, 1 digit, and 1 special character')
-    expect(errors[2]).toBe('Password cannot contain personal data')
-  })
-
-  test('Should not add an error if password is valid', () => {
-    const sut = new PasswordValidation()
-    const errors = sut.validate(validPassword)
-    expect(errors).toEqual([])
+    const error = sut.validate(validPassword)
+    expect(error).toBeNull()
   })
 })

@@ -9,9 +9,9 @@ export class SignUpController implements Controller {
   ) {}
 
   public async handle(request: SignUpController.Request): Promise<HttpResponse> {
-    const errors = this.validation.validate(request)
-    if (errors) {
-      return HttpHelper.badRequest(errors)
+    const error = this.validation.validate(request)
+    if (error) {
+      return HttpHelper.badRequest(error)
     }
     await this.addAccount.add(request)
     return HttpHelper.ok({})

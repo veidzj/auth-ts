@@ -18,7 +18,7 @@ export class ExpressRouteAdapter {
         })
       } else {
         res.status(statusCode).json({
-          errors: body
+          error: body.message
         })
       }
     }

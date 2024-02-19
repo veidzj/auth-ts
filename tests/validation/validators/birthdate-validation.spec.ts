@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 
 import { BirthdateValidation } from '@/validation/validators'
+import { ValidationError } from '@/validation/errors'
 
 describe('BirthdateValidation', () => {
   let invalidBirthdate: BirthdateValidation.Input
@@ -15,15 +16,15 @@ describe('BirthdateValidation', () => {
     }
   })
 
-  test('Should add an error if birthdate is in invalid format', () => {
+  test('Should return an error if birthdate is in invalid format', () => {
     const sut = new BirthdateValidation()
-    const errors = sut.validate(invalidBirthdate)
-    expect(errors[0]).toBe('Birthdate must be in the format YYYY-MM-DD (ISO 8601)')
+    const error = sut.validate(invalidBirthdate)
+    expect(error).toEqual(new ValidationError('Birthdate must be in the format YYYY-MM-DD (ISO 8601)'))
   })
 
-  test('Should not add an error if birthdate is in valid format', () => {
+  test('Should return null if birthdate is in valid format', () => {
     const sut = new BirthdateValidation()
-    const errors = sut.validate(validBirthdate)
-    expect(errors).toEqual([])
+    const error = sut.validate(validBirthdate)
+    expect(error).toBeNull()
   })
 })

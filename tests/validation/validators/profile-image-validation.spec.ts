@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 
 import { ProfileImageValidation } from '@/validation/validators'
+import { ValidationError } from '@/validation/errors'
 
 describe('ProfileImageValidation', () => {
   let invalidUrl: ProfileImageValidation.Input
@@ -19,21 +20,21 @@ describe('ProfileImageValidation', () => {
     }
   })
 
-  test('Should add an error if profile image is not a valid url', () => {
+  test('Should return an error if profile image is not a valid url', () => {
     const sut = new ProfileImageValidation()
-    const errors = sut.validate(invalidUrl)
-    expect(errors[0]).toBe('Profile image must be a valid url')
+    const error = sut.validate(invalidUrl)
+    expect(error).toEqual(new ValidationError('Profile image must be a valid url'))
   })
 
-  test('Should not add an error if profile image is not provided', () => {
+  test('Should return null if profile image is not provided', () => {
     const sut = new ProfileImageValidation()
-    const errors = sut.validate(undefinedProfileImage)
-    expect(errors).toEqual([])
+    const error = sut.validate(undefinedProfileImage)
+    expect(error).toBeNull()
   })
 
-  test('Should not add an error if profile image is a valid url', () => {
+  test('Should return null if profile image is a valid url', () => {
     const sut = new ProfileImageValidation()
-    const errors = sut.validate(validUrl)
-    expect(errors).toEqual([])
+    const error = sut.validate(validUrl)
+    expect(error).toBeNull()
   })
 })

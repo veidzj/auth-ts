@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 
 import { EmailValidation } from '@/validation/validators'
+import { ValidationError } from '@/validation/errors'
 
 describe('EmailValidation', () => {
   let invalidEmail: EmailValidation.Input
@@ -15,15 +16,15 @@ describe('EmailValidation', () => {
     }
   })
 
-  test('Should add an error if email is invalid', () => {
+  test('Should return an error if email is invalid', () => {
     const sut = new EmailValidation()
-    const errors = sut.validate(invalidEmail)
-    expect(errors[0]).toBe('Email must be a valid email')
+    const error = sut.validate(invalidEmail)
+    expect(error).toEqual(new ValidationError('Email must be a valid email'))
   })
 
-  test('Should not add an error if email is valid', () => {
+  test('Should return null if email is valid', () => {
     const sut = new EmailValidation()
-    const errors = sut.validate(validEmail)
-    expect(errors).toEqual([])
+    const error = sut.validate(validEmail)
+    expect(error).toBeNull()
   })
 })

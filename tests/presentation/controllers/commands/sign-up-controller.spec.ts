@@ -4,6 +4,7 @@ import { ValidationSpy } from '@/tests/presentation/mocks'
 import { AddAccountSpy } from '@/tests/domain/mocks/commands'
 import { SignUpController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
+import { ValidationError } from '@/validation/errors'
 
 interface Sut {
   sut: SignUpController
@@ -39,11 +40,11 @@ describe('SignUpController', () => {
     expect(validationSpy.input).toEqual(request)
   })
 
-  test('Should return badRequest if Validation returns at least 1 error', async() => {
+  test('Should return badRequest if Validation return an error', async() => {
     const { sut, validationSpy } = makeSut()
-    validationSpy.errors = [faker.word.words(), faker.word.words()]
+    validationSpy.error = new ValidationError(faker.word.words())
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(HttpHelper.badRequest(validationSpy.errors))
+    expect(httpResponse).toEqual(HttpHelper.badRequest(validationSpy.error))
   })
 
   test('Should call AddAccount with correct values', async() => {
