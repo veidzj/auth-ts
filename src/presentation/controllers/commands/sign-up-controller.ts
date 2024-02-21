@@ -18,7 +18,7 @@ export class SignUpController implements Controller {
       if (error instanceof ValidationError) {
         return HttpHelper.badRequest(error)
       }
-      return HttpHelper.badRequest({})
+      return HttpHelper.serverError()
     }
   }
 }
