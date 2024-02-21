@@ -3,6 +3,10 @@ import { faker } from '@faker-js/faker'
 import { PasswordValidation } from '@/validation/validators'
 import { ValidationError } from '@/validation/errors'
 
+const makeSut = (): PasswordValidation => {
+  return new PasswordValidation()
+}
+
 const mockPassword = (): PasswordValidation.Input => ({
   password: faker.internet.password({ length: 15 }) + faker.string.numeric() + faker.string.symbol(),
   username: faker.internet.userName(),
@@ -37,70 +41,70 @@ describe('PasswordValidation', () => {
   })
 
   test('Should throw ValidationError if password is less than 6 characters long', () => {
-    const sut = new PasswordValidation()
+    const sut = makeSut()
     expect(() => {
       sut.validate(shortPassword)
     }).toThrow(new ValidationError('Password must be between 6 and 255 characters long'))
   })
 
   test('Should throw ValidationError if password is greater than 255 characters long', () => {
-    const sut = new PasswordValidation()
+    const sut = makeSut()
     expect(() => {
       sut.validate(longPassword)
     }).toThrow(new ValidationError('Password must be between 6 and 255 characters long'))
   })
 
   test('Should throw ValidationError if password does not contains a letter', () => {
-    const sut = new PasswordValidation()
+    const sut = makeSut()
     expect(() => {
       sut.validate(passwordWithNoLetter)
     }).toThrow(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
   })
 
   test('Should throw ValidationError if password does not contains a number', () => {
-    const sut = new PasswordValidation()
+    const sut = makeSut()
     expect(() => {
       sut.validate(passwordWithNoNumber)
     }).toThrow(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
   })
 
   test('Should throw ValidationError if password does not contains a special character', () => {
-    const sut = new PasswordValidation()
+    const sut = makeSut()
     expect(() => {
       sut.validate(passwordWithNoSpecialCharacter)
     }).toThrow(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
   })
 
   test('Should throw ValidationError if password contains username', () => {
-    const sut = new PasswordValidation()
+    const sut = makeSut()
     expect(() => {
       sut.validate(passwordContainsUsername)
     }).toThrow(new ValidationError('Password cannot contain personal data'))
   })
 
   test('Should throw ValidationError if password contains full name', () => {
-    const sut = new PasswordValidation()
+    const sut = makeSut()
     expect(() => {
       sut.validate(passwordContainsFullName)
     }).toThrow(new ValidationError('Password cannot contain personal data'))
   })
 
   test('Should throw ValidationError if password contains email', () => {
-    const sut = new PasswordValidation()
+    const sut = makeSut()
     expect(() => {
       sut.validate(passwordContainsEmail)
     }).toThrow(new ValidationError('Password cannot contain personal data'))
   })
 
   test('Should throw ValidationError if password contains birthdate', () => {
-    const sut = new PasswordValidation()
+    const sut = makeSut()
     expect(() => {
       sut.validate(passwordContainsBirthdate)
     }).toThrow(new ValidationError('Password cannot contain personal data'))
   })
 
   test('Should not throw if password is valid', () => {
-    const sut = new PasswordValidation()
+    const sut = makeSut()
     expect(() => {
       sut.validate(validPassword)
     }).not.toThrow()
