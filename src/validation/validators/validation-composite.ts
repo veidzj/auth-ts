@@ -3,13 +3,9 @@ import { type Validation } from '@/presentation/protocols'
 export class ValidationComposite implements Validation {
   constructor(private readonly validations: Validation[]) {}
 
-  public validate(input: object): Error | null {
+  public validate(input: object): void {
     for (const validation of this.validations) {
-      const error = validation.validate(input)
-      if (error) {
-        return error
-      }
+      validation.validate(input)
     }
-    return null
   }
 }

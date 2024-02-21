@@ -19,24 +19,19 @@ const makeSut = (): Sut => {
 }
 
 describe('ValidationComposite', () => {
-  test('Should return an error if any validation fails', () => {
+  test('Should throw ValidationError if any validation throws', () => {
     const { sut, validationSpies } = makeSut()
-    validationSpies[0].error = new ValidationError(faker.word.words())
-    const error = sut.validate({ username: faker.word.words() })
-    expect(error).toBe(validationSpies[0].error)
+    const errorMessage = faker.word.words()
+    jest.spyOn(validationSpies[0], 'validate').mockImplementationOnce(() => { throw new ValidationError(errorMessage) })
+    expect(() => {
+      sut.validate({ username: faker.word.words() })
+    }).toThrow(new ValidationError(errorMessage))
   })
 
-  test('Should return only 1 error if more than 1 validation fails', () => {
-    const { sut, validationSpies } = makeSut()
-    validationSpies[0].error = new ValidationError(faker.word.words())
-    validationSpies[1].error = new ValidationError(faker.word.words())
-    const error = sut.validate({ username: faker.word.words() })
-    expect(error).toBe(validationSpies[0].error)
-  })
-
-  test('Should return null if all validations succeeds', () => {
+  test('Should not throw if all validations succeeds', () => {
     const { sut } = makeSut()
-    const error = sut.validate({ username: faker.word.words() })
-    expect(error).toBeNull()
+    expect(() => {
+      sut.validate({ username: faker.word.words() })
+    }).not.toThrow()
   })
 })

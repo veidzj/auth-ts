@@ -1,6 +1,7 @@
 import { type Validation, type Controller, type HttpResponse } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
 import { type AddAccount } from '@/domain/usecases/commands'
+import { ValidationError } from '@/validation/errors'
 
 export class SignUpController implements Controller {
   constructor(
@@ -9,12 +10,16 @@ export class SignUpController implements Controller {
   ) {}
 
   public async handle(request: SignUpController.Request): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) {
-      return HttpHelper.badRequest(error)
+    try {
+      this.validation.validate(request)
+      await this.addAccount.add(request)
+      return HttpHelper.ok({})
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        return HttpHelper.badRequest(error)
+      }
+      return HttpHelper.badRequest({})
     }
-    await this.addAccount.add(request)
-    return HttpHelper.ok({})
   }
 }
 

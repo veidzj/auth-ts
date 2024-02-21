@@ -16,15 +16,17 @@ describe('EmailValidation', () => {
     }
   })
 
-  test('Should return an error if email is invalid', () => {
+  test('Should throw ValidationError if email is invalid', () => {
     const sut = new EmailValidation()
-    const error = sut.validate(invalidEmail)
-    expect(error).toEqual(new ValidationError('Email must be a valid email'))
+    expect(() => {
+      sut.validate(invalidEmail)
+    }).toThrow(new ValidationError('Email must be a valid email'))
   })
 
-  test('Should return null if email is valid', () => {
+  test('Should not throw if email is valid', () => {
     const sut = new EmailValidation()
-    const error = sut.validate(validEmail)
-    expect(error).toBeNull()
+    expect(() => {
+      sut.validate(validEmail)
+    }).not.toThrow()
   })
 })

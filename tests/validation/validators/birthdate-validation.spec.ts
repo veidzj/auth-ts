@@ -16,15 +16,17 @@ describe('BirthdateValidation', () => {
     }
   })
 
-  test('Should return an error if birthdate is in invalid format', () => {
+  test('Should throw ValidationError if birthdate is in invalid format', () => {
     const sut = new BirthdateValidation()
-    const error = sut.validate(invalidBirthdate)
-    expect(error).toEqual(new ValidationError('Birthdate must be in the format YYYY-MM-DD (ISO 8601)'))
+    expect(() => {
+      sut.validate(invalidBirthdate)
+    }).toThrow(new ValidationError('Birthdate must be in the format YYYY-MM-DD (ISO 8601)'))
   })
 
-  test('Should return null if birthdate is in valid format', () => {
+  test('Should not throw if birthdate is in valid format', () => {
     const sut = new BirthdateValidation()
-    const error = sut.validate(validBirthdate)
-    expect(error).toBeNull()
+    expect(() => {
+      sut.validate(validBirthdate)
+    }).not.toThrow()
   })
 })

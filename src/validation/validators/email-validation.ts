@@ -4,11 +4,10 @@ import { ValidationError } from '@/validation/errors'
 import { type Validation } from '@/presentation/protocols'
 
 export class EmailValidation implements Validation {
-  validate(input: EmailValidation.Input): Error | null {
+  validate(input: EmailValidation.Input): void {
     if (!validator.isEmail(input.email)) {
-      return new ValidationError('Email must be a valid email')
+      throw new ValidationError('Email must be a valid email')
     }
-    return null
   }
 }
 

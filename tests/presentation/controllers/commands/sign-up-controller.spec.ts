@@ -40,11 +40,12 @@ describe('SignUpController', () => {
     expect(validationSpy.input).toEqual(request)
   })
 
-  test('Should return badRequest if Validation return an error', async() => {
+  test('Should return badRequest if Validation throws', async() => {
     const { sut, validationSpy } = makeSut()
-    validationSpy.error = new ValidationError(faker.word.words())
+    const errorMessage = faker.word.words()
+    jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new ValidationError(errorMessage) })
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(HttpHelper.badRequest(validationSpy.error))
+    expect(httpResponse).toEqual(HttpHelper.badRequest(new ValidationError(errorMessage)))
   })
 
   test('Should call AddAccount with correct values', async() => {

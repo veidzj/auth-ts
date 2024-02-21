@@ -20,21 +20,24 @@ describe('ProfileImageValidation', () => {
     }
   })
 
-  test('Should return an error if profile image is not a valid url', () => {
+  test('Should throw ValidationError if profile image is not a valid url', () => {
     const sut = new ProfileImageValidation()
-    const error = sut.validate(invalidUrl)
-    expect(error).toEqual(new ValidationError('Profile image must be a valid url'))
+    expect(() => {
+      sut.validate(invalidUrl)
+    }).toThrow(new ValidationError('Profile image must be a valid url'))
   })
 
-  test('Should return null if profile image is not provided', () => {
+  test('Should not throw if profile image is not provided', () => {
     const sut = new ProfileImageValidation()
-    const error = sut.validate(undefinedProfileImage)
-    expect(error).toBeNull()
+    expect(() => {
+      sut.validate(undefinedProfileImage)
+    }).not.toThrow()
   })
 
-  test('Should return null if profile image is a valid url', () => {
+  test('Should not throw if profile image is a valid url', () => {
     const sut = new ProfileImageValidation()
-    const error = sut.validate(validUrl)
-    expect(error).toBeNull()
+    expect(() => {
+      sut.validate(validUrl)
+    }).not.toThrow()
   })
 })
