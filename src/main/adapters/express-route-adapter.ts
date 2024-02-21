@@ -18,7 +18,11 @@ export class ExpressRouteAdapter {
         })
       } else {
         res.status(statusCode).json({
-          error: body.message
+          error: {
+            status: statusCode,
+            type: body.name,
+            message: body.message
+          }
         })
       }
     }
