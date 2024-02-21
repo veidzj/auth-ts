@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import { faker } from '@faker-js/faker'
 
+import { env } from '@/main/config'
 import { BcryptAdapter } from '@/infra/cryptography'
 
 jest.mock('bcrypt', () => ({
@@ -9,7 +10,7 @@ jest.mock('bcrypt', () => ({
   }
 }))
 
-const salt: number = 12
+const salt: number = Number(env.salt)
 const plainText: string = faker.word.words()
 const digest: string = faker.word.words()
 

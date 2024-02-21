@@ -8,7 +8,7 @@ import { AddAccountMongoRepository } from '@/infra/db/mongodb/commands'
 export class AddAccountFactory {
   public static readonly makeAddAccount = (): AddAccount => {
     const checkAccountByEmailRepository = new CheckAccountByEmailMongoRepository()
-    const hasher = new BcryptAdapter(env.salt)
+    const hasher = new BcryptAdapter(Number(env.salt))
     const addAccountRepository = new AddAccountMongoRepository()
     return new DbAddAccount(checkAccountByEmailRepository, hasher, addAccountRepository)
   }
