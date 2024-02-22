@@ -1,5 +1,6 @@
 import { type Validation, type Controller, type HttpResponse } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
+import { ValidationError } from '@/validation/errors'
 
 export class SignInController implements Controller {
   constructor(
@@ -11,6 +12,9 @@ export class SignInController implements Controller {
       this.validation.validate(request)
       return HttpHelper.ok({})
     } catch (error) {
+      if (error instanceof ValidationError) {
+        return HttpHelper.badRequest(error)
+      }
       return HttpHelper.serverError()
     }
   }
