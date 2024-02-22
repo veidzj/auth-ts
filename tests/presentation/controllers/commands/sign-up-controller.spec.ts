@@ -41,7 +41,7 @@ describe('SignUpController', () => {
       expect(validationSpy.input).toEqual(request)
     })
 
-    test('Should return badRequest if Validation throws', async() => {
+    test('Should return badRequest if Validation throws ValidationError', async() => {
       const { sut, validationSpy } = makeSut()
       const errorMessage = faker.word.words()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new ValidationError(errorMessage) })
@@ -49,7 +49,7 @@ describe('SignUpController', () => {
       expect(httpResponse).toEqual(HttpHelper.badRequest(new ValidationError(errorMessage)))
     })
 
-    test('Should return serverError if Validation throws an unexpected error', async() => {
+    test('Should return serverError if Validation throws', async() => {
       const { sut, validationSpy } = makeSut()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new Error() })
       const httpResponse = await sut.handle(mockRequest())
