@@ -4,7 +4,7 @@ import { GetAccountByEmailRepositorySpy } from '@/tests/application/mocks/querie
 import { HashComparerSpy } from '@/tests/application/mocks/cryptography'
 import { DbAuthentication } from '@/application/usecases/queries'
 import { type Authentication } from '@/domain/usecases/queries'
-import { AccountNotFoundError } from '@/domain/errors'
+import { AccountNotFoundError, InvalidCredentialsError } from '@/domain/errors'
 
 interface Sut {
   sut: DbAuthentication
@@ -59,6 +59,13 @@ describe('DbAuthentication', () => {
       await sut.auth(authenticationInput)
       expect(hashComparerSpy.plainText).toBe(authenticationInput.password)
       expect(hashComparerSpy.digest).toBe(getAccountByEmailRepositorySpy.output?.password)
+    })
+
+    test('Should throw InvalidCredentialsError if HashComparer returns false', async() => {
+      const { sut, hashComparerSpy } = makeSut()
+      hashComparerSpy.output = false
+      const promise = sut.auth(mockAuthenticationInput())
+      await expect(promise).rejects.toThrow(new InvalidCredentialsError())
     })
   })
 })
