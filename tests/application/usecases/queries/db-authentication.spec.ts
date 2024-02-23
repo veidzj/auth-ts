@@ -101,13 +101,19 @@ describe('DbAuthentication', () => {
   describe('UpdateAccessTokenRepository', () => {
     test('Should call UpdateAccessTokenRepository with correct values', async() => {
       const { sut, getAccountByEmailRepositorySpy, encrypterSpy, updateAccessTokenRepositorySpy } = makeSut()
-      const authenticationInput = mockAuthenticationInput()
-      await sut.auth(authenticationInput)
+      await sut.auth(mockAuthenticationInput())
       expect(encrypterSpy.plainText).toBe(getAccountByEmailRepositorySpy.output?.id)
       expect(updateAccessTokenRepositorySpy.input).toEqual({
         id: getAccountByEmailRepositorySpy.output?.id,
         accessToken: encrypterSpy.cipherText
       })
+    })
+
+    test('Should throw if UpdateAccessTokenRepository throws', async() => {
+      const { sut, updateAccessTokenRepositorySpy } = makeSut()
+      jest.spyOn(updateAccessTokenRepositorySpy, 'update').mockRejectedValueOnce(new Error())
+      const promise = sut.auth(mockAuthenticationInput())
+      await expect(promise).rejects.toThrow()
     })
   })
 })
