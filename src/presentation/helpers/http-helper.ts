@@ -16,6 +16,13 @@ export class HttpHelper {
     }
   }
 
+  public static notFound(data: object): HttpResponse {
+    return {
+      statusCode: 404,
+      body: data
+    }
+  }
+
   public static serverError(): HttpResponse {
     return {
       statusCode: 500,
