@@ -1,4 +1,4 @@
-import { type Collection } from 'mongodb'
+import { Collection } from 'mongodb'
 import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
@@ -38,5 +38,12 @@ describe('GetAccountByEmailMongoRepository', () => {
     const sut = makeSut()
     const account = await sut.get(faker.internet.email())
     expect(account).toBeNull()
+  })
+
+  test('Should throw if mongo throws', async() => {
+    const sut = makeSut()
+    jest.spyOn(Collection.prototype, 'findOne').mockRejectedValueOnce(new Error())
+    const promise = sut.get(faker.internet.email())
+    await expect(promise).rejects.toThrow()
   })
 })
