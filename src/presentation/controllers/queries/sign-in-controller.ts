@@ -1,15 +1,18 @@
 import { type Validation, type Controller, type HttpResponse } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
+import { type Authentication } from '@/domain/usecases/queries'
 
 export class SignInController implements Controller {
   constructor(
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly authentication: Authentication
   ) {}
 
   public async handle(request: SignInController.Request): Promise<HttpResponse> {
     try {
       this.validation.validate(request)
+      await this.authentication.auth(request)
       return HttpHelper.ok({})
     } catch (error) {
       if (error instanceof ValidationError) {
