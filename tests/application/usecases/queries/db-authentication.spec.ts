@@ -31,5 +31,12 @@ describe('DbAuthentication', () => {
       await sut.auth(authenticationInput)
       expect(getAccountByEmailRepositorySpy.email).toBe(authenticationInput.email)
     })
+
+    test('Should throw if GetAccountByEmailRepository throws', async() => {
+      const { sut, getAccountByEmailRepositorySpy } = makeSut()
+      jest.spyOn(getAccountByEmailRepositorySpy, 'get').mockRejectedValueOnce(new Error())
+      const promise = sut.auth(mockAuthenticationInput())
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
