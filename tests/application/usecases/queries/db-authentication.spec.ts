@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 
 import { GetAccountByEmailRepositorySpy } from '@/tests/application/mocks/queries'
+import { HashComparerSpy } from '@/tests/application/mocks/cryptography'
 import { DbAuthentication } from '@/application/usecases/queries'
 import { type Authentication } from '@/domain/usecases/queries'
 import { AccountNotFoundError } from '@/domain/errors'
@@ -8,14 +9,17 @@ import { AccountNotFoundError } from '@/domain/errors'
 interface Sut {
   sut: DbAuthentication
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
+  hashComparerSpy: HashComparerSpy
 }
 
 const makeSut = (): Sut => {
   const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
-  const sut = new DbAuthentication(getAccountByEmailRepositorySpy)
+  const hashComparerSpy = new HashComparerSpy()
+  const sut = new DbAuthentication(getAccountByEmailRepositorySpy, hashComparerSpy)
   return {
     sut,
-    getAccountByEmailRepositorySpy
+    getAccountByEmailRepositorySpy,
+    hashComparerSpy
   }
 }
 
@@ -45,6 +49,16 @@ describe('DbAuthentication', () => {
       jest.spyOn(getAccountByEmailRepositorySpy, 'get').mockRejectedValueOnce(new Error())
       const promise = sut.auth(mockAuthenticationInput())
       await expect(promise).rejects.toThrow()
+    })
+  })
+
+  describe('HashComparer', () => {
+    test('Should call HashComparer with correct values', async() => {
+      const { sut, getAccountByEmailRepositorySpy, hashComparerSpy } = makeSut()
+      const authenticationInput = mockAuthenticationInput()
+      await sut.auth(authenticationInput)
+      expect(hashComparerSpy.plainText).toBe(authenticationInput.password)
+      expect(hashComparerSpy.digest).toBe(getAccountByEmailRepositorySpy.output?.password)
     })
   })
 })
