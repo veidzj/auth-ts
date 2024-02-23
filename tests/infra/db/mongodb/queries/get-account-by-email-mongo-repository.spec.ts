@@ -1,4 +1,5 @@
 import { type Collection } from 'mongodb'
+import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
 import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
@@ -31,5 +32,11 @@ describe('GetAccountByEmailMongoRepository', () => {
     const account = await sut.get(addAccountRepositoryInput.email)
     expect(account?.id).toBe(addAccountRepositoryInput.id)
     expect(account?.password).toBe(addAccountRepositoryInput.password)
+  })
+
+  test('Should return null if there is no account with the given email', async() => {
+    const sut = makeSut()
+    const account = await sut.get(faker.internet.email())
+    expect(account).toBeNull()
   })
 })
