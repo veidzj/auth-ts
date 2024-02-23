@@ -60,5 +60,12 @@ describe('SignInController', () => {
       await sut.handle(request)
       expect(authenticationSpy.input).toEqual(request)
     })
+
+    test('Should return serverError if Authentication throws', async() => {
+      const { sut, authenticationSpy } = makeSut()
+      jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(() => { throw new Error() })
+      const httpResponse = await sut.handle(mockRequest())
+      expect(httpResponse).toEqual(HttpHelper.serverError())
+    })
   })
 })
