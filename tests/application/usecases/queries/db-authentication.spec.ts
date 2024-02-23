@@ -1,8 +1,22 @@
 import { faker } from '@faker-js/faker'
 
 import { DbAuthentication } from '@/application/usecases/queries'
-import { type GetAccountByEmailRepository } from '@/application/protocols/queries'
 import { type Authentication } from '@/domain/usecases/queries'
+import { GetAccountByEmailRepositorySpy } from '@/tests/application/mocks/queries'
+
+interface Sut {
+  sut: DbAuthentication
+  getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
+}
+
+const makeSut = (): Sut => {
+  const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
+  const sut = new DbAuthentication(getAccountByEmailRepositorySpy)
+  return {
+    sut,
+    getAccountByEmailRepositorySpy
+  }
+}
 
 const mockAuthenticationInput = (): Authentication.Input => ({
   email: faker.internet.email(),
@@ -12,17 +26,7 @@ const mockAuthenticationInput = (): Authentication.Input => ({
 describe('DbAuthentication', () => {
   describe('GetAccountByEmailRepository', () => {
     test('Should call GetAccountByEmailRepository with correct email', async() => {
-      class GetAccountByEmailRepositorySpy implements GetAccountByEmailRepository {
-        public email: string
-        public output: GetAccountByEmailRepository.Output
-
-        public async get(email: string): Promise<GetAccountByEmailRepository.Output> {
-          this.email = email
-          return this.output
-        }
-      }
-      const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
-      const sut = new DbAuthentication(getAccountByEmailRepositorySpy)
+      const { sut, getAccountByEmailRepositorySpy } = makeSut()
       const authenticationInput = mockAuthenticationInput()
       await sut.auth(authenticationInput)
       expect(getAccountByEmailRepositorySpy.email).toBe(authenticationInput.email)
