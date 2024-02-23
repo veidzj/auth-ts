@@ -1,5 +1,5 @@
 export class GetAccountByEmailRepository {
-  get: (email: string) => Promise<GetAccountByEmailRepository.Output>
+  get: (email: string) => Promise<GetAccountByEmailRepository.Output | null>
 }
 
 export namespace GetAccountByEmailRepository {
