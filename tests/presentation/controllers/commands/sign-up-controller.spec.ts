@@ -92,5 +92,12 @@ describe('SignUpController', () => {
       await sut.handle(request)
       expect(authenticationSpy.input).toEqual({ email: request.email, password: request.password })
     })
+
+    test('Should return serverError if Authentication throws an unexpected error', async() => {
+      const { sut, authenticationSpy } = makeSut()
+      jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(() => { throw new Error() })
+      const httpResponse = await sut.handle(mockRequest())
+      expect(httpResponse).toEqual(HttpHelper.serverError())
+    })
   })
 })
