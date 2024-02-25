@@ -1,3 +1,9 @@
-export * from './bad-request'
-export * from './conflict'
-export * from './server-error'
+import { badRequest } from './bad-request'
+import { conflict } from './conflict'
+import { serverError } from './server-error'
+
+export const httpComponents = {
+  badRequest,
+  conflict,
+  serverError
+}
