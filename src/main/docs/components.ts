@@ -1,8 +1,8 @@
 import { badRequest, conflict, serverError } from '@/main/docs/components/http'
-import { auth } from '@/main/docs/components/account'
+import { accountComponents } from '@/main/docs/components/account'
 
 export default {
-  auth,
+  ...accountComponents,
   badRequest,
   conflict,
   serverError
