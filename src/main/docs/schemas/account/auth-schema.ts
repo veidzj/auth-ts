@@ -1,9 +1,19 @@
 export const authSchema = {
   type: 'object',
   properties: {
-    accessToken: {
-      type: 'string'
+    data: {
+      type: 'object',
+      properties: {
+        status: {
+          type: 'number',
+          default: 200
+        },
+        accessToken: {
+          type: 'string'
+        }
+      },
+      required: ['status', 'accessToken']
     }
   },
-  required: ['accessToken']
+  required: ['data']
 }
