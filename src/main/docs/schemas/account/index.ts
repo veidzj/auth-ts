@@ -1,2 +1,7 @@
-export * from './account-schema'
-export * from './sign-up-input-schema'
+import { authSchema } from './auth-schema'
+import { signUpInputSchema } from './sign-up-input-schema'
+
+export const accountSchema = {
+  auth: authSchema,
+  signUpInput: signUpInputSchema
+}
