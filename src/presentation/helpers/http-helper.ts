@@ -16,6 +16,27 @@ export class HttpHelper {
     }
   }
 
+  public static unauthorized(data: object): HttpResponse {
+    return {
+      statusCode: 401,
+      body: data
+    }
+  }
+
+  public static notFound(data: object): HttpResponse {
+    return {
+      statusCode: 404,
+      body: data
+    }
+  }
+
+  public static conflict(data: object): HttpResponse {
+    return {
+      statusCode: 409,
+      body: data
+    }
+  }
+
   public static serverError(): HttpResponse {
     return {
       statusCode: 500,

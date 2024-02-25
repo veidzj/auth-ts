@@ -31,7 +31,7 @@ describe('CheckAccountByEmailMongoRepository', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return false if email does not exists', async() => {
+  test('Should return false if there is no account with the given email', async() => {
     const sut = makeSut()
     const accountExists = await sut.check(mockAddAccountRepositoryInput().email)
     expect(accountExists).toBe(false)

@@ -2,7 +2,7 @@ import MockDate from 'mockdate'
 import { faker } from '@faker-js/faker'
 
 import { CheckAccountByEmailRepositorySpy } from '@/tests/application/mocks/queries'
-import { HasherSpy } from '@/tests/application/mocks/cryptography/hasher-mock'
+import { HasherSpy } from '@/tests/application/mocks/cryptography'
 import { AddAccountRepositorySpy } from '@/tests/application/mocks/commands'
 import { DbAddAccount } from '@/application/usecases/commands'
 import { type AddAccount } from '@/domain/usecases/commands'
