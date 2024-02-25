@@ -1,7 +1,7 @@
-import { httpComponents } from '@/main/docs/components/http'
+import { httpErrorsComponents } from '@/main/docs/components/http-errors'
 import { accountComponents } from '@/main/docs/components/account'
 
 export default {
-  ...httpComponents,
+  ...httpErrorsComponents,
   ...accountComponents
 }
