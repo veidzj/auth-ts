@@ -1,5 +1,5 @@
-import { auth } from './auth'
+import { authOutput } from './auth'
 
 export const accountComponents = {
-  auth
+  authOutput
 }

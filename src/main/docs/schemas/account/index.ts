@@ -1,7 +1,7 @@
-import { authSchema } from './auth-schema'
+import { authSchema } from './auth-output-schema'
 import { signUpInputSchema } from './sign-up-input-schema'
 
 export const accountSchema = {
-  auth: authSchema,
+  authOutput: authSchema,
   signUpInput: signUpInputSchema
 }
