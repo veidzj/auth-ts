@@ -1,14 +1,22 @@
 export const serverErrorSchema = {
-  allOf: [
-    { $ref: '#/schemas/error' },
-    {
+  type: 'object',
+  properties: {
+    error: {
+      type: 'object',
       properties: {
-        error: {
-          properties: {
-            status: { type: 'number', enum: [500] }
-          }
+        status: {
+          type: 'number',
+          default: 500
+        },
+        type: {
+          type: 'string'
+        },
+        message: {
+          type: 'string'
         }
-      }
+      },
+      required: ['status', 'type', 'message']
     }
-  ]
+  },
+  required: ['error']
 }

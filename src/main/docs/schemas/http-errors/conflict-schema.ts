@@ -1,14 +1,22 @@
 export const conflictSchema = {
-  allOf: [
-    { $ref: '#/schemas/error' },
-    {
+  type: 'object',
+  properties: {
+    error: {
+      type: 'object',
       properties: {
-        error: {
-          properties: {
-            status: { type: 'number', enum: [409] }
-          }
+        status: {
+          type: 'number',
+          default: 409
+        },
+        type: {
+          type: 'string'
+        },
+        message: {
+          type: 'string'
         }
-      }
+      },
+      required: ['status', 'type', 'message']
     }
-  ]
+  },
+  required: ['error']
 }

@@ -1,14 +1,22 @@
 export const badRequestSchema = {
-  allOf: [
-    { $ref: '#/schemas/error' },
-    {
+  type: 'object',
+  properties: {
+    error: {
+      type: 'object',
       properties: {
-        error: {
-          properties: {
-            status: { type: 'number', enum: [400] }
-          }
+        status: {
+          type: 'number',
+          default: 400
+        },
+        type: {
+          type: 'string'
+        },
+        message: {
+          type: 'string'
         }
-      }
+      },
+      required: ['status', 'type', 'message']
     }
-  ]
+  },
+  required: ['error']
 }
