@@ -8,14 +8,14 @@ services:
     volumes:
       - ./data:/data/db
     ports:
-      - 27018:27018
+      - 27017:27017
   api:
     container_name: auth-ts
     build:
       context: .
       dockerfile: Dockerfile.dev
     environment:
-      - MONGO_URL=mongodb://auth-ts-mongodb:27018/auth-ts
+      - MONGO_URL=mongodb://auth-ts-mongodb:27017/auth-ts
       - PORT=5000
     volumes:
       - ./dist:/usr/src/auth-ts/dist/
