@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-COPY ./dist ./dist
+COPY . .
 
 FROM node:20-alpine
 
