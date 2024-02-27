@@ -18,7 +18,7 @@ WORKDIR /usr/src/auth-ts
 
 COPY --from=builder /usr/src/auth-ts .
 
-RUN npm install --omit=dev
+RUN npm install --omit=dev --ignore-scripts
 
 ENV PORT=5000
 
