@@ -100,10 +100,11 @@ describe('DbAddAccount', () => {
       const input = mockInput()
       await sut.add(input)
       expect(addAccountRepositorySpy.input).toEqual({
+        id: mockedGUID,
         ...input,
         password: hasherSpy.digest,
-        id: mockedGUID,
         isActive: true,
+        roles: ['user'],
         createdAt: new Date()
       })
     })
