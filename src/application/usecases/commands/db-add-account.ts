@@ -22,6 +22,7 @@ export class DbAddAccount implements AddAccount {
       ...input,
       password: hashedPassword,
       id: generateGUID(),
+      roles: ['user'],
       isActive: true,
       createdAt: new Date()
     })

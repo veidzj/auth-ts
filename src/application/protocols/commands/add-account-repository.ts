@@ -12,6 +12,7 @@ export namespace AddAccountRepository {
     birthdate: string
     profileImage?: string
     isActive: boolean
+    roles: string[]
     createdAt: Date
   }
 }

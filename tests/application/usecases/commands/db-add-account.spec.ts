@@ -104,6 +104,7 @@ describe('DbAddAccount', () => {
         password: hasherSpy.digest,
         id: mockedGUID,
         isActive: true,
+        roles: ['user'],
         createdAt: new Date()
       })
     })
