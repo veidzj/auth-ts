@@ -100,4 +100,18 @@ npm run build # To build the application
 npm start # To start the application
 # or
 npm run debug # To debug the application
+```
 
+
+## Requirements for Running with Docker
+
+To run the project using Docker, you must have Docker installed on your machine.
+
+## How to Run with Docker
+
+Use the following commands to set up and run the application using Docker:
+
+```bash
+npm run up # To start the application using Docker Compose
+npm run down # To stop the Docker Compose
+```
