@@ -1,12 +1,5 @@
 # Auth TS
 
-## Authentication service using TypeScript, TDD, DDD and Clean Architecture
+## Project Summary
 
-## Prerequisites
-
-Before you begin, ensure you have the following installed on your machine:
-
-- Node.js (v20 or later)
-- npm (v10 or later)
-- MongoDB (v7 or later)
-- Docker (if running with Docker)
+Auth TS is a user authentication system developed using TypeScript and Node. It provides a robust set of features for managing user authentication, including registration and login functionalities. The project aims to offer a secure and efficient way for applications to handle user authentication processes.
