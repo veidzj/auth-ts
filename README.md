@@ -2,15 +2,15 @@
 
 ## Project Summary
 
-Auth TS is a user authentication system developed using TypeScript and Node. It provides a robust set of features for managing user authentication, including registration and login functionalities. The project aims to offer a secure and efficient way for applications to handle user authentication processes.
+Auth TS is a user authentication and authorization system developed using TypeScript and Node. It provides a robust set of features for managing user authentication and authorization. The project aims to offer a secure and efficient way for applications to handle user authentication and authorization processes.
 
 
 ## Project Features
 
 ### Completed Features
 
-- [x] User registration
-- [x] User login
+- [x] User sign up
+- [x] User sign in
 
 ### Features To Do
 
@@ -58,7 +58,7 @@ The project utilizes a variety of tools categorized based on their functionality
 - Node.js
 - MongoDB
 - Express.js
-- JWT for authentication
+- JWT for authentication and authorization
 - Bcrypt for hashing passwords
 
 ### Testing
