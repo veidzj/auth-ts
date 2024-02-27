@@ -1,20 +1,12 @@
-FROM node:20 as builder
+FROM node:20-alpine
 
 WORKDIR /usr/src/auth-ts
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci --omit=dev --ignore-scripts
 
 COPY . .
-
-FROM node:20-alpine
-
-WORKDIR /usr/src/auth-ts
-
-COPY --from=builder /usr/src/auth-ts .
-
-RUN npm ci --omit=dev --ignore-scripts
 
 ENV PORT=5000
 
