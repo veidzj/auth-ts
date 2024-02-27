@@ -7,6 +7,14 @@
       "name": "Attach to Node",
       "port": 9222,
       "restart": true
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Docker: Attach to Node",
+      "remoteRoot": "/usr/src/auth-ts",
+      "port": 9222,
+      "restart": true
     }
   ]
 }

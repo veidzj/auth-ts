@@ -1,6 +1,6 @@
 {
   "name": "auth-ts",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Authentication service using TypeScript, TDD, DDD and Clean Architecture",
   "author": "João Victor Veidz",
   "license": "GPL-3.0",
@@ -11,6 +11,8 @@
     "start": "node dist/main/server.js",
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "up": "npm run build && docker-compose up -d",
+    "down": "docker-compose down",
     "test": "jest --passWithNoTests --noStackTrace --runInBand --no-cache",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit.config.ts",
