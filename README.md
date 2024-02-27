@@ -22,7 +22,7 @@ Auth TS is a user authentication system developed using TypeScript and Node. It 
 - [ ] Check if a user has a specific permission (user or admin)
 
 
-## Standards Used in the Project
+## Standards Used
 
 The project adheres to several industry-standard practices and patterns to ensure high-quality, maintainable, and scalable code. These include:
 
@@ -46,3 +46,38 @@ The project adheres to several industry-standard practices and patterns to ensur
 - Git Flow
 - Continuous Integration (CI)
 - Continuous Deployment (CD)
+
+
+## Tools Used
+
+The project utilizes a variety of tools categorized based on their functionality:
+
+### Development and Production
+
+- TypeScript
+- Node.js
+- MongoDB
+- Express.js
+- JWT for authentication
+- Bcrypt for hashing passwords
+
+### Testing
+
+- Jest
+- Supertest
+- Mockdate
+- Faker
+
+### Code Quality and Maintenance
+
+- ESLint with Standard configuration
+- Husky for Git hooks
+- Lint-staged for staging files
+- Nodemon for hot reloading
+- Validator for data validation
+- npm-check-updates for managing dependencies
+- Module Alias for cleaner import paths
+
+### Documentation
+
+- Swagger for API documentation
