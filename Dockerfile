@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-FROM node:20-slim
+FROM node:20-alpine
 
 WORKDIR /usr/src/auth-ts
 
@@ -16,6 +16,8 @@ COPY --from=builder /usr/src/auth-ts .
 
 RUN npm ci --omit=dev --ignore-scripts
 
-EXPOSE 3000
+ENV PORT=5000
+
+EXPOSE $PORT
 
 CMD ["npm", "start"]
