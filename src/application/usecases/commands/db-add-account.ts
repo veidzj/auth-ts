@@ -19,11 +19,11 @@ export class DbAddAccount implements AddAccount {
     }
     const hashedPassword = await this.hasher.hash(input.password)
     await this.addAccountRepository.add({
+      id: generateGUID(),
       ...input,
       password: hashedPassword,
-      id: generateGUID(),
-      roles: ['user'],
       isActive: true,
+      roles: ['user'],
       createdAt: new Date()
     })
   }

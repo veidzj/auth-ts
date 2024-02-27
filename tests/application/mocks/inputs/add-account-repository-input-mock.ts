@@ -9,8 +9,8 @@ export const mockAddAccountRepositoryInput = (): AddAccountRepository.Input => (
   email: faker.internet.email(),
   password: faker.internet.password(),
   birthdate: faker.date.anytime().toISOString(),
-  isActive: faker.datatype.boolean(),
   profileImage: faker.internet.url(),
+  isActive: faker.datatype.boolean(),
   roles: [faker.word.words()],
   createdAt: faker.date.anytime()
 })
