@@ -81,3 +81,23 @@ The project utilizes a variety of tools categorized based on their functionality
 ### Documentation
 
 - Swagger for API documentation
+
+
+## Requirements for Running Locally
+
+To run the project locally, you must have the following tools installed:
+
+- Node.js (v20 or later)
+- MongoDB (v7 or later)
+
+## How to Run Locally
+
+Follow these commands to set up and run the application locally:
+
+```bash
+npm install # To install dependencies
+npm run build # To build the application
+npm start # To start the application
+# or
+npm run debug # To debug the application
+
