@@ -1,7 +1,21 @@
 import { faker } from '@faker-js/faker'
 
+import { GetAccountIdByTokenSpy } from '@/tests/domain/mocks/queries'
 import { AuthMiddleware } from '@/presentation/middlewares'
-import { type GetAccountIdByToken } from '@/domain/usecases/queries'
+
+interface Sut {
+  sut: AuthMiddleware
+  getAccountIdByTokenSpy: GetAccountIdByTokenSpy
+}
+
+const makeSut = (role: string = faker.word.words()): Sut => {
+  const getAccountIdByTokenSpy = new GetAccountIdByTokenSpy()
+  const sut = new AuthMiddleware(getAccountIdByTokenSpy, role)
+  return {
+    sut,
+    getAccountIdByTokenSpy
+  }
+}
 
 const mockRequest = (): AuthMiddleware.Request => ({
   accessToken: faker.string.uuid()
@@ -9,18 +23,8 @@ const mockRequest = (): AuthMiddleware.Request => ({
 
 describe('AuthMiddleware', () => {
   test('Should call GetAccountIdByToken with correct values', async() => {
-    class GetAccountIdByTokenSpy implements GetAccountIdByToken {
-      public input: GetAccountIdByToken.Input
-      public output: GetAccountIdByToken.Output
-
-      public async get(input: GetAccountIdByToken.Input): Promise<GetAccountIdByToken.Output> {
-        this.input = input
-        return this.output
-      }
-    }
-    const getAccountIdByTokenSpy = new GetAccountIdByTokenSpy()
     const role = faker.word.words()
-    const sut = new AuthMiddleware(getAccountIdByTokenSpy, role)
+    const { sut, getAccountIdByTokenSpy } = makeSut(role)
     const request = mockRequest()
     await sut.handle(request)
     expect(getAccountIdByTokenSpy.input.accessToken).toBe(request.accessToken)
