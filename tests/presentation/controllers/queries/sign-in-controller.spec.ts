@@ -64,21 +64,21 @@ describe('SignInController', () => {
 
     test('Should return notFound if Authentication throws AccountNotFoundError', async() => {
       const { sut, authenticationSpy } = makeSut()
-      jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(() => { throw new AccountNotFoundError() })
+      jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(new AccountNotFoundError())
       const httpResponse = await sut.handle(mockRequest())
       expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
     })
 
     test('Should return unauthorized if Authentication throws InvalidCredentialsError', async() => {
       const { sut, authenticationSpy } = makeSut()
-      jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(() => { throw new InvalidCredentialsError() })
+      jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(new InvalidCredentialsError())
       const httpResponse = await sut.handle(mockRequest())
       expect(httpResponse).toEqual(HttpHelper.unauthorized(new InvalidCredentialsError()))
     })
 
     test('Should return serverError if Authentication throws', async() => {
       const { sut, authenticationSpy } = makeSut()
-      jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(() => { throw new Error() })
+      jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(new Error())
       const httpResponse = await sut.handle(mockRequest())
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })

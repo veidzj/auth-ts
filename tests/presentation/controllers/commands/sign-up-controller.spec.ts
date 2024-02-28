@@ -72,14 +72,14 @@ describe('SignUpController', () => {
 
     test('Should return conflict if AddAccount throws AccountAlreadyExists', async() => {
       const { sut, addAccountSpy } = makeSut()
-      jest.spyOn(addAccountSpy, 'add').mockImplementationOnce(() => { throw new AccountAlreadyExists() })
+      jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(new AccountAlreadyExists())
       const httpResponse = await sut.handle(mockRequest())
       expect(httpResponse).toEqual(HttpHelper.conflict(new AccountAlreadyExists()))
     })
 
     test('Should return serverError if AddAccount throws an unexpected error', async() => {
       const { sut, addAccountSpy } = makeSut()
-      jest.spyOn(addAccountSpy, 'add').mockImplementationOnce(() => { throw new Error() })
+      jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(new Error())
       const httpResponse = await sut.handle(mockRequest())
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
@@ -95,7 +95,7 @@ describe('SignUpController', () => {
 
     test('Should return serverError if Authentication throws an unexpected error', async() => {
       const { sut, authenticationSpy } = makeSut()
-      jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(() => { throw new Error() })
+      jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(new Error())
       const httpResponse = await sut.handle(mockRequest())
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
