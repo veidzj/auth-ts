@@ -39,6 +39,13 @@ describe('AuthMiddleware', () => {
     expect(getAccountIdByTokenSpy.input.role).toBe(role)
   })
 
+  test('Should return unauthorized if GetAccountIdByToken throws InvalidCredentialsError', async() => {
+    const { sut, getAccountIdByTokenSpy } = makeSut()
+    jest.spyOn(getAccountIdByTokenSpy, 'get').mockRejectedValueOnce(new InvalidCredentialsError())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.unauthorized(new InvalidCredentialsError()))
+  })
+
   test('Should return serverError if GetAccountIdByToken throws', async() => {
     const { sut, getAccountIdByTokenSpy } = makeSut()
     jest.spyOn(getAccountIdByTokenSpy, 'get').mockRejectedValueOnce(new Error())
