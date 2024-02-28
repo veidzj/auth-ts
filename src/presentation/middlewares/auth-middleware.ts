@@ -10,11 +10,15 @@ export class AuthMiddleware implements Middleware {
   ) {}
 
   public async handle(request: AuthMiddleware.Request): Promise<HttpResponse> {
-    if (!request.accessToken) {
-      return HttpHelper.unauthorized(new InvalidCredentialsError())
+    try {
+      if (!request.accessToken) {
+        return HttpHelper.unauthorized(new InvalidCredentialsError())
+      }
+      await this.getAccountIdByToken.get({ accessToken: request.accessToken, role: this.role })
+      return HttpHelper.ok({})
+    } catch (error) {
+      return HttpHelper.serverError()
     }
-    await this.getAccountIdByToken.get({ accessToken: request.accessToken, role: this.role })
-    return HttpHelper.ok({})
   }
 }
 
