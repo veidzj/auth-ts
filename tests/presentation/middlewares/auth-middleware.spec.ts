@@ -2,6 +2,8 @@ import { faker } from '@faker-js/faker'
 
 import { GetAccountIdByTokenSpy } from '@/tests/domain/mocks/queries'
 import { AuthMiddleware } from '@/presentation/middlewares'
+import { HttpHelper } from '@/presentation/helpers'
+import { InvalidCredentialsError } from '@/domain/errors'
 
 interface Sut {
   sut: AuthMiddleware
@@ -22,6 +24,12 @@ const mockRequest = (): AuthMiddleware.Request => ({
 })
 
 describe('AuthMiddleware', () => {
+  test('Should return unauthorized if accessToken is not provided', async() => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(HttpHelper.unauthorized(new InvalidCredentialsError()))
+  })
+
   test('Should call GetAccountIdByToken with correct values', async() => {
     const role = faker.word.words()
     const { sut, getAccountIdByTokenSpy } = makeSut(role)
