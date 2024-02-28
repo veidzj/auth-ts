@@ -1,6 +1,7 @@
 import { type Middleware, type HttpResponse } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
 import { type GetAccountIdByToken } from '@/domain/usecases/queries'
+import { InvalidCredentialsError } from '@/domain/errors'
 
 export class AuthMiddleware implements Middleware {
   constructor(
@@ -9,7 +10,10 @@ export class AuthMiddleware implements Middleware {
   ) {}
 
   public async handle(request: AuthMiddleware.Request): Promise<HttpResponse> {
-    await this.getAccountIdByToken.get({ accessToken: request.accessToken!, role: this.role })
+    if (!request.accessToken) {
+      return HttpHelper.unauthorized(new InvalidCredentialsError())
+    }
+    await this.getAccountIdByToken.get({ accessToken: request.accessToken, role: this.role })
     return HttpHelper.ok({})
   }
 }
