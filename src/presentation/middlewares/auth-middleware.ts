@@ -17,6 +17,9 @@ export class AuthMiddleware implements Middleware {
       await this.getAccountIdByToken.get({ accessToken: request.accessToken, role: this.role })
       return HttpHelper.ok({})
     } catch (error) {
+      if (error instanceof InvalidCredentialsError) {
+        return HttpHelper.unauthorized(error)
+      }
       return HttpHelper.serverError()
     }
   }
