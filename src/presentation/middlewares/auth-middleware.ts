@@ -1,7 +1,7 @@
 import { type Middleware, type HttpResponse } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
 import { type GetAccountIdByToken } from '@/domain/usecases/queries'
-import { InvalidCredentialsError } from '@/domain/errors'
+import { InvalidCredentialsError, AccessDeniedError } from '@/domain/errors'
 
 export class AuthMiddleware implements Middleware {
   constructor(
@@ -19,6 +19,9 @@ export class AuthMiddleware implements Middleware {
     } catch (error) {
       if (error instanceof InvalidCredentialsError) {
         return HttpHelper.unauthorized(error)
+      }
+      if (error instanceof AccessDeniedError) {
+        return HttpHelper.forbidden(error)
       }
       return HttpHelper.serverError()
     }

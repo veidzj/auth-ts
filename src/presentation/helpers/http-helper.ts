@@ -23,6 +23,13 @@ export class HttpHelper {
     }
   }
 
+  public static forbidden(data: object): HttpResponse {
+    return {
+      statusCode: 403,
+      body: data
+    }
+  }
+
   public static notFound(data: object): HttpResponse {
     return {
       statusCode: 404,
