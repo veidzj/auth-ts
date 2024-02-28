@@ -38,4 +38,11 @@ describe('AuthMiddleware', () => {
     expect(getAccountIdByTokenSpy.input.accessToken).toBe(request.accessToken)
     expect(getAccountIdByTokenSpy.input.role).toBe(role)
   })
+
+  test('Should return serverError if GetAccountIdByToken throws', async() => {
+    const { sut, getAccountIdByTokenSpy } = makeSut()
+    jest.spyOn(getAccountIdByTokenSpy, 'get').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.serverError())
+  })
 })
