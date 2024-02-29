@@ -30,4 +30,11 @@ describe('DbGetAccountIdByToken', () => {
     await sut.get(getAccountIdByTokenInput)
     expect(getAccountIdByTokenRepositorySpy.input).toEqual(getAccountIdByTokenInput)
   })
+
+  test('Should throw if GetAccountIdByTokenRepository throws', async() => {
+    const { sut, getAccountIdByTokenRepositorySpy } = makeSut()
+    jest.spyOn(getAccountIdByTokenRepositorySpy, 'get').mockRejectedValueOnce(new Error())
+    const promise = sut.get(mockGetAccountIdByTokenInput())
+    await expect(promise).rejects.toThrow()
+  })
 })
