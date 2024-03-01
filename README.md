@@ -9,6 +9,7 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 
 ## Project Summary
 
