@@ -1,11 +1,12 @@
 {
   "name": "auth-ts",
-  "version": "0.5.1",
-  "description": "Authentication service using TypeScript, TDD, DDD and Clean Architecture",
+  "version": "0.6.0",
+  "description": "Authentication and Authorization service using TypeScript, TDD, DDD, SOLID, and Clean Architecture",
   "author": "João Victor Veidz",
   "license": "GPL-3.0",
   "keywords": [
-    "Authentication"
+    "Authentication",
+    "Authorization"
   ],
   "scripts": {
     "start": "node dist/main/server.js",
