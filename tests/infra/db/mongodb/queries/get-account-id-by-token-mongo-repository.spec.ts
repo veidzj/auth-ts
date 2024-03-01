@@ -1,4 +1,4 @@
-import { type Collection } from 'mongodb'
+import { Collection } from 'mongodb'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
 import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
@@ -23,6 +23,16 @@ describe('GetAccountIdByTokenMongoRepository', () => {
   beforeEach(async() => {
     accountCollection = await getCollection('accounts')
     await clearCollection(accountCollection)
+  })
+
+  test('Should throw if mongo throws', async() => {
+    const sut = makeSut()
+    jest.spyOn(Collection.prototype, 'findOne').mockRejectedValueOnce(new Error())
+    const promise = sut.get({
+      accessToken: faker.word.words(),
+      role: faker.word.words()
+    })
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should return an accountId on success', async() => {
