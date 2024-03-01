@@ -1,5 +1,5 @@
 export class GetAccountIdByTokenRepository {
-  get: (input: GetAccountIdByTokenRepository.Input) => Promise<GetAccountIdByTokenRepository.Output>
+  get: (input: GetAccountIdByTokenRepository.Input) => Promise<GetAccountIdByTokenRepository.Output | null>
 }
 
 export namespace GetAccountIdByTokenRepository {
