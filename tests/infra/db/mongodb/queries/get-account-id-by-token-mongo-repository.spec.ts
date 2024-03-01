@@ -1,0 +1,37 @@
+import { type Collection } from 'mongodb'
+
+import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
+import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
+import { GetAccountIdByTokenMongoRepository } from '@/infra/db/mongodb/queries'
+
+let accountCollection: Collection
+
+const makeSut = (): GetAccountIdByTokenMongoRepository => {
+  return new GetAccountIdByTokenMongoRepository()
+}
+
+describe('GetAccountIdByTokenMongoRepository', () => {
+  beforeAll(async() => {
+    await connectToDatabase()
+  })
+
+  afterAll(async() => {
+    await disconnectFromDatabase()
+  })
+
+  beforeEach(async() => {
+    accountCollection = await getCollection('accounts')
+    await clearCollection(accountCollection)
+  })
+
+  test('Should return an accountId on success', async() => {
+    const sut = makeSut()
+    const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: 'teste' }
+    await accountCollection.insertOne(addAccountRepositoryInput)
+    const account = await sut.get({
+      accessToken: addAccountRepositoryInput.accessToken,
+      role: addAccountRepositoryInput.roles[0]
+    })
+    expect(account?.accountId).toBe(addAccountRepositoryInput.id)
+  })
+})
