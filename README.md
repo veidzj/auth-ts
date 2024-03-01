@@ -13,6 +13,7 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
+[![Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Project Summary
 
