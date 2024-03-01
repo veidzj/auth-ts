@@ -46,4 +46,15 @@ describe('GetAccountIdByTokenMongoRepository', () => {
     })
     expect(account).toBeNull()
   })
+
+  test('Should return null if there is no account with the given role', async() => {
+    const sut = makeSut()
+    const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: faker.word.words() }
+    await accountCollection.insertOne(addAccountRepositoryInput)
+    const account = await sut.get({
+      accessToken: addAccountRepositoryInput.accessToken,
+      role: faker.word.words()
+    })
+    expect(account).toBeNull()
+  })
 })
