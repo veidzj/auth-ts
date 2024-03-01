@@ -5,6 +5,7 @@
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=coverage)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 
 ## Project Summary
 
