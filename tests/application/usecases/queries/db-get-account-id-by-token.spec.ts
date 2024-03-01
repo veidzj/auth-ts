@@ -45,4 +45,10 @@ describe('DbGetAccountIdByToken', () => {
     const promise = sut.get(mockGetAccountIdByTokenInput())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return accountId on success', async() => {
+    const { sut, getAccountIdByTokenRepositorySpy } = makeSut()
+    const accountId = await sut.get(mockGetAccountIdByTokenInput())
+    expect(accountId).toEqual(getAccountIdByTokenRepositorySpy.output)
+  })
 })
