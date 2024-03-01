@@ -4,7 +4,7 @@ import { DecrypterSpy } from '@/tests/application/mocks/cryptography'
 import { GetAccountIdByTokenRepositorySpy } from '@/tests/application/mocks/queries'
 import { DbGetAccountIdByToken } from '@/application/usecases/queries'
 import { type GetAccountIdByToken } from '@/domain/usecases/queries'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, InvalidCredentialsError } from '@/domain/errors'
 
 interface Sut {
   sut: DbGetAccountIdByToken
@@ -37,11 +37,11 @@ describe('DbGetAccountIdByToken', () => {
       expect(decrypterSpy.cipherText).toBe(getAccountIdByTokenInput.accessToken)
     })
 
-    test('Should throw if Decrypter throws', async() => {
+    test('Should throw InvalidCredentialsError if Decrypter throws', async() => {
       const { sut, decrypterSpy } = makeSut()
       jest.spyOn(decrypterSpy, 'decrypt').mockRejectedValueOnce(new Error())
       const promise = sut.get(mockGetAccountIdByTokenInput())
-      await expect(promise).rejects.toThrow()
+      await expect(promise).rejects.toThrow(new InvalidCredentialsError())
     })
   })
 
