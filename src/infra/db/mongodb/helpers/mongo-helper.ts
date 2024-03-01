@@ -37,8 +37,4 @@ export class MongoHelper {
   public map<T>(mongoDoc: WithId<Document>): T {
     return mongoDoc as T
   }
-
-  public mapCollection(collection: any[]): any {
-    return collection.map(c => c)
-  }
 }
