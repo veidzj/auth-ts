@@ -35,17 +35,6 @@ describe('GetAccountIdByTokenMongoRepository', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return an accountId on success', async() => {
-    const sut = makeSut()
-    const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: faker.word.words() }
-    await accountCollection.insertOne(addAccountRepositoryInput)
-    const account = await sut.get({
-      accessToken: addAccountRepositoryInput.accessToken,
-      role: addAccountRepositoryInput.roles[0]
-    })
-    expect(account?.accountId).toBe(addAccountRepositoryInput.id)
-  })
-
   test('Should return null if there is no account with the given accessToken', async() => {
     const sut = makeSut()
     const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: faker.word.words() }
@@ -66,5 +55,16 @@ describe('GetAccountIdByTokenMongoRepository', () => {
       role: faker.word.words()
     })
     expect(account).toBeNull()
+  })
+
+  test('Should return an accountId on success', async() => {
+    const sut = makeSut()
+    const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: faker.word.words() }
+    await accountCollection.insertOne(addAccountRepositoryInput)
+    const account = await sut.get({
+      accessToken: addAccountRepositoryInput.accessToken,
+      role: addAccountRepositoryInput.roles[0]
+    })
+    expect(account?.accountId).toBe(addAccountRepositoryInput.id)
   })
 })
