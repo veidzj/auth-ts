@@ -1,6 +1,6 @@
 import { type Decrypter } from '@/application/protocols/cryptography'
 import { type GetAccountIdByTokenRepository } from '@/application/protocols/queries'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, InvalidCredentialsError } from '@/domain/errors'
 import { type GetAccountIdByToken } from '@/domain/usecases/queries'
 
 export class DbGetAccountIdByToken implements GetAccountIdByToken {
@@ -10,7 +10,11 @@ export class DbGetAccountIdByToken implements GetAccountIdByToken {
   ) {}
 
   public async get(input: GetAccountIdByToken.Input): Promise<GetAccountIdByToken.Output> {
-    await this.decrypter.decrypt(input.accessToken)
+    try {
+      await this.decrypter.decrypt(input.accessToken)
+    } catch (_) {
+      throw new InvalidCredentialsError()
+    }
     const accountId = await this.getAccountIdByTokenRepository.get(input)
     if (!accountId) {
       throw new AccessDeniedError()
