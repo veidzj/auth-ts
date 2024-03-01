@@ -36,6 +36,13 @@ describe('DbGetAccountIdByToken', () => {
       await sut.get(getAccountIdByTokenInput)
       expect(decrypterSpy.cipherText).toBe(getAccountIdByTokenInput.accessToken)
     })
+
+    test('Should throw if Decrypter throws', async() => {
+      const { sut, decrypterSpy } = makeSut()
+      jest.spyOn(decrypterSpy, 'decrypt').mockRejectedValueOnce(new Error())
+      const promise = sut.get(mockGetAccountIdByTokenInput())
+      await expect(promise).rejects.toThrow()
+    })
   })
 
   describe('GetAccountIdByTokenRepository', () => {
