@@ -8,6 +8,7 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 
 ## Project Summary
 
