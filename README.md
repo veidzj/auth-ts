@@ -1,5 +1,7 @@
 # Auth TS
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
+
 ## Project Summary
 
 Auth TS is a user authentication and authorization system developed using TypeScript and Node. It provides a robust set of features for managing user authentication and authorization. The project aims to offer a secure and efficient way for applications to handle user authentication and authorization processes.
