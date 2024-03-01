@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker'
 import { GetAccountIdByTokenRepositorySpy } from '@/tests/application/mocks/queries'
 import { DbGetAccountIdByToken } from '@/application/usecases/queries'
 import { type GetAccountIdByToken } from '@/domain/usecases/queries'
+import { AccessDeniedError } from '@/domain/errors'
 
 interface Sut {
   sut: DbGetAccountIdByToken
@@ -29,6 +30,13 @@ describe('DbGetAccountIdByToken', () => {
     const getAccountIdByTokenInput = mockGetAccountIdByTokenInput()
     await sut.get(getAccountIdByTokenInput)
     expect(getAccountIdByTokenRepositorySpy.input).toEqual(getAccountIdByTokenInput)
+  })
+
+  test('Should throw AccessDeniedError if GetAccountIdByTokenRepository returns null', async() => {
+    const { sut, getAccountIdByTokenRepositorySpy } = makeSut()
+    getAccountIdByTokenRepositorySpy.output = null
+    const promise = sut.get(mockGetAccountIdByTokenInput())
+    await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 
   test('Should throw if GetAccountIdByTokenRepository throws', async() => {
