@@ -6,12 +6,17 @@ import { JwtAdapter } from '@/infra/cryptography'
 jest.mock('jsonwebtoken', () => ({
   sign(): string {
     return jwtToken
+  },
+
+  verify(): string {
+    return jwtDecodedToken
   }
 }))
 
 const jwtSecret: string = faker.string.uuid()
 const plainText: string = faker.string.uuid()
 const jwtToken: string = faker.string.uuid()
+const jwtDecodedToken: string = faker.string.uuid()
 
 const makeSut = (): JwtAdapter => {
   return new JwtAdapter(jwtSecret)
@@ -37,6 +42,15 @@ describe('JwtAdapter', () => {
       const sut = makeSut()
       const accessToken = await sut.encrypt(plainText)
       expect(accessToken).toBe(jwtToken)
+    })
+  })
+
+  describe('Decrypter', () => {
+    test('Should call verify with correct values', async() => {
+      const sut = makeSut()
+      const verifySpy = jest.spyOn(jwt, 'verify')
+      await sut.decrypt(jwtToken)
+      expect(verifySpy).toHaveBeenCalledWith(jwtToken, jwtSecret)
     })
   })
 })
