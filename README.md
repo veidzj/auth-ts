@@ -95,16 +95,14 @@ The project utilizes a variety of tools categorized based on their functionality
 - Swagger for API documentation
 
 
-## Requirements for Running Locally
+## How to Run Locally
 
-To run the project locally, you must have the following tools installed:
+To run the project locally, ensure you have the following tools installed:
 
 - Node.js (v20 or later)
 - MongoDB (v7 or later)
 
-## How to Run Locally
-
-Follow these commands to set up and run the application locally:
+Then follow these commands to set up and run the application locally:
 
 ```bash
 npm install # To install dependencies
@@ -115,13 +113,11 @@ npm run debug # To debug the application
 ```
 
 
-## Requirements for Running with Docker
-
-To run the project using Docker, you must have Docker installed on your machine.
-
 ## How to Run with Docker
 
-Use the following commands to set up and run the application using Docker:
+To run the project using Docker, ensure you have Docker installed on your machine.
+
+Then follow these commands to set up and run the application using Docker:
 
 ```bash
 npm run up # To start the application using Docker Compose
