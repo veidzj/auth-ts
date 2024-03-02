@@ -1,5 +1,8 @@
 export const deactivateAccountPath = {
   put: {
+    security: [{
+      apiKeyAuth: []
+    }],
     tags: ['Account'],
     summary: 'Deactivates an account',
     parameters: [{
