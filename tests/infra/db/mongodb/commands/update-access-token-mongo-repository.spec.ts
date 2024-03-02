@@ -31,6 +31,13 @@ describe('UpdateAccessTokenMongoRepository', () => {
     await clearCollection(accountCollection)
   })
 
+  test('Should throw if mongo throws', async() => {
+    const sut = makeSut()
+    jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
+    const promise = sut.update(mockUpdateAccessTokenInput())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should update accessToken on success', async() => {
     const sut = makeSut()
     const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
@@ -41,12 +48,5 @@ describe('UpdateAccessTokenMongoRepository', () => {
     const account = await accountCollection.findOne({ id: fakeAccount?.id })
     expect(account).toBeTruthy()
     expect(account?.accessToken).toBe(accessToken)
-  })
-
-  test('Should throw if mongo throws', async() => {
-    const sut = makeSut()
-    jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
-    const promise = sut.update(mockUpdateAccessTokenInput())
-    await expect(promise).rejects.toThrow()
   })
 })
