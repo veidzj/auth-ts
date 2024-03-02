@@ -28,38 +28,42 @@ const mockInput = (): DeactivateAccount.Input => ({
 })
 
 describe('DbDeactivateAccount', () => {
-  test('Should call CheckAccountByIdRepository with correct id', async() => {
-    const { sut, checkAccountByIdRepositorySpy } = makeSut()
-    const input = mockInput()
-    await sut.deactivate(input)
-    expect(checkAccountByIdRepositorySpy.id).toEqual(input.accountId)
+  describe('CheckAccountByIdRepository', () => {
+    test('Should call CheckAccountByIdRepository with correct id', async() => {
+      const { sut, checkAccountByIdRepositorySpy } = makeSut()
+      const input = mockInput()
+      await sut.deactivate(input)
+      expect(checkAccountByIdRepositorySpy.id).toEqual(input.accountId)
+    })
+
+    test('Should throw AccountNotFoundError if CheckAccountByIdRepository returns false', async() => {
+      const { sut, checkAccountByIdRepositorySpy } = makeSut()
+      checkAccountByIdRepositorySpy.output = false
+      const promise = sut.deactivate(mockInput())
+      await expect(promise).rejects.toThrow(new AccountNotFoundError())
+    })
+
+    test('Should throw if CheckAccountByIdRepository throws', async() => {
+      const { sut, checkAccountByIdRepositorySpy } = makeSut()
+      jest.spyOn(checkAccountByIdRepositorySpy, 'check').mockRejectedValueOnce(new Error())
+      const promise = sut.deactivate(mockInput())
+      await expect(promise).rejects.toThrow()
+    })
   })
 
-  test('Should throw AccountNotFoundError if CheckAccountByIdRepository returns false', async() => {
-    const { sut, checkAccountByIdRepositorySpy } = makeSut()
-    checkAccountByIdRepositorySpy.output = false
-    const promise = sut.deactivate(mockInput())
-    await expect(promise).rejects.toThrow(new AccountNotFoundError())
-  })
+  describe('DeactivateAccountRepository', () => {
+    test('Should call DeactivateAccountRepository with correct value', async() => {
+      const { sut, deactivateAccountRepositorySpy } = makeSut()
+      const input = mockInput()
+      await sut.deactivate(input)
+      expect(deactivateAccountRepositorySpy.input).toEqual(input)
+    })
 
-  test('Should throw if CheckAccountByIdRepository throws', async() => {
-    const { sut, checkAccountByIdRepositorySpy } = makeSut()
-    jest.spyOn(checkAccountByIdRepositorySpy, 'check').mockRejectedValueOnce(new Error())
-    const promise = sut.deactivate(mockInput())
-    await expect(promise).rejects.toThrow()
-  })
-
-  test('Should call DeactivateAccountRepository with correct value', async() => {
-    const { sut, deactivateAccountRepositorySpy } = makeSut()
-    const input = mockInput()
-    await sut.deactivate(input)
-    expect(deactivateAccountRepositorySpy.input).toEqual(input)
-  })
-
-  test('Should throw if DeactivateAccountRepository throws', async() => {
-    const { sut, deactivateAccountRepositorySpy } = makeSut()
-    jest.spyOn(deactivateAccountRepositorySpy, 'deactivate').mockRejectedValueOnce(new Error())
-    const promise = sut.deactivate(mockInput())
-    await expect(promise).rejects.toThrow()
+    test('Should throw if DeactivateAccountRepository throws', async() => {
+      const { sut, deactivateAccountRepositorySpy } = makeSut()
+      jest.spyOn(deactivateAccountRepositorySpy, 'deactivate').mockRejectedValueOnce(new Error())
+      const promise = sut.deactivate(mockInput())
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
