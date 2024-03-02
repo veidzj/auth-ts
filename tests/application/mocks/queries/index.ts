@@ -1,3 +1,4 @@
 export * from './check-account-by-email-repository-mock'
+export * from './check-account-by-id-repository-mock'
 export * from './get-account-by-email-repository-mock'
 export * from './get-account-id-by-token-repository-mock'
