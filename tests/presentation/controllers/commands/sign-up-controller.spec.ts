@@ -6,7 +6,7 @@ import { AuthenticationSpy } from '@/tests/domain/mocks/queries'
 import { SignUpController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
-import { AccountAlreadyExists } from '@/domain/errors'
+import { AccountAlreadyExistsError } from '@/domain/errors'
 
 interface Sut {
   sut: SignUpController
@@ -70,11 +70,11 @@ describe('SignUpController', () => {
       expect(addAccountSpy.input).toEqual(request)
     })
 
-    test('Should return conflict if AddAccount throws AccountAlreadyExists', async() => {
+    test('Should return conflict if AddAccount throws AccountAlreadyExistsError', async() => {
       const { sut, addAccountSpy } = makeSut()
-      jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(new AccountAlreadyExists())
+      jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(new AccountAlreadyExistsError())
       const httpResponse = await sut.handle(mockRequest())
-      expect(httpResponse).toEqual(HttpHelper.conflict(new AccountAlreadyExists()))
+      expect(httpResponse).toEqual(HttpHelper.conflict(new AccountAlreadyExistsError()))
     })
 
     test('Should return serverError if AddAccount throws an unexpected error', async() => {

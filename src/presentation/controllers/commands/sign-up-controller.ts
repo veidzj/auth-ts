@@ -3,7 +3,7 @@ import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
 import { type AddAccount } from '@/domain/usecases/commands'
 import { type Authentication } from '@/domain/usecases/queries'
-import { AccountAlreadyExists } from '@/domain/errors'
+import { AccountAlreadyExistsError } from '@/domain/errors'
 
 export class SignUpController implements Controller {
   constructor(
@@ -22,7 +22,7 @@ export class SignUpController implements Controller {
       if (error instanceof ValidationError) {
         return HttpHelper.badRequest(error)
       }
-      if (error instanceof AccountAlreadyExists) {
+      if (error instanceof AccountAlreadyExistsError) {
         return HttpHelper.conflict(error)
       }
       return HttpHelper.serverError()

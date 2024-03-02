@@ -3,7 +3,7 @@ import { type Hasher } from '@/application/protocols/cryptography'
 import { type AddAccountRepository } from '@/application/protocols/commands'
 import { type AddAccount } from '@/domain/usecases/commands'
 import { generateGUID } from '@/domain/helpers'
-import { AccountAlreadyExists } from '@/domain/errors'
+import { AccountAlreadyExistsError } from '@/domain/errors'
 
 export class DbAddAccount implements AddAccount {
   constructor(
@@ -15,7 +15,7 @@ export class DbAddAccount implements AddAccount {
   public async add(input: AddAccount.Input): Promise<void> {
     const accountAlreadyExists = await this.checkAccountByEmailRepository.check(input.email)
     if (accountAlreadyExists) {
-      throw new AccountAlreadyExists()
+      throw new AccountAlreadyExistsError()
     }
     const hashedPassword = await this.hasher.hash(input.password)
     await this.addAccountRepository.add({
