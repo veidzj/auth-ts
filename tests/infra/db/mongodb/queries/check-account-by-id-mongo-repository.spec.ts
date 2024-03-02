@@ -24,6 +24,12 @@ describe('CheckAccountByIdMongoRepository', () => {
     await clearCollection(accountCollection)
   })
 
+  test('Should return false if there is no account with the given id', async() => {
+    const sut = makeSut()
+    const accountExists = await sut.check(mockAddAccountRepositoryInput().id)
+    expect(accountExists).toBe(false)
+  })
+
   test('Should return true if account exists', async() => {
     const sut = makeSut()
     const addAccountRepositoryInput = mockAddAccountRepositoryInput()
