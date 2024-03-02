@@ -1,7 +1,7 @@
 export class AccountAlreadyExists extends Error {
   constructor() {
     super('Account already exists')
-    this.name = 'Authentication'
+    this.name = 'Conflict'
     Error.captureStackTrace(this, this.constructor)
   }
 }

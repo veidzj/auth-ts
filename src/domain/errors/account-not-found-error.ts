@@ -1,7 +1,7 @@
 export class AccountNotFoundError extends Error {
   constructor() {
     super('Account not found')
-    this.name = 'Authentication'
+    this.name = 'Not Found'
     Error.captureStackTrace(this, this.constructor)
   }
 }
