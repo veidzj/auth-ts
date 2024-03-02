@@ -37,4 +37,11 @@ describe('DeactivateAccountController', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
   })
+
+  test('Should return serverError if DeactivateAccount throws', async() => {
+    const { sut, deactivateAccountSpy } = makeSut()
+    jest.spyOn(deactivateAccountSpy, 'deactivate').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.serverError())
+  })
 })
