@@ -2,15 +2,15 @@ import { Collection } from 'mongodb'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
 import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
-import { CheckAccountByEmailMongoRepository } from '@/infra/db/mongodb/queries'
+import { CheckAccountByIdMongoRepository } from '@/infra/db/mongodb/queries'
 
 let accountCollection: Collection
 
-const makeSut = (): CheckAccountByEmailMongoRepository => {
-  return new CheckAccountByEmailMongoRepository()
+const makeSut = (): CheckAccountByIdMongoRepository => {
+  return new CheckAccountByIdMongoRepository()
 }
 
-describe('CheckAccountByEmailMongoRepository', () => {
+describe('CheckAccountByIdMongoRepository', () => {
   beforeAll(async() => {
     await connectToDatabase()
   })
@@ -31,9 +31,9 @@ describe('CheckAccountByEmailMongoRepository', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return false if there is no account with the given email', async() => {
+  test('Should return false if there is no account with the given id', async() => {
     const sut = makeSut()
-    const accountExists = await sut.check(mockAddAccountRepositoryInput().email)
+    const accountExists = await sut.check(mockAddAccountRepositoryInput().id)
     expect(accountExists).toBe(false)
   })
 
@@ -41,7 +41,7 @@ describe('CheckAccountByEmailMongoRepository', () => {
     const sut = makeSut()
     const addAccountRepositoryInput = mockAddAccountRepositoryInput()
     await accountCollection.insertOne(addAccountRepositoryInput)
-    const accountExists = await sut.check(addAccountRepositoryInput.email)
+    const accountExists = await sut.check(addAccountRepositoryInput.id)
     expect(accountExists).toBe(true)
   })
 })

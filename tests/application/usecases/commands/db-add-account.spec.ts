@@ -6,7 +6,7 @@ import { HasherSpy } from '@/tests/application/mocks/cryptography'
 import { AddAccountRepositorySpy } from '@/tests/application/mocks/commands'
 import { DbAddAccount } from '@/application/usecases/commands'
 import { type AddAccount } from '@/domain/usecases/commands'
-import { AccountAlreadyExists } from '@/domain/errors'
+import { AccountAlreadyExistsError } from '@/domain/errors'
 
 jest.mock('@/domain/helpers', () => ({
   generateGUID(): string {
@@ -69,11 +69,11 @@ describe('DbAddAccount', () => {
       await expect(promise).rejects.toThrow()
     })
 
-    test('Should throw AccountAlreadyExists if CheckAccountByEmailRepository returns true', async() => {
+    test('Should throw AccountAlreadyExistsError if CheckAccountByEmailRepository returns true', async() => {
       const { sut, checkAccountByEmailRepositorySpy } = makeSut()
       checkAccountByEmailRepositorySpy.output = true
       const promise = sut.add(mockInput())
-      await expect(promise).rejects.toThrow(new AccountAlreadyExists())
+      await expect(promise).rejects.toThrow(new AccountAlreadyExistsError())
     })
   })
 
