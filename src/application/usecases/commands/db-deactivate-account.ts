@@ -1,7 +1,7 @@
 import { type DeactivateAccountRepository } from '@/application/protocols/commands'
 import { type CheckAccountByIdRepository } from '@/application/protocols/queries'
 import { type DeactivateAccount } from '@/domain/usecases/commands'
-import { AccountNotFoundError } from '@/domain/errors'
+import { AccountNotFoundError, AccountAlreadyDeactivatedError } from '@/domain/errors'
 
 export class DbDeactivateAccount implements DeactivateAccount {
   constructor(
@@ -14,6 +14,9 @@ export class DbDeactivateAccount implements DeactivateAccount {
     if (!account) {
       throw new AccountNotFoundError()
     }
-    await this.deactivateAccountRepository.deactivate(input)
+    const accountDeactivated = await this.deactivateAccountRepository.deactivate(input)
+    if (!accountDeactivated) {
+      throw new AccountAlreadyDeactivatedError()
+    }
   }
 }
