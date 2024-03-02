@@ -1,0 +1,38 @@
+import { type Collection } from 'mongodb'
+
+import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
+import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
+import { DeactivateAccountMongoRepository } from '@/infra/db/mongodb/commands'
+
+let accountCollection: Collection
+
+const makeSut = (): DeactivateAccountMongoRepository => {
+  return new DeactivateAccountMongoRepository()
+}
+
+describe('DeactivateAccountMongoRepository', () => {
+  beforeAll(async() => {
+    await connectToDatabase()
+  })
+
+  afterAll(async() => {
+    await disconnectFromDatabase()
+  })
+
+  beforeEach(async() => {
+    accountCollection = await getCollection('accounts')
+    await clearCollection(accountCollection)
+  })
+
+  test('Should deactivate an account on success', async() => {
+    const sut = makeSut()
+    const insertResult = await accountCollection.insertOne({ ...mockAddAccountRepositoryInput(), isActive: true })
+    const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
+    expect(fakeAccount?.isActive).toBe(true)
+    const result = await sut.deactivate({ accountId: fakeAccount?.id })
+    const account = await accountCollection.findOne({ id: fakeAccount?.id })
+    expect(account).toBeTruthy()
+    expect(account?.isActive).toBe(false)
+    expect(result).toBe(true)
+  })
+})
