@@ -1,7 +1,21 @@
 import { faker } from '@faker-js/faker'
 
+import { DeactivateAccountSpy } from '@/tests/domain/mocks/commands'
 import { DeactivateAccountController } from '@/presentation/controllers/commands'
-import { type DeactivateAccount } from '@/domain/usecases/commands'
+
+interface Sut {
+  sut: DeactivateAccountController
+  deactivateAccountSpy: DeactivateAccountSpy
+}
+
+const makeSut = (): Sut => {
+  const deactivateAccountSpy = new DeactivateAccountSpy()
+  const sut = new DeactivateAccountController(deactivateAccountSpy)
+  return {
+    sut,
+    deactivateAccountSpy
+  }
+}
 
 const mockRequest = (): DeactivateAccountController.Request => ({
   accountId: faker.string.uuid()
@@ -9,15 +23,7 @@ const mockRequest = (): DeactivateAccountController.Request => ({
 
 describe('DeactivateAccountController', () => {
   test('Should call DeactivateAccount with correct value', async() => {
-    class DeactivateAccountSpy implements DeactivateAccount {
-      public input: DeactivateAccount.Input
-
-      public async deactivate(input: DeactivateAccount.Input): Promise<void> {
-        this.input = input
-      }
-    }
-    const deactivateAccountSpy = new DeactivateAccountSpy()
-    const sut = new DeactivateAccountController(deactivateAccountSpy)
+    const { sut, deactivateAccountSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
     expect(deactivateAccountSpy.input).toEqual(request)
