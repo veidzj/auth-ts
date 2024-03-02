@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 import { DeactivateAccountSpy } from '@/tests/domain/mocks/commands'
 import { DeactivateAccountController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
-import { AccountNotFoundError } from '@/domain/errors'
+import { AccountNotFoundError, AccountAlreadyDeactivatedError } from '@/domain/errors'
 
 interface Sut {
   sut: DeactivateAccountController
@@ -36,6 +36,13 @@ describe('DeactivateAccountController', () => {
     jest.spyOn(deactivateAccountSpy, 'deactivate').mockRejectedValueOnce(new AccountNotFoundError())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
+  })
+
+  test('Should return conflict if DeactivateAccount throws AccountAlreadyDeactivatedError', async() => {
+    const { sut, deactivateAccountSpy } = makeSut()
+    jest.spyOn(deactivateAccountSpy, 'deactivate').mockRejectedValueOnce(new AccountAlreadyDeactivatedError())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.conflict(new AccountAlreadyDeactivatedError()))
   })
 
   test('Should return serverError if DeactivateAccount throws', async() => {
