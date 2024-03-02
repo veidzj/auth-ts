@@ -34,6 +34,13 @@ describe('DbDeactivateAccount', () => {
     expect(checkAccountByIdRepositorySpy.id).toEqual(input.accountId)
   })
 
+  test('Should throw if CheckAccountByIdRepository throws', async() => {
+    const { sut, checkAccountByIdRepositorySpy } = makeSut()
+    jest.spyOn(checkAccountByIdRepositorySpy, 'check').mockRejectedValueOnce(new Error())
+    const promise = sut.deactivate(mockInput())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call DeactivateAccountRepository with correct value', async() => {
     const { sut, deactivateAccountRepositorySpy } = makeSut()
     const input = mockInput()
