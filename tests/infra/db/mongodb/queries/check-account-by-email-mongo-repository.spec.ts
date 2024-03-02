@@ -37,7 +37,7 @@ describe('CheckAccountByEmailMongoRepository', () => {
     expect(accountExists).toBe(false)
   })
 
-  test('Should return true if email exists', async() => {
+  test('Should return true if account exists', async() => {
     const sut = makeSut()
     const addAccountRepositoryInput = mockAddAccountRepositoryInput()
     await accountCollection.insertOne(addAccountRepositoryInput)
