@@ -35,4 +35,16 @@ describe('DeactivateAccountMongoRepository', () => {
     expect(account?.isActive).toBe(false)
     expect(result).toBe(true)
   })
+
+  test('Should not deactivate an account if is already deactivated', async() => {
+    const sut = makeSut()
+    const insertResult = await accountCollection.insertOne({ ...mockAddAccountRepositoryInput(), isActive: false })
+    const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
+    expect(fakeAccount?.isActive).toBe(false)
+    const result = await sut.deactivate({ accountId: fakeAccount?.id })
+    const account = await accountCollection.findOne({ id: fakeAccount?.id })
+    expect(account).toBeTruthy()
+    expect(account?.isActive).toBe(false)
+    expect(result).toBe(false)
+  })
 })
