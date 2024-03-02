@@ -1,5 +1,5 @@
 export interface DeactivateAccountRepository {
-  deactivate: (input: DeactivateAccountRepository.Input) => Promise<void>
+  deactivate: (input: DeactivateAccountRepository.Input) => Promise<boolean>
 }
 
 export namespace DeactivateAccountRepository {

@@ -2,8 +2,10 @@ import { type DeactivateAccountRepository } from '@/application/protocols/comman
 
 export class DeactivateAccountRepositorySpy implements DeactivateAccountRepository {
   public input: DeactivateAccountRepository.Input
+  public output: boolean = true
 
-  public async deactivate(input: DeactivateAccountRepository.Input): Promise<void> {
+  public async deactivate(input: DeactivateAccountRepository.Input): Promise<boolean> {
     this.input = input
+    return this.output
   }
 }
