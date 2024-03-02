@@ -4,6 +4,7 @@ import { CheckAccountByIdRepositorySpy } from '@/tests/application/mocks/queries
 import { DeactivateAccountRepositorySpy } from '@/tests/application/mocks/commands'
 import { DbDeactivateAccount } from '@/application/usecases/commands'
 import { type DeactivateAccount } from '@/domain/usecases/commands'
+import { AccountNotFoundError } from '@/domain/errors'
 
 interface Sut {
   sut: DbDeactivateAccount
@@ -32,6 +33,13 @@ describe('DbDeactivateAccount', () => {
     const input = mockInput()
     await sut.deactivate(input)
     expect(checkAccountByIdRepositorySpy.id).toEqual(input.accountId)
+  })
+
+  test('Should throw AccountNotFoundError if CheckAccountByIdRepository returns false', async() => {
+    const { sut, checkAccountByIdRepositorySpy } = makeSut()
+    checkAccountByIdRepositorySpy.output = false
+    const promise = sut.deactivate(mockInput())
+    await expect(promise).rejects.toThrow(new AccountNotFoundError())
   })
 
   test('Should throw if CheckAccountByIdRepository throws', async() => {
