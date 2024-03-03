@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker'
 import { ActivateAccountSpy } from '@/tests/domain/mocks/commands'
 import { ActivateAccountController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
+import { AccountNotFoundError } from '@/domain/errors'
 
 interface Sut {
   sut: ActivateAccountController
@@ -28,6 +29,13 @@ describe('ActivateAccountController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(activateAccountSpy.accountId).toBe(request.accountId)
+  })
+
+  test('Should return notFound if ActivateAccount throws AccountNotFoundError', async() => {
+    const { sut, activateAccountSpy } = makeSut()
+    jest.spyOn(activateAccountSpy, 'activate').mockRejectedValueOnce(new AccountNotFoundError())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
   })
 
   test('Should return serverError if ActivateAccount throws', async() => {
