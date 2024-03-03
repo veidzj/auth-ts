@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 import { CheckAccountByIdRepositorySpy } from '@/tests/application/mocks/queries'
 import { ActivateAccountRepositorySpy } from '@/tests/application/mocks/commands'
 import { DbActivateAccount } from '@/application/usecases/commands'
-import { AccountNotFoundError } from '@/domain/errors'
+import { AccountNotFoundError, AccountAlreadyActivatedError } from '@/domain/errors'
 
 interface Sut {
   sut: DbActivateAccount
@@ -52,6 +52,13 @@ describe('DbActivateAccount', () => {
       const { sut, activateAccountRepositorySpy } = makeSut()
       await sut.activate(accountId)
       expect(activateAccountRepositorySpy.accountId).toBe(accountId)
+    })
+
+    test('Should throw AccountAlreadyDeactivated if ActivateAccountRepository returns false', async() => {
+      const { sut, activateAccountRepositorySpy } = makeSut()
+      activateAccountRepositorySpy.output = false
+      const promise = sut.activate(accountId)
+      await expect(promise).rejects.toThrow(new AccountAlreadyActivatedError())
     })
   })
 })
