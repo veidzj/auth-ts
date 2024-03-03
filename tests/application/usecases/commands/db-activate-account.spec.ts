@@ -1,20 +1,24 @@
 import { faker } from '@faker-js/faker'
 
 import { CheckAccountByIdRepositorySpy } from '@/tests/application/mocks/queries'
+import { ActivateAccountRepositorySpy } from '@/tests/application/mocks/commands'
 import { DbActivateAccount } from '@/application/usecases/commands'
 import { AccountNotFoundError } from '@/domain/errors'
 
 interface Sut {
   sut: DbActivateAccount
   checkAccountByIdRepositorySpy: CheckAccountByIdRepositorySpy
+  activateAccountRepositorySpy: ActivateAccountRepositorySpy
 }
 
 const makeSut = (): Sut => {
   const checkAccountByIdRepositorySpy = new CheckAccountByIdRepositorySpy()
-  const sut = new DbActivateAccount(checkAccountByIdRepositorySpy)
+  const activateAccountRepositorySpy = new ActivateAccountRepositorySpy()
+  const sut = new DbActivateAccount(checkAccountByIdRepositorySpy, activateAccountRepositorySpy)
   return {
     sut,
-    checkAccountByIdRepositorySpy
+    checkAccountByIdRepositorySpy,
+    activateAccountRepositorySpy
   }
 }
 
@@ -40,6 +44,14 @@ describe('DbActivateAccount', () => {
       jest.spyOn(checkAccountByIdRepositorySpy, 'check').mockRejectedValueOnce(new Error())
       const promise = sut.activate(accountId)
       await expect(promise).rejects.toThrow()
+    })
+  })
+
+  describe('ActivateAccountRepository', () => {
+    test('Should call ActivateAccountRepository with correct value', async() => {
+      const { sut, activateAccountRepositorySpy } = makeSut()
+      await sut.activate(accountId)
+      expect(activateAccountRepositorySpy.accountId).toBe(accountId)
     })
   })
 })
