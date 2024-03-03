@@ -35,8 +35,8 @@ describe('AuthMiddleware', () => {
     const { sut, getAccountIdByTokenSpy } = makeSut(role)
     const request = mockRequest()
     await sut.handle(request)
-    expect(getAccountIdByTokenSpy.input.accessToken).toBe(request.accessToken)
-    expect(getAccountIdByTokenSpy.input.role).toBe(role)
+    expect(getAccountIdByTokenSpy.accessToken).toBe(request.accessToken)
+    expect(getAccountIdByTokenSpy.role).toBe(role)
   })
 
   test('Should return unauthorized if GetAccountIdByToken throws InvalidCredentialsError', async() => {
@@ -63,6 +63,6 @@ describe('AuthMiddleware', () => {
   test('Should return ok on success', async() => {
     const { sut, getAccountIdByTokenSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(HttpHelper.ok(getAccountIdByTokenSpy.output))
+    expect(httpResponse).toEqual(HttpHelper.ok({ accountId: getAccountIdByTokenSpy.accountId }))
   })
 })
