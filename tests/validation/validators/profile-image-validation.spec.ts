@@ -33,4 +33,12 @@ describe('ProfileImageValidation', () => {
       sut.validate({ profileImage: faker.internet.url() })
     }).toThrow(new ValidationError('Profile image must be a valid url'))
   })
+
+  test('Should throw if URLValidator throws', () => {
+    const { sut, urlValidatorSpy } = makeSut()
+    jest.spyOn(urlValidatorSpy, 'isValid').mockImplementationOnce(() => { throw new Error() })
+    expect(() => {
+      sut.validate({ profileImage: faker.internet.url() })
+    }).toThrow()
+  })
 })
