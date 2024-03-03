@@ -3,13 +3,13 @@ import { faker } from '@faker-js/faker'
 import { type Authentication } from '@/domain/usecases/queries'
 
 export class AuthenticationSpy implements Authentication {
-  public input: Authentication.Input
-  public output: Authentication.Output = {
-    accessToken: faker.string.uuid()
-  }
+  public email: string
+  public password: string
+  public accessToken: string = faker.string.uuid()
 
-  public async auth(input: Authentication.Input): Promise<Authentication.Output> {
-    this.input = input
-    return this.output
+  public async auth(email: string, password: string): Promise<string> {
+    this.email = email
+    this.password = password
+    return this.accessToken
   }
 }

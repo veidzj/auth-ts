@@ -90,7 +90,8 @@ describe('SignUpController', () => {
       const { sut, authenticationSpy } = makeSut()
       const request = mockRequest()
       await sut.handle(request)
-      expect(authenticationSpy.input).toEqual({ email: request.email, password: request.password })
+      expect(authenticationSpy.email).toBe(request.email)
+      expect(authenticationSpy.password).toBe(request.password)
     })
 
     test('Should return serverError if Authentication throws an unexpected error', async() => {
@@ -103,7 +104,7 @@ describe('SignUpController', () => {
     test('Should return accessToken on success', async() => {
       const { sut, authenticationSpy } = makeSut()
       const httpResponse = await sut.handle(mockRequest())
-      expect(httpResponse).toEqual(HttpHelper.ok(authenticationSpy.output))
+      expect(httpResponse).toEqual(HttpHelper.ok({ accessToken: authenticationSpy.accessToken }))
     })
   })
 })
