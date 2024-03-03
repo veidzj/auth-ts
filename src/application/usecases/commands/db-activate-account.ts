@@ -1,7 +1,7 @@
 import { type CheckAccountByIdRepository } from '@/application/protocols/queries'
 import { type ActivateAccountRepository } from '@/application/protocols/commands'
 import { type ActivateAccount } from '@/domain/usecases/commands'
-import { AccountNotFoundError } from '@/domain/errors'
+import { AccountNotFoundError, AccountAlreadyActivatedError } from '@/domain/errors'
 
 export class DbActivateAccount implements ActivateAccount {
   constructor(
@@ -14,6 +14,9 @@ export class DbActivateAccount implements ActivateAccount {
     if (!account) {
       throw new AccountNotFoundError()
     }
-    await this.activateAccountRepository.activate(accountId)
+    const accountActivated = await this.activateAccountRepository.activate(accountId)
+    if (!accountActivated) {
+      throw new AccountAlreadyActivatedError()
+    }
   }
 }
