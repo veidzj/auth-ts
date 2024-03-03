@@ -29,7 +29,7 @@ describe('DbDeactivateAccount', () => {
     test('Should call CheckAccountByIdRepository with correct id', async() => {
       const { sut, checkAccountByIdRepositorySpy } = makeSut()
       await sut.deactivate(accountId)
-      expect(checkAccountByIdRepositorySpy.id).toEqual(accountId)
+      expect(checkAccountByIdRepositorySpy.id).toBe(accountId)
     })
 
     test('Should throw AccountNotFoundError if CheckAccountByIdRepository returns false', async() => {
