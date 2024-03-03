@@ -22,7 +22,7 @@ export class DbAuthentication implements Authentication {
       throw new InvalidCredentialsError()
     }
     const accessToken = await this.encrypter.encrypt(account.id)
-    await this.updateAccessTokenRepository.update({ id: account.id, accessToken })
+    await this.updateAccessTokenRepository.update(account.id, accessToken)
     return accessToken
   }
 }

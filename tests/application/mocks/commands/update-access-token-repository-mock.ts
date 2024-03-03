@@ -1,9 +1,11 @@
 import { type UpdateAccessTokenRepository } from '@/application/protocols/commands'
 
 export class UpdateAccessTokenRepositorySpy implements UpdateAccessTokenRepository {
-  public input: UpdateAccessTokenRepository.Input
+  public id: string
+  public accessToken: string
 
-  public async update(input: UpdateAccessTokenRepository.Input): Promise<void> {
-    this.input = input
+  public async update(id: string, accessToken: string): Promise<void> {
+    this.id = id
+    this.accessToken = accessToken
   }
 }

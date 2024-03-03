@@ -98,10 +98,8 @@ describe('DbAuthentication', () => {
       const { sut, getAccountByEmailRepositorySpy, encrypterSpy, updateAccessTokenRepositorySpy } = makeSut()
       await sut.auth(email, password)
       expect(encrypterSpy.plainText).toBe(getAccountByEmailRepositorySpy.output?.id)
-      expect(updateAccessTokenRepositorySpy.input).toEqual({
-        id: getAccountByEmailRepositorySpy.output?.id,
-        accessToken: encrypterSpy.cipherText
-      })
+      expect(updateAccessTokenRepositorySpy.id).toBe(getAccountByEmailRepositorySpy.output?.id)
+      expect(updateAccessTokenRepositorySpy.accessToken).toBe(encrypterSpy.cipherText)
     })
 
     test('Should throw if UpdateAccessTokenRepository throws', async() => {
