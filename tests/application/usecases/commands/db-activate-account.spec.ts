@@ -60,5 +60,12 @@ describe('DbActivateAccount', () => {
       const promise = sut.activate(accountId)
       await expect(promise).rejects.toThrow(new AccountAlreadyActivatedError())
     })
+
+    test('Should throw if ActivateAccountRepository throws', async() => {
+      const { sut, activateAccountRepositorySpy } = makeSut()
+      jest.spyOn(activateAccountRepositorySpy, 'activate').mockRejectedValueOnce(new Error())
+      const promise = sut.activate(accountId)
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
