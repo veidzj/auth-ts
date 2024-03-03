@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 
 import { ActivateAccountSpy } from '@/tests/domain/mocks/commands'
 import { ActivateAccountController } from '@/presentation/controllers/commands'
+import { HttpHelper } from '@/presentation/helpers'
 
 interface Sut {
   sut: ActivateAccountController
@@ -27,5 +28,12 @@ describe('ActivateAccountController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(activateAccountSpy.accountId).toBe(request.accountId)
+  })
+
+  test('Should return serverError if ActivateAccount throws', async() => {
+    const { sut, activateAccountSpy } = makeSut()
+    jest.spyOn(activateAccountSpy, 'activate').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.serverError())
   })
 })
