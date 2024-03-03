@@ -7,8 +7,8 @@ import { AccountNotFoundError, AccountAlreadyDeactivatedError } from '@/domain/e
 
 interface Sut {
   sut: DbDeactivateAccount
-  deactivateAccountRepositorySpy: DeactivateAccountRepositorySpy
   checkAccountByIdRepositorySpy: CheckAccountByIdRepositorySpy
+  deactivateAccountRepositorySpy: DeactivateAccountRepositorySpy
 }
 
 const makeSut = (): Sut => {
