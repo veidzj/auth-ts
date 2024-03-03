@@ -1,7 +1,7 @@
 import { type Controller, type HttpResponse } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
 import { type ActivateAccount } from '@/domain/usecases/commands'
-import { AccountNotFoundError } from '@/domain/errors'
+import { AccountNotFoundError, AccountAlreadyActivatedError } from '@/domain/errors'
 
 export class ActivateAccountController implements Controller {
   constructor(private readonly activateAccount: ActivateAccount) {}
@@ -13,6 +13,9 @@ export class ActivateAccountController implements Controller {
     } catch (error) {
       if (error instanceof AccountNotFoundError) {
         return HttpHelper.notFound(error)
+      }
+      if (error instanceof AccountAlreadyActivatedError) {
+        return HttpHelper.conflict(error)
       }
       return HttpHelper.serverError()
     }
