@@ -1,47 +1,27 @@
 import { faker } from '@faker-js/faker'
 
+import { URLValidatorSpy } from '@/tests/validation/mocks'
 import { ProfileImageValidation } from '@/validation/validators'
-import { ValidationError } from '@/validation/errors'
 
-const makeSut = (): ProfileImageValidation => {
-  return new ProfileImageValidation()
+interface Sut {
+  sut: ProfileImageValidation
+  urlValidatorSpy: URLValidatorSpy
+}
+
+const makeSut = (): Sut => {
+  const urlValidatorSpy = new URLValidatorSpy()
+  const sut = new ProfileImageValidation(urlValidatorSpy)
+  return {
+    sut,
+    urlValidatorSpy
+  }
 }
 
 describe('ProfileImageValidation', () => {
-  let invalidUrl: ProfileImageValidation.Input
-  let validUrl: ProfileImageValidation.Input
-  let undefinedProfileImage: ProfileImageValidation.Input
-
-  beforeAll(() => {
-    invalidUrl = {
-      profileImage: faker.string.alpha(12)
-    }
-    undefinedProfileImage = {
-      profileImage: undefined
-    }
-    validUrl = {
-      profileImage: faker.internet.url()
-    }
-  })
-
-  test('Should throw ValidationError if profile image is not a valid url', () => {
-    const sut = makeSut()
-    expect(() => {
-      sut.validate(invalidUrl)
-    }).toThrow(new ValidationError('Profile image must be a valid url'))
-  })
-
-  test('Should not throw if profile image is not provided', () => {
-    const sut = makeSut()
-    expect(() => {
-      sut.validate(undefinedProfileImage)
-    }).not.toThrow()
-  })
-
-  test('Should not throw if profile image is a valid url', () => {
-    const sut = makeSut()
-    expect(() => {
-      sut.validate(validUrl)
-    }).not.toThrow()
+  test('Should call URLValidator with correct url', () => {
+    const { sut, urlValidatorSpy } = makeSut()
+    const url = faker.internet.url()
+    sut.validate({ profileImage: url })
+    expect(urlValidatorSpy.url).toBe(url)
   })
 })
