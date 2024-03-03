@@ -1,5 +1,6 @@
 import { type CheckAccountByIdRepository } from '@/application/protocols/queries'
 import { type ActivateAccount } from '@/domain/usecases/commands'
+import { AccountNotFoundError } from '@/domain/errors'
 
 export class DbActivateAccount implements ActivateAccount {
   constructor(
@@ -7,6 +8,9 @@ export class DbActivateAccount implements ActivateAccount {
   ) {}
 
   public async activate(accountId: string): Promise<void> {
-    await this.checkAccountByIdRepository.check(accountId)
+    const account = await this.checkAccountByIdRepository.check(accountId)
+    if (!account) {
+      throw new AccountNotFoundError()
+    }
   }
 }
