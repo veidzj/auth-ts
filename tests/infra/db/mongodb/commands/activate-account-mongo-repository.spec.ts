@@ -36,4 +36,17 @@ describe('ActivateAccountMongoRepository', () => {
     expect(account?.isActive).toBe(true)
     expect(result).toBe(true)
   })
+
+  test('Should not activate an account if is already activated', async() => {
+    const sut = makeSut()
+    const insertResult = await accountCollection.insertOne({ ...mockAddAccountRepositoryInput(), isActive: true })
+    const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
+    expect(fakeAccount?.isActive).toBe(true)
+    const accountId: string = fakeAccount?.id.toString()
+    const result = await sut.activate(accountId)
+    const account = await accountCollection.findOne({ id: fakeAccount?.id })
+    expect(account).toBeTruthy()
+    expect(account?.isActive).toBe(true)
+    expect(result).toBe(false)
+  })
 })
