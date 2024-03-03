@@ -67,5 +67,11 @@ describe('DbActivateAccount', () => {
       const promise = sut.activate(accountId)
       await expect(promise).rejects.toThrow()
     })
+
+    test('Should not throw on success', async() => {
+      const { sut } = makeSut()
+      const promise = sut.activate(accountId)
+      await expect(promise).resolves.not.toThrow()
+    })
   })
 })
