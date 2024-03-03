@@ -3,9 +3,6 @@ import { MongoClient, type Collection, type WithId, type Document } from 'mongod
 export class MongoHelper {
   private static instance: MongoHelper
   private client: MongoClient | null = null
-  private uri: string | null = null
-
-  private constructor() {}
 
   public static getInstance(): MongoHelper {
     if (!MongoHelper.instance) {
@@ -16,7 +13,6 @@ export class MongoHelper {
   }
 
   public async connect(uri: string): Promise<void> {
-    this.uri = uri
     this.client = await MongoClient.connect(uri)
   }
 
