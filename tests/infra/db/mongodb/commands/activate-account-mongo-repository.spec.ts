@@ -1,4 +1,5 @@
-import { type Collection } from 'mongodb'
+import { Collection } from 'mongodb'
+import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
 import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
@@ -22,6 +23,13 @@ describe('ActivateAccountMongoRepository', () => {
   beforeEach(async() => {
     accountCollection = await getCollection('accounts')
     await clearCollection(accountCollection)
+  })
+
+  test('Should throw if mongo throws', async() => {
+    const sut = makeSut()
+    jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
+    const promise = sut.activate(faker.string.uuid())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should activate an account on success', async() => {
