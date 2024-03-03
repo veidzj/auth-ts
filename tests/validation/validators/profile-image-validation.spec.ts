@@ -41,4 +41,11 @@ describe('ProfileImageValidation', () => {
       sut.validate({ profileImage: faker.internet.url() })
     }).toThrow()
   })
+
+  test('Should not throw if URLValidator returns true', () => {
+    const { sut } = makeSut()
+    expect(() => {
+      sut.validate({ profileImage: faker.internet.url() })
+    }).not.toThrow()
+  })
 })
