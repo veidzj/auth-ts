@@ -1,9 +1,9 @@
 import { type DeactivateAccount } from '@/domain/usecases/commands'
 
 export class DeactivateAccountSpy implements DeactivateAccount {
-  public input: DeactivateAccount.Input
+  public accountId: string
 
-  public async deactivate(input: DeactivateAccount.Input): Promise<void> {
-    this.input = input
+  public async deactivate(accountId: string): Promise<void> {
+    this.accountId = accountId
   }
 }

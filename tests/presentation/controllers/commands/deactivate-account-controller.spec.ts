@@ -28,7 +28,7 @@ describe('DeactivateAccountController', () => {
     const { sut, deactivateAccountSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(deactivateAccountSpy.input).toEqual(request)
+    expect(deactivateAccountSpy.accountId).toBe(request.accountId)
   })
 
   test('Should return notFound if DeactivateAccount throws AccountNotFoundError', async() => {

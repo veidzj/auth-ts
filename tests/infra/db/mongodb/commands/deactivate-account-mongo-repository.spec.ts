@@ -28,7 +28,7 @@ describe('DeactivateAccountMongoRepository', () => {
   test('Should throw if mongo throws', async() => {
     const sut = makeSut()
     jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
-    const promise = sut.deactivate({ accountId: faker.string.uuid() })
+    const promise = sut.deactivate(faker.string.uuid())
     await expect(promise).rejects.toThrow()
   })
 
@@ -37,7 +37,8 @@ describe('DeactivateAccountMongoRepository', () => {
     const insertResult = await accountCollection.insertOne({ ...mockAddAccountRepositoryInput(), isActive: true })
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     expect(fakeAccount?.isActive).toBe(true)
-    const result = await sut.deactivate({ accountId: fakeAccount?.id })
+    const accountId: string = fakeAccount?.id.toString()
+    const result = await sut.deactivate(accountId)
     const account = await accountCollection.findOne({ id: fakeAccount?.id })
     expect(account).toBeTruthy()
     expect(account?.isActive).toBe(false)
@@ -49,7 +50,8 @@ describe('DeactivateAccountMongoRepository', () => {
     const insertResult = await accountCollection.insertOne({ ...mockAddAccountRepositoryInput(), isActive: false })
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     expect(fakeAccount?.isActive).toBe(false)
-    const result = await sut.deactivate({ accountId: fakeAccount?.id })
+    const accountId: string = fakeAccount?.id.toString()
+    const result = await sut.deactivate(accountId)
     const account = await accountCollection.findOne({ id: fakeAccount?.id })
     expect(account).toBeTruthy()
     expect(account?.isActive).toBe(false)

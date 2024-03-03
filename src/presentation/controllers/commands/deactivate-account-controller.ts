@@ -8,7 +8,7 @@ export class DeactivateAccountController implements Controller {
 
   public async handle(request: DeactivateAccountController.Request): Promise<HttpResponse> {
     try {
-      await this.deactivateAccount.deactivate(request)
+      await this.deactivateAccount.deactivate(request.accountId)
       return HttpHelper.ok({ message: 'Account successfully deactivated' })
     } catch (error) {
       if (error instanceof AccountNotFoundError) {
