@@ -11,7 +11,7 @@ const makeSut = (): GetAccountIdByTokenMongoRepository => {
   return new GetAccountIdByTokenMongoRepository()
 }
 
-describe.only('GetAccountIdByTokenMongoRepository', () => {
+describe('GetAccountIdByTokenMongoRepository', () => {
   beforeAll(async() => {
     await connectToDatabase()
   })
