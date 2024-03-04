@@ -9,12 +9,12 @@ export class DbDeactivateAccount implements DeactivateAccount {
     private readonly deactivateAccountRepository: DeactivateAccountRepository
   ) {}
 
-  public async deactivate(input: DeactivateAccount.Input): Promise<void> {
-    const account = await this.checkAccountByIdRepository.check(input.accountId)
+  public async deactivate(accountId: string): Promise<void> {
+    const account = await this.checkAccountByIdRepository.check(accountId)
     if (!account) {
       throw new AccountNotFoundError()
     }
-    const accountDeactivated = await this.deactivateAccountRepository.deactivate(input)
+    const accountDeactivated = await this.deactivateAccountRepository.deactivate(accountId)
     if (!accountDeactivated) {
       throw new AccountAlreadyDeactivatedError()
     }

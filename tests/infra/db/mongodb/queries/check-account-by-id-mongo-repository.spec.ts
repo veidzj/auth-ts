@@ -3,6 +3,7 @@ import { Collection } from 'mongodb'
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
 import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
 import { CheckAccountByIdMongoRepository } from '@/infra/db/mongodb/queries'
+import { faker } from '@faker-js/faker'
 
 let accountCollection: Collection
 
@@ -24,24 +25,24 @@ describe('CheckAccountByIdMongoRepository', () => {
     await clearCollection(accountCollection)
   })
 
-  test('Should throw if mongo throws', async() => {
-    const sut = makeSut()
-    jest.spyOn(Collection.prototype, 'countDocuments').mockRejectedValueOnce(new Error())
-    const promise = sut.check(mockAddAccountRepositoryInput().email)
-    await expect(promise).rejects.toThrow()
-  })
-
   test('Should return false if there is no account with the given id', async() => {
     const sut = makeSut()
-    const accountExists = await sut.check(mockAddAccountRepositoryInput().id)
+    const accountExists = await sut.check(faker.database.mongodbObjectId())
     expect(accountExists).toBe(false)
   })
 
   test('Should return true if account exists', async() => {
     const sut = makeSut()
     const addAccountRepositoryInput = mockAddAccountRepositoryInput()
-    await accountCollection.insertOne(addAccountRepositoryInput)
-    const accountExists = await sut.check(addAccountRepositoryInput.id)
+    const insertResult = await accountCollection.insertOne(addAccountRepositoryInput)
+    const accountExists = await sut.check(insertResult.insertedId.toString())
     expect(accountExists).toBe(true)
+  })
+
+  test('Should throw if mongo throws', async() => {
+    const sut = makeSut()
+    jest.spyOn(Collection.prototype, 'countDocuments').mockRejectedValueOnce(new Error())
+    const promise = sut.check(faker.database.mongodbObjectId())
+    await expect(promise).rejects.toThrow()
   })
 })

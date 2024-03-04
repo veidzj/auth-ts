@@ -59,7 +59,8 @@ describe('SignInController', () => {
       const { sut, authenticationSpy } = makeSut()
       const request = mockRequest()
       await sut.handle(request)
-      expect(authenticationSpy.input).toEqual(request)
+      expect(authenticationSpy.email).toBe(request.email)
+      expect(authenticationSpy.password).toBe(request.password)
     })
 
     test('Should return notFound if Authentication throws AccountNotFoundError', async() => {
@@ -86,7 +87,7 @@ describe('SignInController', () => {
     test('Should return accessToken on success', async() => {
       const { sut, authenticationSpy } = makeSut()
       const httpResponse = await sut.handle(mockRequest())
-      expect(httpResponse).toEqual(HttpHelper.ok(authenticationSpy.output))
+      expect(httpResponse).toEqual(HttpHelper.ok({ accessToken: authenticationSpy.accessToken }))
     })
   })
 })

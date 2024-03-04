@@ -3,9 +3,6 @@ import { MongoClient, type Collection, type WithId, type Document } from 'mongod
 export class MongoHelper {
   private static instance: MongoHelper
   private client: MongoClient | null = null
-  private uri: string | null = null
-
-  private constructor() {}
 
   public static getInstance(): MongoHelper {
     if (!MongoHelper.instance) {
@@ -16,7 +13,6 @@ export class MongoHelper {
   }
 
   public async connect(uri: string): Promise<void> {
-    this.uri = uri
     this.client = await MongoClient.connect(uri)
   }
 
@@ -34,7 +30,13 @@ export class MongoHelper {
     return this.client.db().collection(name)
   }
 
-  public map<T>(mongoDoc: WithId<Document>): T {
-    return mongoDoc as T
+  public mapId(mongoDoc: WithId<Document>): string {
+    return mongoDoc._id.toHexString()
+  }
+
+  public mapDocument<T>(mongoDoc: WithId<Document>): T {
+    const { _id, ...rest } = mongoDoc
+    const mappedDocument = { ...rest, id: _id.toHexString() }
+    return mappedDocument as T
   }
 }

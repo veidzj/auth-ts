@@ -1,11 +1,12 @@
-import validator from 'validator'
-
+import { type EmailValidator } from '@/validation/protocols'
 import { ValidationError } from '@/validation/errors'
 import { type Validation } from '@/presentation/protocols'
 
 export class EmailValidation implements Validation {
+  constructor(private readonly emailValidator: EmailValidator) {}
+
   validate(input: EmailValidation.Input): void {
-    if (!validator.isEmail(input.email)) {
+    if (!this.emailValidator.isValid(input.email)) {
       throw new ValidationError('Email must be a valid email')
     }
   }

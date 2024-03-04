@@ -1,13 +1,13 @@
-import { MongoHelper } from '@/infra/db/mongodb/helpers'
+import { ObjectId } from 'mongodb'
+
+import { MongoRepository } from '@/infra/db/mongodb/common'
 import { type DeactivateAccountRepository } from '@/application/protocols/commands'
 
-export class DeactivateAccountMongoRepository implements DeactivateAccountRepository {
-  private readonly mongoHelper: MongoHelper = MongoHelper.getInstance()
-
-  public async deactivate(input: DeactivateAccountRepository.Input): Promise<boolean> {
+export class DeactivateAccountMongoRepository extends MongoRepository implements DeactivateAccountRepository {
+  public async deactivate(accountId: string): Promise<boolean> {
     const accountCollection = this.mongoHelper.getCollection('accounts')
     const query = await accountCollection.updateOne({
-      id: input.accountId
+      _id: new ObjectId(accountId)
     }, {
       $set: {
         isActive: false

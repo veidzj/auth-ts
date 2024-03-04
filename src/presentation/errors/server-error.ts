@@ -1,7 +1,7 @@
 export class InternalServerError extends Error {
   constructor() {
-    super('Internal server error')
-    this.name = 'Server'
+    super('The server has encountered an unexpected error. Please try again later')
+    this.name = 'Internal Server Error'
     Error.captureStackTrace(this, this.constructor)
   }
 }

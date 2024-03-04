@@ -9,13 +9,13 @@ export class DbGetAccountIdByToken implements GetAccountIdByToken {
     private readonly getAccountIdByTokenRepository: GetAccountIdByTokenRepository
   ) {}
 
-  public async get(input: GetAccountIdByToken.Input): Promise<GetAccountIdByToken.Output> {
+  public async get(accessToken: string, role: string): Promise<string> {
     try {
-      await this.decrypter.decrypt(input.accessToken)
+      await this.decrypter.decrypt(accessToken)
     } catch (_) {
       throw new InvalidCredentialsError()
     }
-    const accountId = await this.getAccountIdByTokenRepository.get(input)
+    const accountId = await this.getAccountIdByTokenRepository.get(accessToken, role)
     if (!accountId) {
       throw new AccessDeniedError()
     }

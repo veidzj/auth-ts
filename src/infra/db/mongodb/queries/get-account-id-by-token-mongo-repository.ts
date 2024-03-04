@@ -1,24 +1,19 @@
-import { MongoHelper } from '@/infra/db/mongodb/helpers'
+import { MongoRepository } from '@/infra/db/mongodb/common'
 import { type GetAccountIdByTokenRepository } from '@/application/protocols/queries'
 
-export class GetAccountIdByTokenMongoRepository implements GetAccountIdByTokenRepository {
-  private readonly mongoHelper: MongoHelper = MongoHelper.getInstance()
-
-  public async get(input: GetAccountIdByTokenRepository.Input): Promise<GetAccountIdByTokenRepository.Output | null> {
+export class GetAccountIdByTokenMongoRepository extends MongoRepository implements GetAccountIdByTokenRepository {
+  public async get(accessToken: string, role: string): Promise<string | null> {
     const accountCollection = this.mongoHelper.getCollection('accounts')
     const account = await accountCollection.findOne({
-      accessToken: input.accessToken,
+      accessToken,
       roles: {
-        $in: [input.role]
+        $in: [role]
       }
     }, {
       projection: {
-        _id: 0,
-        id: 1
+        _id: 1
       }
     })
-    return account && {
-      accountId: account?.id
-    }
+    return account && this.mongoHelper.mapId(account)
   }
 }

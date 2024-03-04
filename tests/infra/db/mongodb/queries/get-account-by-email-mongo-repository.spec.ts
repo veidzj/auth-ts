@@ -28,9 +28,9 @@ describe('GetAccountByEmailMongoRepository', () => {
   test('Should return an account on success', async() => {
     const sut = makeSut()
     const addAccountRepositoryInput = mockAddAccountRepositoryInput()
-    await accountCollection.insertOne(addAccountRepositoryInput)
+    const insertResult = await accountCollection.insertOne(addAccountRepositoryInput)
     const account = await sut.get(addAccountRepositoryInput.email)
-    expect(account?.id).toBe(addAccountRepositoryInput.id)
+    expect(account?.id).toBe(insertResult.insertedId.toString())
     expect(account?.password).toBe(addAccountRepositoryInput.password)
   })
 
