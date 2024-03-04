@@ -28,10 +28,7 @@ describe('GetAccountIdByTokenMongoRepository', () => {
   test('Should throw if mongo throws', async() => {
     const sut = makeSut()
     jest.spyOn(Collection.prototype, 'findOne').mockRejectedValueOnce(new Error())
-    const promise = sut.get({
-      accessToken: faker.word.words(),
-      role: faker.word.words()
-    })
+    const promise = sut.get(faker.word.words(), faker.word.words())
     await expect(promise).rejects.toThrow()
   })
 
@@ -39,32 +36,23 @@ describe('GetAccountIdByTokenMongoRepository', () => {
     const sut = makeSut()
     const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: faker.word.words() }
     await accountCollection.insertOne(addAccountRepositoryInput)
-    const account = await sut.get({
-      accessToken: faker.word.words(),
-      role: addAccountRepositoryInput.roles[0]
-    })
-    expect(account).toBeNull()
+    const accountId = await sut.get(faker.word.words(), addAccountRepositoryInput.roles[0])
+    expect(accountId).toBeNull()
   })
 
   test('Should return null if there is no account with the given role', async() => {
     const sut = makeSut()
     const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: faker.word.words() }
     await accountCollection.insertOne(addAccountRepositoryInput)
-    const account = await sut.get({
-      accessToken: addAccountRepositoryInput.accessToken,
-      role: faker.word.words()
-    })
-    expect(account).toBeNull()
+    const accountId = await sut.get(addAccountRepositoryInput.accessToken, faker.word.words())
+    expect(accountId).toBeNull()
   })
 
   test('Should return an accountId on success', async() => {
     const sut = makeSut()
     const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: faker.word.words() }
     await accountCollection.insertOne(addAccountRepositoryInput)
-    const account = await sut.get({
-      accessToken: addAccountRepositoryInput.accessToken,
-      role: addAccountRepositoryInput.roles[0]
-    })
-    expect(account?.accountId).toBe(addAccountRepositoryInput.id)
+    const accountId = await sut.get(addAccountRepositoryInput.accessToken, addAccountRepositoryInput.roles[0])
+    expect(accountId).toBe(addAccountRepositoryInput.id)
   })
 })
