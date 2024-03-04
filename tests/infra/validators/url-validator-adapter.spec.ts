@@ -27,4 +27,11 @@ describe('URLValidatorAdapter', () => {
     const isValid = sut.isValid(faker.internet.url())
     expect(isValid).toBe(true)
   })
+
+  test('Should return false if validator returns false', () => {
+    const sut = makeSut()
+    jest.spyOn(validator, 'isURL').mockReturnValueOnce(false)
+    const isValid = sut.isValid(faker.internet.url())
+    expect(isValid).toBe(false)
+  })
 })
