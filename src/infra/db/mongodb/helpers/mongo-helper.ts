@@ -36,6 +36,7 @@ export class MongoHelper {
 
   public mapDocument<T>(mongoDoc: WithId<Document>): T {
     const { _id, ...rest } = mongoDoc
-    return Object.assign({}, rest, { id: _id.toHexString() }) as T
+    const mappedDocument = { ...rest, id: _id.toHexString() }
+    return mappedDocument as T
   }
 }
