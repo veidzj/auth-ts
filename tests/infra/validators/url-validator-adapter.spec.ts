@@ -21,4 +21,10 @@ describe('URLValidatorAdapter', () => {
     sut.isValid(url)
     expect(isURLSpy).toHaveBeenCalledWith(url)
   })
+
+  test('Should return true if validator returns true', () => {
+    const sut = makeSut()
+    const isValid = sut.isValid(faker.internet.url())
+    expect(isValid).toBe(true)
+  })
 })
