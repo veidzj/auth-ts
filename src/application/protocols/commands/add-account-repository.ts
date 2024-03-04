@@ -4,7 +4,6 @@ export class AddAccountRepository {
 
 export namespace AddAccountRepository {
   export interface Input {
-    id: string
     username: string
     fullName: string
     email: string

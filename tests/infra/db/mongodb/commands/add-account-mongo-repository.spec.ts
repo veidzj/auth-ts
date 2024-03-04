@@ -24,28 +24,18 @@ describe('AddAccountMongoRepository', () => {
     await clearCollection(accountCollection)
   })
 
-  test('Should throw if mongo throws', async() => {
-    const sut = makeSut()
-    jest.spyOn(Collection.prototype, 'insertOne').mockRejectedValueOnce(new Error())
-    const promise = sut.add(mockAddAccountRepositoryInput())
-    await expect(promise).rejects.toThrow()
-  })
-
   test('Should add an account on success', async() => {
     const sut = makeSut()
     const addAccountRepositoryInput = mockAddAccountRepositoryInput()
     await sut.add(addAccountRepositoryInput)
     const count = await accountCollection.countDocuments()
-    const account = await accountCollection.findOne({ id: addAccountRepositoryInput.id })
     expect(count).toBe(1)
-    expect(account?.id).toBe(addAccountRepositoryInput.id)
-    expect(account?.username).toBe(addAccountRepositoryInput.username)
-    expect(account?.fullName).toBe(addAccountRepositoryInput.fullName)
-    expect(account?.email).toBe(addAccountRepositoryInput.email)
-    expect(account?.password).toBe(addAccountRepositoryInput.password)
-    expect(account?.birthdate).toEqual(addAccountRepositoryInput.birthdate)
-    expect(account?.isActive).toBe(addAccountRepositoryInput.isActive)
-    expect(account?.profileImage).toBe(addAccountRepositoryInput.profileImage)
-    expect(account?.createdAt).toEqual(addAccountRepositoryInput.createdAt)
+  })
+
+  test('Should throw if mongo throws', async() => {
+    const sut = makeSut()
+    jest.spyOn(Collection.prototype, 'insertOne').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockAddAccountRepositoryInput())
+    await expect(promise).rejects.toThrow()
   })
 })

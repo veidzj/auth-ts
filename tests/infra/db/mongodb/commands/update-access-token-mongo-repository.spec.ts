@@ -25,23 +25,24 @@ describe('UpdateAccessTokenMongoRepository', () => {
     await clearCollection(accountCollection)
   })
 
+  test('Should update accessToken on success', async() => {
+    const sut = makeSut()
+    const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
+    const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
+    if (fakeAccount) {
+      expect(fakeAccount.accessToken).toBeFalsy()
+      const accessToken = faker.string.uuid()
+      await sut.update(fakeAccount._id.toString(), accessToken)
+      const account = await accountCollection.findOne({ _id: fakeAccount._id })
+      expect(account).toBeTruthy()
+      expect(account?.accessToken).toBe(accessToken)
+    }
+  })
+
   test('Should throw if mongo throws', async() => {
     const sut = makeSut()
     jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
     const promise = sut.update(faker.string.uuid(), faker.string.uuid())
     await expect(promise).rejects.toThrow()
-  })
-
-  test('Should update accessToken on success', async() => {
-    const sut = makeSut()
-    const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
-    const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
-    expect(fakeAccount?.accessToken).toBeFalsy()
-    const accountId: string = fakeAccount?.id.toString()
-    const accessToken = faker.string.uuid()
-    await sut.update(accountId, accessToken)
-    const account = await accountCollection.findOne({ id: fakeAccount?.id })
-    expect(account).toBeTruthy()
-    expect(account?.accessToken).toBe(accessToken)
   })
 })

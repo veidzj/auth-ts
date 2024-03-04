@@ -30,7 +30,12 @@ export class MongoHelper {
     return this.client.db().collection(name)
   }
 
-  public map<T>(mongoDoc: WithId<Document>): T {
-    return mongoDoc as T
+  public mapId(mongoDoc: WithId<Document>): string {
+    return mongoDoc._id.toHexString()
+  }
+
+  public mapDocument<T>(mongoDoc: WithId<Document>): T {
+    const { _id, ...rest } = mongoDoc
+    return Object.assign({}, rest, { id: _id.toHexString() }) as T
   }
 }

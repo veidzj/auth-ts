@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb'
+
 import { MongoRepository } from '@/infra/db/mongodb/common'
 import { type ActivateAccountRepository } from '@/application/protocols/commands'
 
@@ -5,7 +7,7 @@ export class ActivateAccountMongoRepository extends MongoRepository implements A
   public async activate(accountId: string): Promise<boolean> {
     const accountCollection = this.mongoHelper.getCollection('accounts')
     const query = await accountCollection.updateOne({
-      id: accountId
+      _id: new ObjectId(accountId)
     }, {
       $set: {
         isActive: true

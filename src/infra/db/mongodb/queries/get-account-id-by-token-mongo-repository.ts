@@ -11,10 +11,9 @@ export class GetAccountIdByTokenMongoRepository extends MongoRepository implemen
       }
     }, {
       projection: {
-        _id: 0,
-        id: 1
+        _id: 1
       }
     })
-    return account && account?.id
+    return account && this.mongoHelper.mapId(account)
   }
 }

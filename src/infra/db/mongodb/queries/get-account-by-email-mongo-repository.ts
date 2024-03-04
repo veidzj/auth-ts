@@ -8,14 +8,10 @@ export class GetAccountByEmailMongoRepository extends MongoRepository implements
       email
     }, {
       projection: {
-        _id: 0,
-        id: 1,
+        _id: 1,
         password: 1
       }
     })
-    return account && {
-      id: account?.id,
-      password: account?.password
-    }
+    return account && this.mongoHelper.mapDocument<GetAccountByEmailRepository.Output>(account)
   }
 }

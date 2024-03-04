@@ -25,36 +25,38 @@ describe('DeactivateAccountMongoRepository', () => {
     await clearCollection(accountCollection)
   })
 
-  test('Should throw if mongo throws', async() => {
-    const sut = makeSut()
-    jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
-    const promise = sut.deactivate(faker.string.uuid())
-    await expect(promise).rejects.toThrow()
-  })
-
   test('Should deactivate an account on success', async() => {
     const sut = makeSut()
     const insertResult = await accountCollection.insertOne({ ...mockAddAccountRepositoryInput(), isActive: true })
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
-    expect(fakeAccount?.isActive).toBe(true)
-    const accountId: string = fakeAccount?.id.toString()
-    const result = await sut.deactivate(accountId)
-    const account = await accountCollection.findOne({ id: fakeAccount?.id })
-    expect(account).toBeTruthy()
-    expect(account?.isActive).toBe(false)
-    expect(result).toBe(true)
+    if (fakeAccount) {
+      expect(fakeAccount.isActive).toBe(true)
+      const result = await sut.deactivate(fakeAccount._id.toString())
+      const account = await accountCollection.findOne({ _id: fakeAccount._id })
+      expect(account).toBeTruthy()
+      expect(account?.isActive).toBe(false)
+      expect(result).toBe(true)
+    }
   })
 
   test('Should not deactivate an account if is already deactivated', async() => {
     const sut = makeSut()
     const insertResult = await accountCollection.insertOne({ ...mockAddAccountRepositoryInput(), isActive: false })
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
-    expect(fakeAccount?.isActive).toBe(false)
-    const accountId: string = fakeAccount?.id.toString()
-    const result = await sut.deactivate(accountId)
-    const account = await accountCollection.findOne({ id: fakeAccount?.id })
-    expect(account).toBeTruthy()
-    expect(account?.isActive).toBe(false)
-    expect(result).toBe(false)
+    if (fakeAccount) {
+      expect(fakeAccount.isActive).toBe(false)
+      const result = await sut.deactivate(fakeAccount._id.toString())
+      const account = await accountCollection.findOne({ _id: fakeAccount._id })
+      expect(account).toBeTruthy()
+      expect(account?.isActive).toBe(false)
+      expect(result).toBe(false)
+    }
+  })
+
+  test('Should throw if mongo throws', async() => {
+    const sut = makeSut()
+    jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
+    const promise = sut.deactivate(faker.string.uuid())
+    await expect(promise).rejects.toThrow()
   })
 })
