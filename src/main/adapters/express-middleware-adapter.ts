@@ -1,5 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express'
 
+import { logger } from '@/main/config'
 import { type Middleware } from '@/presentation/protocols'
 
 export class ExpressMiddlewareAdapter {
@@ -22,6 +23,11 @@ export class ExpressMiddlewareAdapter {
             message: body.message
           }
         })
+        if (statusCode === 500) {
+          logger.error(`${statusCode} ${req.method} ${req.path}`)
+        } else {
+          logger.warn(`${statusCode} ${req.method} ${req.path}`)
+        }
       }
     }
   }

@@ -1,5 +1,6 @@
 import { type Request, type Response } from 'express'
 
+import { logger } from '@/main/config'
 import { type Controller } from '@/presentation/protocols'
 
 export class ExpressRouteAdapter {
@@ -16,6 +17,7 @@ export class ExpressRouteAdapter {
         res.status(statusCode).json({
           data: body
         })
+        logger.info(`${statusCode} ${req.method} ${req.path}`)
       } else {
         res.status(statusCode).json({
           error: {
@@ -24,6 +26,11 @@ export class ExpressRouteAdapter {
             message: body.message
           }
         })
+        if (statusCode === 500) {
+          logger.error(`${statusCode} ${req.method} ${req.path}`)
+        } else {
+          logger.warn(`${statusCode} ${req.method} ${req.path}`)
+        }
       }
     }
   }
