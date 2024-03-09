@@ -1,4 +1,11 @@
-export * from './activate-account-path'
-export * from './deactivate-account-path'
-export * from './sign-in-path'
-export * from './sign-up-path'
+import { signUpPath } from './sign-up-path'
+import { signInPath } from './sign-in-path'
+import { activateAccountPath } from './activate-account-path'
+import { deactivateAccountPath } from './deactivate-account-path'
+
+export const accountPaths = {
+  signUpPath,
+  signInPath,
+  activateAccountPath,
+  deactivateAccountPath
+}
