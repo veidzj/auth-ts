@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   mongodbMemoryServer: {
     version: 'latest'
   },
@@ -13,3 +13,5 @@ module.exports = {
     autoStart: false
   }
 }
+
+export default config
