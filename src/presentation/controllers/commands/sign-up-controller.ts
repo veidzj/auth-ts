@@ -1,8 +1,7 @@
 import { type Validation, type Controller, type HttpResponse } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
-import { type AddAccount } from '@/domain/usecases/commands'
-import { type Authentication } from '@/domain/usecases/queries'
+import { type AddAccount, type Authentication } from '@/domain/usecases/commands'
 import { AccountAlreadyExistsError } from '@/domain/errors'
 
 export class SignUpController implements Controller {

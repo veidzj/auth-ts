@@ -1,7 +1,7 @@
 import { type Validation, type Controller, type HttpResponse } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
-import { type Authentication } from '@/domain/usecases/queries'
+import { type Authentication } from '@/domain/usecases/commands'
 import { AccountNotFoundError, InvalidCredentialsError } from '@/domain/errors'
 
 export class SignInController implements Controller {

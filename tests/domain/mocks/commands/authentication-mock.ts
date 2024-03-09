@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-import { type Authentication } from '@/domain/usecases/queries'
+import { type Authentication } from '@/domain/usecases/commands'
 
 export class AuthenticationSpy implements Authentication {
   public email: string

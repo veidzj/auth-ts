@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 import { GetAccountByEmailRepositorySpy } from '@/tests/application/mocks/queries'
 import { HashComparerSpy, EncrypterSpy } from '@/tests/application/mocks/cryptography'
 import { UpdateAccessTokenRepositorySpy } from '@/tests/application/mocks/commands'
-import { DbAuthentication } from '@/application/usecases/queries'
+import { DbAuthentication } from '@/application/usecases/commands'
 import { AccountNotFoundError, InvalidCredentialsError } from '@/domain/errors'
 
 interface Sut {

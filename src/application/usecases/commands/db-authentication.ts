@@ -1,7 +1,7 @@
 import { type GetAccountByEmailRepository } from '@/application/protocols/queries'
 import { type HashComparer, type Encrypter } from '@/application/protocols/cryptography'
 import { type UpdateAccessTokenRepository } from '@/application/protocols/commands'
-import { type Authentication } from '@/domain/usecases/queries'
+import { type Authentication } from '@/domain/usecases/commands'
 import { AccountNotFoundError, InvalidCredentialsError } from '@/domain/errors'
 
 export class DbAuthentication implements Authentication {

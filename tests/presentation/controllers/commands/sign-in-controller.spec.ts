@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker'
 
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { AuthenticationSpy } from '@/tests/domain/mocks/queries'
-import { SignInController } from '@/presentation/controllers/queries'
+import { AuthenticationSpy } from '@/tests/domain/mocks/commands'
+import { SignInController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
 import { AccountNotFoundError, InvalidCredentialsError } from '@/domain/errors'
