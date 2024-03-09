@@ -1,6 +1,6 @@
 import { env } from '@/main/config'
-import { type Authentication } from '@/domain/usecases/queries'
-import { DbAuthentication } from '@/application/usecases/queries'
+import { type Authentication } from '@/domain/usecases/commands'
+import { DbAuthentication } from '@/application/usecases/commands'
 import { GetAccountByEmailMongoRepository } from '@/infra/db/mongodb/queries'
 import { BcryptAdapter, JwtAdapter } from '@/infra/cryptography'
 import { UpdateAccessTokenMongoRepository } from '@/infra/db/mongodb/commands'

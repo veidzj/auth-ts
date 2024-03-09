@@ -1,7 +1,7 @@
-import { AuthenticationFactory } from '@/main/factories/usecases/queries'
+import { AuthenticationFactory } from '@/main/factories/usecases/commands'
 import { SignInValidationFactory } from '@/main/factories/validators'
 import { type Controller } from '@/presentation/protocols'
-import { SignInController } from '@/presentation/controllers/queries'
+import { SignInController } from '@/presentation/controllers/commands'
 
 export class SignInControllerFactory {
   public static readonly makeSignInController = (): Controller => {

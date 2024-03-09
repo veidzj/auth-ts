@@ -1,6 +1,5 @@
 import { SignUpValidationFactory } from '@/main/factories/validators'
-import { AddAccountFactory } from '@/main/factories/usecases/commands'
-import { AuthenticationFactory } from '@/main/factories/usecases/queries'
+import { AddAccountFactory, AuthenticationFactory } from '@/main/factories/usecases/commands'
 import { type Controller } from '@/presentation/protocols'
 import { SignUpController } from '@/presentation/controllers/commands'
 
