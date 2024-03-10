@@ -1,7 +1,21 @@
 import { faker } from '@faker-js/faker'
 
+import { ChangeEmailSpy } from '@/tests/domain/mocks/commands'
 import { ChangeEmailController } from '@/presentation/controllers/commands'
-import { type ChangeEmail } from '@/domain/usecases/commands'
+
+interface Sut {
+  sut: ChangeEmailController
+  changeEmailSpy: ChangeEmailSpy
+}
+
+const makeSut = (): Sut => {
+  const changeEmailSpy = new ChangeEmailSpy()
+  const sut = new ChangeEmailController(changeEmailSpy)
+  return {
+    sut,
+    changeEmailSpy
+  }
+}
 
 const mockRequest = (): ChangeEmailController.Request => ({
   currentEmail: faker.internet.email(),
@@ -10,17 +24,7 @@ const mockRequest = (): ChangeEmailController.Request => ({
 
 describe('ChangeEmailController', () => {
   test('Should call ChangeEmail with correct values', async() => {
-    class ChangeEmailSpy implements ChangeEmail {
-      public currentEmail: string
-      public newEmail: string
-
-      public async change(currentEmail: string, newEmail: string): Promise<void> {
-        this.currentEmail = currentEmail
-        this.newEmail = newEmail
-      }
-    }
-    const changeEmailSpy = new ChangeEmailSpy()
-    const sut = new ChangeEmailController(changeEmailSpy)
+    const { sut, changeEmailSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
     expect(changeEmailSpy.currentEmail).toBe(request.currentEmail)
