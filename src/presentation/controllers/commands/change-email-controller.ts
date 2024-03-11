@@ -9,7 +9,7 @@ export class ChangeEmailController implements Controller {
   public async handle(request: ChangeEmailController.Request): Promise<HttpResponse> {
     try {
       await this.changeEmail.change(request.currentEmail, request.newEmail)
-      return HttpHelper.ok({})
+      return HttpHelper.ok({ message: 'Email successfully changed' })
     } catch (error) {
       if (error instanceof AccountNotFoundError) {
         return HttpHelper.notFound(error)
