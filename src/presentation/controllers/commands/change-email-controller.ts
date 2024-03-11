@@ -1,5 +1,6 @@
 import { type Controller, type HttpResponse, type Validation } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
+import { ValidationError } from '@/validation/errors'
 import { type ChangeEmail } from '@/domain/usecases/commands'
 import { AccountNotFoundError, AccountAlreadyExistsError } from '@/domain/errors'
 
@@ -15,6 +16,9 @@ export class ChangeEmailController implements Controller {
       await this.changeEmail.change(request.currentEmail, request.newEmail)
       return HttpHelper.ok({ message: 'Email successfully changed' })
     } catch (error) {
+      if (error instanceof ValidationError) {
+        return HttpHelper.badRequest(error)
+      }
       if (error instanceof AccountNotFoundError) {
         return HttpHelper.notFound(error)
       }
