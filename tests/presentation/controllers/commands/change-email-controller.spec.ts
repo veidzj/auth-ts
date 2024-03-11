@@ -46,4 +46,11 @@ describe('ChangeEmailController', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(HttpHelper.conflict(new AccountAlreadyExistsError()))
   })
+
+  test('Should return serverError if ChangeEmail throws', async() => {
+    const { sut, changeEmailSpy } = makeSut()
+    jest.spyOn(changeEmailSpy, 'change').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.serverError())
+  })
 })
