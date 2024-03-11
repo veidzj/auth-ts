@@ -2,19 +2,23 @@ import { faker } from '@faker-js/faker'
 
 import { DbChangeEmail } from '@/application/usecases/commands'
 import { CheckAccountByEmailRepositorySpy } from '@/tests/application/mocks/queries'
+import { ChangeEmailRepositorySpy } from '@/tests/application/mocks/commands'
 import { AccountNotFoundError, AccountAlreadyExistsError } from '@/domain/errors'
 
 interface Sut {
   sut: DbChangeEmail
   checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
+  changeEmailRepositorySpy: ChangeEmailRepositorySpy
 }
 
 const makeSut = (): Sut => {
   const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
-  const sut = new DbChangeEmail(checkAccountByEmailRepositorySpy)
+  const changeEmailRepositorySpy = new ChangeEmailRepositorySpy()
+  const sut = new DbChangeEmail(checkAccountByEmailRepositorySpy, changeEmailRepositorySpy)
   return {
     sut,
-    checkAccountByEmailRepositorySpy
+    checkAccountByEmailRepositorySpy,
+    changeEmailRepositorySpy
   }
 }
 
@@ -56,6 +60,18 @@ describe('DbChangeEmail', () => {
       jest.spyOn(checkAccountByEmailRepositorySpy, 'check').mockRejectedValueOnce(new Error())
       const promise = sut.change(currentEmail, newEmail)
       await expect(promise).rejects.toThrow()
+    })
+  })
+
+  describe('ChangeEmailRepository', () => {
+    test('Should call ChangeEmailRepository with correct emails', async() => {
+      const { sut, checkAccountByEmailRepositorySpy, changeEmailRepositorySpy } = makeSut()
+      jest.spyOn(changeEmailRepositorySpy, 'change')
+      jest.spyOn(checkAccountByEmailRepositorySpy, 'check')
+        .mockReturnValueOnce(Promise.resolve(true))
+        .mockReturnValueOnce(Promise.resolve(false))
+      await sut.change(currentEmail, newEmail)
+      expect(changeEmailRepositorySpy.change).toHaveBeenCalledWith(currentEmail, newEmail)
     })
   })
 })
