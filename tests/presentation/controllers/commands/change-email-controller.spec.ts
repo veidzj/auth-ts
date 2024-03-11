@@ -45,6 +45,13 @@ describe('ChangeEmailController', () => {
       const httpResponse = await sut.handle(mockRequest())
       expect(httpResponse).toEqual(HttpHelper.badRequest(new ValidationError(errorMessage)))
     })
+
+    test('Should return serverError if Validation throws', async() => {
+      const { sut, validationSpy } = makeSut()
+      jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new Error() })
+      const httpResponse = await sut.handle(mockRequest())
+      expect(httpResponse).toEqual(HttpHelper.serverError())
+    })
   })
 
   describe('ChangeEmail', () => {
