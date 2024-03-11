@@ -6,5 +6,6 @@ export class DbChangeEmail implements ChangeEmail {
 
   public async change(currentEmail: string, newEmail: string): Promise<void> {
     await this.checkAccountByEmailRepository.check(currentEmail)
+    await this.checkAccountByEmailRepository.check(newEmail)
   }
 }
