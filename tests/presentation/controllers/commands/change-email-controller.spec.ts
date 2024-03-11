@@ -53,4 +53,10 @@ describe('ChangeEmailController', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(HttpHelper.serverError())
   })
+
+  test('Should return ok on success', async() => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.ok({ message: 'Email successfully changed' }))
+  })
 })
