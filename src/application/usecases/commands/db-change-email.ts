@@ -1,6 +1,6 @@
 import { type CheckAccountByEmailRepository } from '@/application/protocols/queries'
 import { type ChangeEmail } from '@/domain/usecases/commands'
-import { AccountNotFoundError } from '@/domain/errors'
+import { AccountNotFoundError, AccountAlreadyExistsError } from '@/domain/errors'
 
 export class DbChangeEmail implements ChangeEmail {
   constructor(private readonly checkAccountByEmailRepository: CheckAccountByEmailRepository) {}
@@ -10,6 +10,9 @@ export class DbChangeEmail implements ChangeEmail {
     if (!accountWithCurrentEmailExists) {
       throw new AccountNotFoundError()
     }
-    await this.checkAccountByEmailRepository.check(newEmail)
+    const accountWithNewEmailExists = await this.checkAccountByEmailRepository.check(newEmail)
+    if (accountWithNewEmailExists) {
+      throw new AccountAlreadyExistsError()
+    }
   }
 }
