@@ -50,5 +50,12 @@ describe('DbChangeEmail', () => {
       const promise = sut.change(currentEmail, newEmail)
       await expect(promise).rejects.toThrow(new AccountAlreadyExistsError())
     })
+
+    test('Should throw if CheckAccountByEmailRepository throws', async() => {
+      const { sut, checkAccountByEmailRepositorySpy } = makeSut()
+      jest.spyOn(checkAccountByEmailRepositorySpy, 'check').mockRejectedValueOnce(new Error())
+      const promise = sut.change(currentEmail, newEmail)
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
