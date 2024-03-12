@@ -2,7 +2,7 @@ import { type Controller, type HttpResponse, type Validation } from '@/presentat
 import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
 import { type ChangeEmail } from '@/domain/usecases/commands'
-import { AccountNotFoundError, AccountAlreadyExistsError } from '@/domain/errors'
+import { AccountAlreadyExistsError } from '@/domain/errors'
 
 export class ChangeEmailController implements Controller {
   constructor(
@@ -18,9 +18,6 @@ export class ChangeEmailController implements Controller {
     } catch (error) {
       if (error instanceof ValidationError) {
         return HttpHelper.badRequest(error)
-      }
-      if (error instanceof AccountNotFoundError) {
-        return HttpHelper.notFound(error)
       }
       if (error instanceof AccountAlreadyExistsError) {
         return HttpHelper.conflict(error)

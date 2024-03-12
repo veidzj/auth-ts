@@ -5,7 +5,7 @@ import { ChangeEmailSpy } from '@/tests/domain/mocks/commands'
 import { ChangeEmailController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
-import { AccountNotFoundError, AccountAlreadyExistsError } from '@/domain/errors'
+import { AccountAlreadyExistsError } from '@/domain/errors'
 
 interface Sut {
   sut: ChangeEmailController
@@ -61,13 +61,6 @@ describe('ChangeEmailController', () => {
       await sut.handle(request)
       expect(changeEmailSpy.currentEmail).toBe(request.currentEmail)
       expect(changeEmailSpy.newEmail).toBe(request.newEmail)
-    })
-
-    test('Should return notFound if ChangeEmail throws AccountNotFoundError', async() => {
-      const { sut, changeEmailSpy } = makeSut()
-      jest.spyOn(changeEmailSpy, 'change').mockRejectedValueOnce(new AccountNotFoundError())
-      const httpResponse = await sut.handle(mockRequest())
-      expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
     })
 
     test('Should return conflict if ChangeEmail throws AccountAlreadyExistsError', async() => {
