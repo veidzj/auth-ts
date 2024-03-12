@@ -1,4 +1,4 @@
-import { type Collection } from 'mongodb'
+import { Collection } from 'mongodb'
 import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
@@ -38,5 +38,12 @@ describe('ChangeEmailMongoRepository', () => {
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(account?.email).toBe(newEmail)
     }
+  })
+
+  test('Should throw if mongo throws', async() => {
+    const sut = makeSut()
+    jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
+    const promise = sut.change(faker.internet.email(), faker.internet.email())
+    await expect(promise).rejects.toThrow()
   })
 })
