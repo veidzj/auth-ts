@@ -10,7 +10,8 @@ export class UpdateAccessTokenMongoRepository extends MongoRepository implements
       _id: new ObjectId(id)
     }, {
       $set: {
-        accessToken
+        accessToken,
+        updatedAt: new Date()
       }
     })
   }
