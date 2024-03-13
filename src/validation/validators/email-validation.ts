@@ -9,16 +9,10 @@ export class EmailValidation implements Validation {
     private readonly fieldName: string
   ) {}
 
-  validate(input: EmailValidation.Input): void {
+  validate(input: object): void {
     const email: string = input[toCamelCase(this.fieldName)]
     if (!this.emailValidator.isValid(email)) {
       throw new ValidationError(`${this.fieldName} must be a valid email`)
     }
-  }
-}
-
-export namespace EmailValidation {
-  export interface Input {
-    email: string
   }
 }
