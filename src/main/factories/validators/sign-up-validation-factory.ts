@@ -6,7 +6,7 @@ import {
   EmailValidation,
   PasswordValidation,
   ProfileImageValidation,
-  BirthdateValidation
+  DateValidation
 } from '@/validation/validators'
 import { EmailValidatorAdapter, URLValidatorAdapter } from '@/infra/validators'
 
@@ -18,7 +18,7 @@ export class SignUpValidationFactory {
     validations.push(new EmailValidation(new EmailValidatorAdapter(), 'Email'))
     validations.push(new PasswordValidation())
     validations.push(new ProfileImageValidation(new URLValidatorAdapter()))
-    validations.push(new BirthdateValidation())
+    validations.push(new DateValidation('Birthdate'))
     return new ValidationComposite(validations)
   }
 }
