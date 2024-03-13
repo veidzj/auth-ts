@@ -8,7 +8,8 @@ export class ChangeEmailMongoRepository extends MongoRepository implements Chang
       email: currentEmail
     }, {
       $set: {
-        email: newEmail
+        email: newEmail,
+        updatedAt: new Date()
       }
     })
   }

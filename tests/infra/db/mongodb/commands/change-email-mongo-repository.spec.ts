@@ -1,4 +1,5 @@
 import { Collection } from 'mongodb'
+import MockDate from 'mockdate'
 import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
@@ -13,10 +14,12 @@ const makeSut = (): ChangeEmailMongoRepository => {
 
 describe('ChangeEmailMongoRepository', () => {
   beforeAll(async() => {
+    MockDate.set(new Date())
     await connectToDatabase()
   })
 
   afterAll(async() => {
+    MockDate.reset()
     await disconnectFromDatabase()
   })
 
@@ -37,6 +40,7 @@ describe('ChangeEmailMongoRepository', () => {
       await sut.change(currentEmail, newEmail)
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(account?.email).toBe(newEmail)
+      expect(account?.updatedAt).toEqual(new Date())
     }
   })
 
@@ -51,6 +55,7 @@ describe('ChangeEmailMongoRepository', () => {
       await sut.change(faker.internet.email(), newEmail)
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(account?.email).toBe(fakeAccount.email)
+      expect(account?.updatedAt).toBeFalsy()
     }
   })
 
