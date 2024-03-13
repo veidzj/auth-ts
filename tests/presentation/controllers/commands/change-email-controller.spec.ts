@@ -35,7 +35,7 @@ describe('ChangeEmailController', () => {
       const { sut, validationSpy } = makeSut()
       const request = mockRequest()
       await sut.handle(request)
-      expect(validationSpy.input).toEqual(request)
+      expect(validationSpy.input).toEqual({ newEmail: request.newEmail })
     })
 
     test('Should return badRequest if Validation throws ValidationError', async() => {
