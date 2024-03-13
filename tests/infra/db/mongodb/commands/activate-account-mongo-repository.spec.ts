@@ -1,4 +1,5 @@
 import { Collection } from 'mongodb'
+import MockDate from 'mockdate'
 import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
@@ -13,10 +14,12 @@ const makeSut = (): ActivateAccountMongoRepository => {
 
 describe('ActivateAccountMongoRepository', () => {
   beforeAll(async() => {
+    MockDate.set(new Date())
     await connectToDatabase()
   })
 
   afterAll(async() => {
+    MockDate.reset()
     await disconnectFromDatabase()
   })
 
@@ -31,11 +34,12 @@ describe('ActivateAccountMongoRepository', () => {
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
       expect(fakeAccount.isActive).toBe(false)
+      expect(fakeAccount.updatedAt).toBeFalsy()
       const result = await sut.activate(fakeAccount._id.toHexString())
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
-      expect(account).toBeTruthy()
-      expect(account?.isActive).toBe(true)
       expect(result).toBe(true)
+      expect(account?.isActive).toBe(true)
+      expect(account?.updatedAt).toEqual(new Date())
     }
   })
 
@@ -45,11 +49,12 @@ describe('ActivateAccountMongoRepository', () => {
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
       expect(fakeAccount.isActive).toBe(true)
+      expect(fakeAccount.updatedAt).toBeFalsy()
       const result = await sut.activate(fakeAccount._id.toString())
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
-      expect(account).toBeTruthy()
-      expect(account?.isActive).toBe(true)
       expect(result).toBe(false)
+      expect(account?.isActive).toBe(true)
+      expect(account?.updatedAt).toBeFalsy()
     }
   })
 
