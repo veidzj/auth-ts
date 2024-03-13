@@ -15,7 +15,7 @@ export class SignUpValidationFactory {
     const validations: Validation[] = []
     validations.push(new UsernameValidation())
     validations.push(new FullNameValidation())
-    validations.push(new EmailValidation(new EmailValidatorAdapter()))
+    validations.push(new EmailValidation(new EmailValidatorAdapter(), 'Email'))
     validations.push(new PasswordValidation())
     validations.push(new ProfileImageValidation(new URLValidatorAdapter()))
     validations.push(new BirthdateValidation())

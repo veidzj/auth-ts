@@ -12,7 +12,7 @@ export class ChangeEmailController implements Controller {
 
   public async handle(request: ChangeEmailController.Request): Promise<HttpResponse> {
     try {
-      this.validation.validate(request)
+      this.validation.validate({ newEmail: request.newEmail })
       await this.changeEmail.change(request.currentEmail, request.newEmail)
       return HttpHelper.ok({ message: 'Email successfully changed' })
     } catch (error) {

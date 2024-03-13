@@ -2,7 +2,7 @@ import { ValidationError } from '@/validation/errors'
 import { type Validation } from '@/presentation/protocols'
 
 export class FullNameValidation implements Validation {
-  validate(input: FullNameValidation.Input): void {
+  public validate(input: FullNameValidation.Input): void {
     if (input.fullName.length < 3 || input.fullName.length > 50) {
       throw new ValidationError('Full name must be between 3 and 50 characters long')
     }

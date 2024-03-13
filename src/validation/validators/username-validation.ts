@@ -2,7 +2,7 @@ import { ValidationError } from '@/validation/errors'
 import { type Validation } from '@/presentation/protocols'
 
 export class UsernameValidation implements Validation {
-  validate(input: UsernameValidation.Input): void {
+  public validate(input: UsernameValidation.Input): void {
     if (input.username.length < 3 || input.username.length > 16) {
       throw new ValidationError('Username must be between 3 and 16 characters long')
     }
