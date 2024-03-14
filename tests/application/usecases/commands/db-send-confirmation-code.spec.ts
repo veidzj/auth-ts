@@ -57,5 +57,12 @@ describe('DbSendConfirmationCode', () => {
       await sut.send(email)
       expect(addConfirmationCodeRepositorySpy.confirmationCode).toBe(confirmationCode)
     })
+
+    test('Should throw if AddConfirmationCodeRepository throws', async() => {
+      const { sut, addConfirmationCodeRepositorySpy } = makeSut()
+      jest.spyOn(addConfirmationCodeRepositorySpy, 'add').mockRejectedValueOnce(new Error())
+      const promise = sut.send(email)
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
