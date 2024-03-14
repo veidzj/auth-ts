@@ -19,4 +19,13 @@ describe('GenerateConfirmationCode', () => {
     expect(code).toHaveLength(length)
     expect(code).toMatch(/^\d+$/)
   })
+
+  test('Should generate unique codes on subsequent calls', () => {
+    const sut = GenerateConfirmationCode
+    const codes = new Set()
+    for (let i = 0; i < 100; i++) {
+      codes.add(sut.generate())
+    }
+    expect(codes.size).toBe(100)
+  })
 })
