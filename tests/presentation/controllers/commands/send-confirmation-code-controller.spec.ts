@@ -5,6 +5,7 @@ import { SendConfirmationCodeSpy } from '@/tests/domain/mocks/commands'
 import { SendConfirmationCodeController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
+import { AccountNotFoundError } from '@/domain/errors'
 
 interface Sut {
   sut: SendConfirmationCodeController
@@ -58,6 +59,13 @@ describe('SendConfirmationCodeController', () => {
       const request = mockRequest()
       await sut.handle(request)
       expect(sendConfirmationCodeSpy.email).toBe(request.email)
+    })
+
+    test('Should return notFound if SendConfirmationCode throws AccountNotFoundError', async() => {
+      const { sut, sendConfirmationCodeSpy } = makeSut()
+      jest.spyOn(sendConfirmationCodeSpy, 'send').mockImplementationOnce(() => { throw new AccountNotFoundError() })
+      const httpResponse = await sut.handle(mockRequest())
+      expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
     })
   })
 })
