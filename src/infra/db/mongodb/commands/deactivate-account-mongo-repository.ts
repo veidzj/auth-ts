@@ -7,10 +7,12 @@ export class DeactivateAccountMongoRepository extends MongoRepository implements
   public async deactivate(accountId: string): Promise<boolean> {
     const accountCollection = this.mongoHelper.getCollection('accounts')
     const query = await accountCollection.updateOne({
-      _id: new ObjectId(accountId)
+      _id: new ObjectId(accountId),
+      isActive: { $ne: false }
     }, {
       $set: {
-        isActive: false
+        isActive: false,
+        updatedAt: new Date()
       }
     })
     return query.modifiedCount > 0

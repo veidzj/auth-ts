@@ -1,4 +1,5 @@
 import { Collection } from 'mongodb'
+import MockDate from 'mockdate'
 import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
@@ -13,10 +14,12 @@ const makeSut = (): UpdateAccessTokenMongoRepository => {
 
 describe('UpdateAccessTokenMongoRepository', () => {
   beforeAll(async() => {
+    MockDate.set(new Date())
     await connectToDatabase()
   })
 
   afterAll(async() => {
+    MockDate.reset()
     await disconnectFromDatabase()
   })
 
@@ -31,11 +34,12 @@ describe('UpdateAccessTokenMongoRepository', () => {
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
       expect(fakeAccount.accessToken).toBeFalsy()
+      expect(fakeAccount.updatedAt).toBeFalsy()
       const accessToken = faker.string.uuid()
       await sut.update(fakeAccount._id.toString(), accessToken)
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
-      expect(account).toBeTruthy()
       expect(account?.accessToken).toBe(accessToken)
+      expect(account?.updatedAt).toEqual(new Date())
     }
   })
 

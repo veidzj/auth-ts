@@ -2,7 +2,7 @@ import { ValidationError } from '@/validation/errors'
 import { type Validation } from '@/presentation/protocols'
 
 export class PasswordValidation implements Validation {
-  validate(input: PasswordValidation.Input): void {
+  public validate(input: PasswordValidation.Input): void {
     if (input.password.length < 6 || input.password.length > 255) {
       throw new ValidationError('Password must be between 6 and 255 characters long')
     }

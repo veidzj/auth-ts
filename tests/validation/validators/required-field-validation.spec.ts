@@ -3,19 +3,15 @@ import { faker } from '@faker-js/faker'
 import { RequiredFieldValidation } from '@/validation/validators'
 import { ValidationError } from '@/validation/errors'
 
-const makesut = (fieldName: string): RequiredFieldValidation => {
+const makesut = (): RequiredFieldValidation => {
   return new RequiredFieldValidation(fieldName)
 }
 
+const fieldName: string = faker.word.words()
+
 describe('RequiredFieldValidation', () => {
-  let fieldName: string
-
-  beforeEach(() => {
-    fieldName = faker.word.words()
-  })
-
   test('Should throw ValidationError if field is not provided', () => {
-    const sut = makesut(fieldName)
+    const sut = makesut()
     expect(() => {
       sut.validate({
         [fieldName]: ''
@@ -24,7 +20,7 @@ describe('RequiredFieldValidation', () => {
   })
 
   test('Should not throw if field is provided', () => {
-    const sut = makesut(fieldName)
+    const sut = makesut()
     expect(() => {
       sut.validate({
         [fieldName]: faker.word.words()

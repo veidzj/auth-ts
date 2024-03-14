@@ -1,4 +1,4 @@
-export * from './birthdate-validation'
+export * from './date-validation'
 export * from './email-validation'
 export * from './full-name-validation'
 export * from './password-validation'
