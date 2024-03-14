@@ -9,8 +9,8 @@ import { EmailValidatorAdapter } from '@/infra/validators'
 export class SignInValidationFactory {
   public static makeSignInValidation(): ValidationComposite {
     const validations: Validation[] = []
-    validations.push(new RequiredFieldValidation('Password'))
-    validations.push(new EmailValidation(new EmailValidatorAdapter(), 'Email'))
+    validations.push(new RequiredFieldValidation('password'))
+    validations.push(new EmailValidation(new EmailValidatorAdapter(), 'email'))
     return new ValidationComposite(validations)
   }
 }

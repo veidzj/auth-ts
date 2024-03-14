@@ -9,8 +9,8 @@ import { EmailValidatorAdapter } from '@/infra/validators'
 export class ChangeEmailValidationFactory {
   public static makeChangeEmailValidation(): ValidationComposite {
     const validations: Validation[] = []
-    validations.push(new RequiredFieldValidation('New email'))
-    validations.push(new EmailValidation(new EmailValidatorAdapter(), 'New email'))
+    validations.push(new RequiredFieldValidation('newEmail'))
+    validations.push(new EmailValidation(new EmailValidatorAdapter(), 'newEmail'))
     return new ValidationComposite(validations)
   }
 }
