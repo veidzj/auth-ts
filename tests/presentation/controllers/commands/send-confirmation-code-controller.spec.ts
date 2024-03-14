@@ -63,9 +63,16 @@ describe('SendConfirmationCodeController', () => {
 
     test('Should return notFound if SendConfirmationCode throws AccountNotFoundError', async() => {
       const { sut, sendConfirmationCodeSpy } = makeSut()
-      jest.spyOn(sendConfirmationCodeSpy, 'send').mockImplementationOnce(() => { throw new AccountNotFoundError() })
+      jest.spyOn(sendConfirmationCodeSpy, 'send').mockRejectedValueOnce(new AccountNotFoundError())
       const httpResponse = await sut.handle(mockRequest())
       expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
+    })
+
+    test('Should return serverError if SendConfirmationCode throws', async() => {
+      const { sut, sendConfirmationCodeSpy } = makeSut()
+      jest.spyOn(sendConfirmationCodeSpy, 'send').mockRejectedValueOnce(new Error())
+      const httpResponse = await sut.handle(mockRequest())
+      expect(httpResponse).toEqual(HttpHelper.serverError())
     })
   })
 })
