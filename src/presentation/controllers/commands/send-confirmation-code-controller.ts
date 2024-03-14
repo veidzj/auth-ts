@@ -2,6 +2,7 @@ import { type Controller, type HttpResponse, type Validation } from '@/presentat
 import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
 import { type SendConfirmationCode } from '@/domain/usecases/commands'
+import { AccountNotFoundError } from '@/domain/errors'
 
 export class SendConfirmationCodeController implements Controller {
   constructor(
@@ -17,6 +18,9 @@ export class SendConfirmationCodeController implements Controller {
     } catch (error) {
       if (error instanceof ValidationError) {
         return HttpHelper.badRequest(error)
+      }
+      if (error instanceof AccountNotFoundError) {
+        return HttpHelper.notFound(error)
       }
       return HttpHelper.serverError()
     }
