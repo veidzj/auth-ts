@@ -7,7 +7,7 @@ export default {
   info: {
     title: 'Auth TS',
     description: 'Authentication service using TypeScript, TDD, DDD and Clean Architecture',
-    version: '0.8.2'
+    version: '0.9.0'
   },
   license: {
     name: 'GNU General Public License v3.0',
