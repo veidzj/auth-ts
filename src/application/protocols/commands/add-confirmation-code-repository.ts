@@ -1,3 +1,3 @@
 export interface AddConfirmationCodeRepository {
-  add: (confirmationCode: string) => Promise<void>
+  add: (confirmationCode: string) => Promise<string>
 }
