@@ -35,5 +35,12 @@ describe('DbSendConfirmationCode', () => {
       const promise = sut.send(email)
       await expect(promise).rejects.toThrow(new AccountNotFoundError())
     })
+
+    test('Should throw if CheckAccountByEmailRepository throws', async() => {
+      const { sut, checkAccountByEmailRepositorySpy } = makeSut()
+      jest.spyOn(checkAccountByEmailRepositorySpy, 'check').mockRejectedValueOnce(new Error())
+      const promise = sut.send(email)
+      await expect(promise).rejects.toThrow(new Error())
+    })
   })
 })
