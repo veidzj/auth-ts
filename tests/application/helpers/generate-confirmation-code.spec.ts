@@ -12,4 +12,11 @@ describe('GenerateConfirmationCode', () => {
     const code = sut.generate()
     expect(code).toMatch(/^\d+$/)
   })
+
+  test.each([1, 5, 10, 20])('Should generate a code of length %i', (length) => {
+    const sut = GenerateConfirmationCode
+    const code = sut.generate(length)
+    expect(code).toHaveLength(length)
+    expect(code).toMatch(/^\d+$/)
+  })
 })
