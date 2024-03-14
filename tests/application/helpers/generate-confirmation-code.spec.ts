@@ -6,4 +6,10 @@ describe('GenerateConfirmationCode', () => {
     const code = sut.generate()
     expect(code).toHaveLength(6)
   })
+
+  test('Should generate a numeric code', () => {
+    const sut = GenerateConfirmationCode
+    const code = sut.generate()
+    expect(code).toMatch(/^\d+$/)
+  })
 })
