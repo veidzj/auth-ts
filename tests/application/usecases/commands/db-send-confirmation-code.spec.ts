@@ -62,6 +62,12 @@ describe('DbSendConfirmationCode', () => {
       expect(addConfirmationCodeRepositorySpy.confirmationCode).toBe(confirmationCode)
     })
 
+    test('Should return insertedId on success', async() => {
+      const { sut, addConfirmationCodeRepositorySpy } = makeSut()
+      const insertedId = await sut.send(email)
+      expect(insertedId).toBe(addConfirmationCodeRepositorySpy.insertedId)
+    })
+
     test('Should throw if AddConfirmationCodeRepository throws', async() => {
       const { sut, addConfirmationCodeRepositorySpy } = makeSut()
       jest.spyOn(addConfirmationCodeRepositorySpy, 'add').mockRejectedValueOnce(new Error())
@@ -85,12 +91,6 @@ describe('DbSendConfirmationCode', () => {
       jest.spyOn(sendConfirmationCodeToEmailSpy, 'send').mockRejectedValueOnce(new Error())
       const promise = sut.send(email)
       await expect(promise).rejects.toThrow()
-    })
-
-    test('Should not throw on success', async() => {
-      const { sut } = makeSut()
-      const promise = sut.send(email)
-      await expect(promise).resolves.not.toThrow()
     })
   })
 })

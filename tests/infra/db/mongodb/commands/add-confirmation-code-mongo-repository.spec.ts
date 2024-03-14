@@ -30,9 +30,9 @@ describe('AddConfirmationCodeMongoRepository', () => {
   test('Should add a confirmation code on success', async() => {
     const sut = makeSut()
     const confirmationCode = faker.string.alphanumeric(6)
-    const id = await sut.add(confirmationCode)
+    const insertedId = await sut.add(confirmationCode)
     const count = await codeCollection.countDocuments()
-    const code = await codeCollection.findOne({ _id: new ObjectId(id) })
+    const code = await codeCollection.findOne({ _id: new ObjectId(insertedId) })
     const expirationDate = new Date()
     expirationDate.setMinutes(expirationDate.getMinutes() + 10)
 

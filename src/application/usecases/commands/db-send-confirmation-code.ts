@@ -12,13 +12,14 @@ export class DbSendConfirmationCode implements SendConfirmationCode {
     private readonly sendConfirmationCodeToEmail: SendConfirmationCodeToEmail
   ) {}
 
-  public async send(email: string): Promise<void> {
+  public async send(email: string): Promise<string> {
     const account = await this.checkAccountByEmailRepository.check(email)
     if (!account) {
       throw new AccountNotFoundError()
     }
     const confirmationCode = GenerateConfirmationCode.generate()
-    await this.addConfirmationCodeRepository.add(confirmationCode)
+    const insertedId = await this.addConfirmationCodeRepository.add(confirmationCode)
     await this.sendConfirmationCodeToEmail.send(confirmationCode, email)
+    return insertedId
   }
 }

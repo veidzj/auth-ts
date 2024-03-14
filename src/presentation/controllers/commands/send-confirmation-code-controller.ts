@@ -13,8 +13,8 @@ export class SendConfirmationCodeController implements Controller {
   public async handle(request: SendConfirmationCodeController.Request): Promise<HttpResponse> {
     try {
       this.validation.validate(request)
-      await this.sendConfirmationCode.send(request.email)
-      return HttpHelper.ok({ message: `Confirmation code sent to ${request.email}` })
+      const insertedId = await this.sendConfirmationCode.send(request.email)
+      return HttpHelper.ok({ insertedId })
     } catch (error) {
       if (error instanceof ValidationError) {
         return HttpHelper.badRequest(error)

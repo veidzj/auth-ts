@@ -1,3 +1,3 @@
 export interface SendConfirmationCode {
-  send: (email: string) => Promise<void>
+  send: (email: string) => Promise<string>
 }
