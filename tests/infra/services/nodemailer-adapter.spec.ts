@@ -17,11 +17,11 @@ interface Sut {
 
 const makeSut = (): Sut => {
   const transporterConfig: SMTPTransport.Options = {
-    host: 'smtp.test.com',
-    port: 587,
+    host: faker.internet.url(),
+    port: faker.internet.port(),
     auth: {
-      user: 'test@test.com',
-      pass: 'test'
+      user: faker.internet.email(),
+      pass: faker.internet.password()
     }
   }
   const sut = new NodemailerAdapter(transporterConfig)
