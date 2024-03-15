@@ -4,6 +4,7 @@ import { ValidationSpy } from '@/tests/presentation/mocks'
 import { ActivateAccountSpy } from '@/tests/domain/mocks/commands'
 import { ActivateAccountController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
+import { ValidationError } from '@/validation/errors'
 import { AccountNotFoundError, AccountAlreadyActivatedError } from '@/domain/errors'
 
 interface Sut {
@@ -36,6 +37,16 @@ describe('ActivateAccountController', () => {
       await sut.handle(request)
 
       expect(validationSpy.input).toEqual(request)
+    })
+
+    test('Should return badRequest if Validation throws ValidationError', async() => {
+      const { sut, validationSpy } = makeSut()
+      const errorMessage = faker.word.words()
+      jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new ValidationError(errorMessage) })
+
+      const httpResponse = await sut.handle(mockRequest())
+
+      expect(httpResponse).toEqual(HttpHelper.badRequest(new ValidationError(errorMessage)))
     })
   })
 
