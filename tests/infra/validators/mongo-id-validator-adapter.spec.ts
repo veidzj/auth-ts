@@ -40,4 +40,13 @@ describe('MongoIdValidatorAdapter', () => {
 
     expect(isValid).toBe(false)
   })
+
+  test('Should throw if validator throws', () => {
+    const sut = makeSut()
+    jest.spyOn(validator, 'isMongoId').mockImplementationOnce(() => { throw new Error() })
+
+    expect(() => {
+      sut.isValid(faker.database.mongodbObjectId())
+    }).toThrow()
+  })
 })
