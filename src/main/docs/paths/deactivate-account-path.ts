@@ -15,7 +15,7 @@ export const deactivateAccountPath = {
     }],
     responses: {
       200: {
-        $ref: '#/schemas/deactivateAccountOutput'
+        $ref: '#/components/deactivateAccountOutput'
       },
       401: {
         $ref: '#/components/unauthorized'

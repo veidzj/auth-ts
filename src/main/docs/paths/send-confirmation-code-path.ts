@@ -16,7 +16,7 @@ export const sendConfirmationCodePath = {
     },
     responses: {
       200: {
-        $ref: '#/schemas/sendConfirmationCodeOutput'
+        $ref: '#/components/sendConfirmationCodeOutput'
       },
       400: {
         $ref: '#/components/badRequest'

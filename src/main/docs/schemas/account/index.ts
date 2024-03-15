@@ -1,6 +1,7 @@
-import { authSchema } from './auth-output-schema'
 import { signUpInputSchema } from './sign-up-input-schema'
+import { signUpOutputSchema } from './sign-up-output-schema'
 import { signInInputSchema } from './sign-in-input-schema'
+import { signInOutputSchema } from './sign-in-output-schema'
 import { deactivateAccountOutputSchema } from './deactivate-account-output-schema'
 import { activateAccountOutputSchema } from './activate-account-output-schema'
 import { changeEmailInputSchema } from './change-email-input-schema'
@@ -9,9 +10,10 @@ import { sendConfirmationCodeInputSchema } from './send-confirmation-code-input-
 import { sendConfirmationCodeOutputSchema } from './send-confirmation-code-output-schema'
 
 export const accountSchema = {
-  authOutput: authSchema,
   signUpInput: signUpInputSchema,
+  signUpOutput: signUpOutputSchema,
   signInInput: signInInputSchema,
+  signInOutput: signInOutputSchema,
   deactivateAccountOutput: deactivateAccountOutputSchema,
   activateAccountOutput: activateAccountOutputSchema,
   changeEmailInput: changeEmailInputSchema,
