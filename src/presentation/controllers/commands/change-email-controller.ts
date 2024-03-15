@@ -14,7 +14,7 @@ export class ChangeEmailController implements Controller {
     try {
       this.validation.validate({ newEmail: request.newEmail })
       await this.changeEmail.change(request.currentEmail, request.newEmail)
-      return HttpHelper.ok({ message: 'Email successfully changed' })
+      return HttpHelper.noContent()
     } catch (error) {
       if (error instanceof ValidationError) {
         return HttpHelper.badRequest(error)

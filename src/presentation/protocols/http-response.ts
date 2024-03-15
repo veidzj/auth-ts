@@ -3,5 +3,5 @@ export interface HttpResponse {
   body: {
     name?: string
     message?: string
-  }
+  } | null
 }

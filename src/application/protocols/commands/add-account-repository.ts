@@ -1,5 +1,5 @@
-export class AddAccountRepository {
-  add: (input: AddAccountRepository.Input) => Promise<void>
+export interface AddAccountRepository {
+  add: (input: AddAccountRepository.Input) => Promise<string>
 }
 
 export namespace AddAccountRepository {

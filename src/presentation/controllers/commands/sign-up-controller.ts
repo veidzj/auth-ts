@@ -14,9 +14,12 @@ export class SignUpController implements Controller {
   public async handle(request: SignUpController.Request): Promise<HttpResponse> {
     try {
       this.validation.validate(request)
-      await this.addAccount.add(request)
+      const insertedId = await this.addAccount.add(request)
       const accessToken = await this.authentication.auth(request.email, request.password)
-      return HttpHelper.ok({ accessToken })
+      return HttpHelper.ok({
+        insertedId,
+        accessToken
+      })
     } catch (error) {
       if (error instanceof ValidationError) {
         return HttpHelper.badRequest(error)

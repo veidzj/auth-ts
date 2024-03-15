@@ -15,8 +15,11 @@ export const changeEmailPath = {
       }
     },
     responses: {
-      200: {
-        $ref: '#/schemas/changeEmailOutput'
+      204: {
+        $ref: '#/components/changeEmailOutput'
+      },
+      401: {
+        $ref: '#/components/unauthorized'
       },
       400: {
         $ref: '#/components/badRequest'

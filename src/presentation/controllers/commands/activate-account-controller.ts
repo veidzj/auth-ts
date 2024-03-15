@@ -9,7 +9,7 @@ export class ActivateAccountController implements Controller {
   public async handle(request: ActivateAccountController.Request): Promise<HttpResponse> {
     try {
       await this.activateAccount.activate(request.accountId)
-      return HttpHelper.ok({ message: 'Account successfully activated' })
+      return HttpHelper.noContent()
     } catch (error) {
       if (error instanceof AccountNotFoundError) {
         return HttpHelper.notFound(error)

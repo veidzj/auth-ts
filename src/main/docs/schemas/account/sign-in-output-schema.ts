@@ -1,4 +1,4 @@
-export const authSchema = {
+export const signInOutputSchema = {
   type: 'object',
   properties: {
     data: {

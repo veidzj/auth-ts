@@ -1,4 +1,4 @@
-export const changeEmailOutputSchema = {
+export const sendConfirmationCodeOutputSchema = {
   type: 'object',
   properties: {
     data: {
@@ -8,11 +8,14 @@ export const changeEmailOutputSchema = {
           type: 'number',
           default: 200
         },
+        insertedId: {
+          type: 'string'
+        },
         message: {
           type: 'string'
         }
       },
-      required: ['status', 'message']
+      required: ['status', 'insertedId', 'message']
     }
   },
   required: ['data']

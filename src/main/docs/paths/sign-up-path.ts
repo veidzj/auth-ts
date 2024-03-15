@@ -13,7 +13,7 @@ export const signUpPath = {
     },
     responses: {
       200: {
-        $ref: '#/components/authOutput'
+        $ref: '#/components/signUpOutput'
       },
       400: {
         $ref: '#/components/badRequest'

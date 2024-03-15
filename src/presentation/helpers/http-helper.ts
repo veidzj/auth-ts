@@ -9,6 +9,13 @@ export class HttpHelper {
     }
   }
 
+  public static noContent(): HttpResponse {
+    return {
+      statusCode: 204,
+      body: null
+    }
+  }
+
   public static badRequest(data: object): HttpResponse {
     return {
       statusCode: 400,

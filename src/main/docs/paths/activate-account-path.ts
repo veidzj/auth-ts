@@ -14,8 +14,8 @@ export const activateAccountPath = {
       }
     }],
     responses: {
-      200: {
-        $ref: '#/schemas/activateAccountOutput'
+      204: {
+        $ref: '#/components/activateAccountOutput'
       },
       401: {
         $ref: '#/components/unauthorized'
