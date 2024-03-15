@@ -43,4 +43,11 @@ describe('IdValidation', () => {
       sut.validate({ [fieldName]: faker.string.uuid() })
     }).toThrow()
   })
+
+  test('Should not throw on success', () => {
+    const { sut } = makeSut()
+    expect(() => {
+      sut.validate({ [fieldName]: faker.string.uuid() })
+    }).not.toThrow()
+  })
 })
