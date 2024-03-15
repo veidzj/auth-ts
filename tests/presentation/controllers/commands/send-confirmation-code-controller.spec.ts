@@ -25,7 +25,8 @@ const makeSut = (): Sut => {
 }
 
 const mockRequest = (): SendConfirmationCodeController.Request => ({
-  email: faker.internet.email()
+  email: faker.internet.email(),
+  accountId: faker.string.uuid()
 })
 
 describe('SendConfirmationCodeController', () => {
@@ -54,11 +55,12 @@ describe('SendConfirmationCodeController', () => {
   })
 
   describe('SendConfirmationCode', () => {
-    test('Should call SendConfirmationCode with correct email', async() => {
+    test('Should call SendConfirmationCode with correct values', async() => {
       const { sut, sendConfirmationCodeSpy } = makeSut()
       const request = mockRequest()
       await sut.handle(request)
       expect(sendConfirmationCodeSpy.email).toBe(request.email)
+      expect(sendConfirmationCodeSpy.accountId).toBe(request.accountId)
     })
 
     test('Should return notFound if SendConfirmationCode throws AccountNotFoundError', async() => {

@@ -30,7 +30,8 @@ describe('AddConfirmationCodeMongoRepository', () => {
   test('Should add a confirmation code on success', async() => {
     const sut = makeSut()
     const confirmationCode = faker.string.alphanumeric(6)
-    const insertedId = await sut.add(confirmationCode)
+    const accountId = faker.string.uuid()
+    const insertedId = await sut.add(confirmationCode, accountId)
     const count = await codeCollection.countDocuments()
     const code = await codeCollection.findOne({ _id: new ObjectId(insertedId) })
     const expirationDate = new Date()
@@ -38,6 +39,7 @@ describe('AddConfirmationCodeMongoRepository', () => {
 
     expect(count).toBe(1)
     expect(code?.confirmationCode).toBe(confirmationCode)
+    expect(code?.accountId).toBe(accountId)
     expect(code?.expirationDate).toEqual(expirationDate)
   })
 })

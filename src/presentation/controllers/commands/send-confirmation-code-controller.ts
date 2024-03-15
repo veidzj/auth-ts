@@ -13,7 +13,7 @@ export class SendConfirmationCodeController implements Controller {
   public async handle(request: SendConfirmationCodeController.Request): Promise<HttpResponse> {
     try {
       this.validation.validate(request)
-      const insertedId = await this.sendConfirmationCode.send(request.email)
+      const insertedId = await this.sendConfirmationCode.send(request.email, request.accountId)
       return HttpHelper.ok({
         insertedId,
         message: `Confirmation code successfully sent to ${request.email}`
@@ -33,5 +33,6 @@ export class SendConfirmationCodeController implements Controller {
 export namespace SendConfirmationCodeController {
   export interface Request {
     email: string
+    accountId: string
   }
 }
