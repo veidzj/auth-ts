@@ -14,7 +14,10 @@ export class SendConfirmationCodeController implements Controller {
     try {
       this.validation.validate(request)
       const insertedId = await this.sendConfirmationCode.send(request.email)
-      return HttpHelper.ok({ insertedId })
+      return HttpHelper.ok({
+        insertedId,
+        message: `Confirmation code successfully sent to ${request.email}`
+      })
     } catch (error) {
       if (error instanceof ValidationError) {
         return HttpHelper.badRequest(error)

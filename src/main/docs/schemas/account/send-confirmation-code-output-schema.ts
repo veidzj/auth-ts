@@ -8,11 +8,14 @@ export const sendConfirmationCodeOutputSchema = {
           type: 'number',
           default: 200
         },
+        insertedId: {
+          type: 'string'
+        },
         message: {
           type: 'string'
         }
       },
-      required: ['status', 'message']
+      required: ['status', 'insertedId', 'message']
     }
   },
   required: ['data']

@@ -79,7 +79,10 @@ describe('SendConfirmationCodeController', () => {
       const { sut, sendConfirmationCodeSpy } = makeSut()
       const request = mockRequest()
       const httpResponse = await sut.handle(request)
-      expect(httpResponse).toEqual(HttpHelper.ok({ insertedId: sendConfirmationCodeSpy.insertedId }))
+      expect(httpResponse).toEqual(HttpHelper.ok({
+        insertedId: sendConfirmationCodeSpy.insertedId,
+        message: `Confirmation code successfully sent to ${request.email}`
+      }))
     })
   })
 })
