@@ -7,7 +7,13 @@ export class NodemailerAdapter implements SendConfirmationCodeToEmail {
   private readonly transporter: Transporter
 
   constructor(transporterConfig: SMTPTransport.Options) {
-    this.transporter = nodemailer.createTransport(transporterConfig)
+    this.transporter = nodemailer.createTransport({
+      ...transporterConfig,
+      secure: true,
+      tls: {
+        rejectUnauthorized: true
+      }
+    })
   }
 
   public async send(confirmationCode: string, email: string): Promise<void> {
