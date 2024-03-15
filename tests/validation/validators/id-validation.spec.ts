@@ -35,4 +35,12 @@ describe('IdValidation', () => {
       sut.validate({ [fieldName]: faker.string.uuid() })
     }).toThrow(new ValidationError(`${fieldName} must be a valid id`))
   })
+
+  test('Should throw if IdValidator throws', () => {
+    const { sut, idValidatorSpy } = makeSut()
+    jest.spyOn(idValidatorSpy, 'isValid').mockImplementationOnce(() => { throw new Error() })
+    expect(() => {
+      sut.validate({ [fieldName]: faker.string.uuid() })
+    }).toThrow()
+  })
 })
