@@ -7,11 +7,12 @@ export class NodemailerAdapter implements SendConfirmationCodeToEmail {
   private readonly transporter: Transporter
 
   constructor(transporterConfig: SMTPTransport.Options) {
+    const isProduction = process.env.NODE_ENV === 'production'
     this.transporter = nodemailer.createTransport({
       ...transporterConfig,
-      secure: true,
+      secure: isProduction,
       tls: {
-        rejectUnauthorized: true
+        rejectUnauthorized: isProduction
       }
     })
   }
