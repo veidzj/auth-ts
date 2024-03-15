@@ -41,7 +41,9 @@ describe('SignUpController', () => {
     test('Should call Validation with correct values', async() => {
       const { sut, validationSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(validationSpy.input).toEqual(request)
     })
 
@@ -49,14 +51,18 @@ describe('SignUpController', () => {
       const { sut, validationSpy } = makeSut()
       const errorMessage = faker.word.words()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new ValidationError(errorMessage) })
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.badRequest(new ValidationError(errorMessage)))
     })
 
     test('Should return serverError if Validation throws', async() => {
       const { sut, validationSpy } = makeSut()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new Error() })
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
   })
@@ -65,21 +71,27 @@ describe('SignUpController', () => {
     test('Should call AddAccount with correct values', async() => {
       const { sut, addAccountSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(addAccountSpy.input).toEqual(request)
     })
 
     test('Should return conflict if AddAccount throws AccountAlreadyExistsError', async() => {
       const { sut, addAccountSpy } = makeSut()
       jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(new AccountAlreadyExistsError())
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.conflict(new AccountAlreadyExistsError()))
     })
 
     test('Should return serverError if AddAccount throws an unexpected error', async() => {
       const { sut, addAccountSpy } = makeSut()
       jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(new Error())
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
   })
@@ -88,7 +100,9 @@ describe('SignUpController', () => {
     test('Should call Authentication with correct values', async() => {
       const { sut, authenticationSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(authenticationSpy.email).toBe(request.email)
       expect(authenticationSpy.password).toBe(request.password)
     })
@@ -96,13 +110,17 @@ describe('SignUpController', () => {
     test('Should return serverError if Authentication throws an unexpected error', async() => {
       const { sut, authenticationSpy } = makeSut()
       jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(new Error())
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
 
     test('Should return ok on success', async() => {
       const { sut, addAccountSpy, authenticationSpy } = makeSut()
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.ok({
         insertedId: addAccountSpy.insertedId,
         accessToken: authenticationSpy.accessToken

@@ -24,13 +24,16 @@ describe('EmailValidation', () => {
   test('Should call EmailValidator with correct email', () => {
     const { sut, emailValidatorSpy } = makeSut()
     const email = faker.internet.email()
+
     sut.validate({ [fieldName]: email })
+
     expect(emailValidatorSpy.email).toBe(email)
   })
 
   test('Should throw ValidationError if EmailValidator returns false', () => {
     const { sut, emailValidatorSpy } = makeSut()
     emailValidatorSpy.isEmailValid = false
+
     expect(() => {
       sut.validate({ [fieldName]: faker.internet.email() })
     }).toThrow(new ValidationError(`${fieldName} must be a valid email`))
@@ -39,13 +42,15 @@ describe('EmailValidation', () => {
   test('Should throw if EmailValidator throws', () => {
     const { sut, emailValidatorSpy } = makeSut()
     jest.spyOn(emailValidatorSpy, 'isValid').mockImplementationOnce(() => { throw new Error() })
+
     expect(() => {
       sut.validate({ [fieldName]: faker.internet.email() })
     }).toThrow()
   })
 
-  test('Should not throw if EmailValidator returns true', () => {
+  test('Should not throw on success', () => {
     const { sut } = makeSut()
+
     expect(() => {
       sut.validate({ [fieldName]: faker.internet.email() })
     }).not.toThrow()

@@ -35,7 +35,9 @@ describe('ActivateAccountMongoRepository', () => {
     if (fakeAccount) {
       expect(fakeAccount.isActive).toBe(false)
       expect(fakeAccount.updatedAt).toBeFalsy()
+
       const result = await sut.activate(fakeAccount._id.toHexString())
+
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(result).toBe(true)
       expect(account?.isActive).toBe(true)
@@ -50,7 +52,9 @@ describe('ActivateAccountMongoRepository', () => {
     if (fakeAccount) {
       expect(fakeAccount.isActive).toBe(true)
       expect(fakeAccount.updatedAt).toBeFalsy()
+
       const result = await sut.activate(fakeAccount._id.toString())
+
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(result).toBe(false)
       expect(account?.isActive).toBe(true)
@@ -61,7 +65,9 @@ describe('ActivateAccountMongoRepository', () => {
   test('Should throw if mongo throws', async() => {
     const sut = makeSut()
     jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
+
     const promise = sut.activate(faker.string.uuid())
+
     await expect(promise).rejects.toThrow()
   })
 })

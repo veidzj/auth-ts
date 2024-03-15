@@ -1,4 +1,6 @@
+export * from './activate-account-validation-factory'
 export * from './change-email-validation-factory'
+export * from './deactivate-account-validation-factory'
 export * from './send-confirmation-code-validation-factory'
 export * from './sign-in-validation-factory'
 export * from './sign-up-validation-factory'

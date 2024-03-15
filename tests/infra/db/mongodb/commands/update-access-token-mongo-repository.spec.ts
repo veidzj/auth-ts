@@ -12,6 +12,8 @@ const makeSut = (): UpdateAccessTokenMongoRepository => {
   return new UpdateAccessTokenMongoRepository()
 }
 
+const accessToken: string = faker.string.uuid()
+
 describe('UpdateAccessTokenMongoRepository', () => {
   beforeAll(async() => {
     MockDate.set(new Date())
@@ -35,8 +37,9 @@ describe('UpdateAccessTokenMongoRepository', () => {
     if (fakeAccount) {
       expect(fakeAccount.accessToken).toBeFalsy()
       expect(fakeAccount.updatedAt).toBeFalsy()
-      const accessToken = faker.string.uuid()
+
       await sut.update(fakeAccount._id.toString(), accessToken)
+
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(account?.accessToken).toBe(accessToken)
       expect(account?.updatedAt).toEqual(new Date())
@@ -46,7 +49,9 @@ describe('UpdateAccessTokenMongoRepository', () => {
   test('Should throw if mongo throws', async() => {
     const sut = makeSut()
     jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
+
     const promise = sut.update(faker.string.uuid(), faker.string.uuid())
+
     await expect(promise).rejects.toThrow()
   })
 })

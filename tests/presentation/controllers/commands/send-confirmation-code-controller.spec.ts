@@ -34,7 +34,9 @@ describe('SendConfirmationCodeController', () => {
     test('Should call Validation with correct values', async() => {
       const { sut, validationSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(validationSpy.input).toEqual(request)
     })
 
@@ -42,14 +44,18 @@ describe('SendConfirmationCodeController', () => {
       const { sut, validationSpy } = makeSut()
       const errorMessage = faker.word.words()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new ValidationError(errorMessage) })
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.badRequest(new ValidationError(errorMessage)))
     })
 
     test('Should return serverError if Validation throws', async() => {
       const { sut, validationSpy } = makeSut()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new Error() })
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
   })
@@ -58,7 +64,9 @@ describe('SendConfirmationCodeController', () => {
     test('Should call SendConfirmationCode with correct values', async() => {
       const { sut, sendConfirmationCodeSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(sendConfirmationCodeSpy.email).toBe(request.email)
       expect(sendConfirmationCodeSpy.accountId).toBe(request.accountId)
     })
@@ -66,21 +74,27 @@ describe('SendConfirmationCodeController', () => {
     test('Should return notFound if SendConfirmationCode throws AccountNotFoundError', async() => {
       const { sut, sendConfirmationCodeSpy } = makeSut()
       jest.spyOn(sendConfirmationCodeSpy, 'send').mockRejectedValueOnce(new AccountNotFoundError())
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
     })
 
     test('Should return serverError if SendConfirmationCode throws', async() => {
       const { sut, sendConfirmationCodeSpy } = makeSut()
       jest.spyOn(sendConfirmationCodeSpy, 'send').mockRejectedValueOnce(new Error())
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
 
     test('Should return ok on success', async() => {
       const { sut, sendConfirmationCodeSpy } = makeSut()
       const request = mockRequest()
+
       const httpResponse = await sut.handle(request)
+
       expect(httpResponse).toEqual(HttpHelper.ok({
         insertedId: sendConfirmationCodeSpy.insertedId,
         message: `Confirmation code successfully sent to ${request.email}`

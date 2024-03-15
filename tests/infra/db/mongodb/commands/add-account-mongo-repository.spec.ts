@@ -37,8 +37,8 @@ describe('AddAccountMongoRepository', () => {
   })
 
   test('Should throw if mongo throws', async() => {
-    jest.spyOn(Collection.prototype, 'insertOne').mockRejectedValueOnce(new Error())
     const sut = makeSut()
+    jest.spyOn(Collection.prototype, 'insertOne').mockRejectedValueOnce(new Error())
 
     const promise = sut.add(mockAddAccountRepositoryInput())
 

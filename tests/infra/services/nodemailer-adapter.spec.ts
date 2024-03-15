@@ -38,7 +38,9 @@ describe('NodemailerAdapter', () => {
   test('Should call sendMail with correct values', async() => {
     const { sut, transporterConfig } = makeSut()
     const sendMailSpy = jest.spyOn(nodemailer.createTransport(transporterConfig), 'sendMail')
+
     await sut.send(confirmationCode, email)
+
     expect(sendMailSpy).toHaveBeenCalledWith(expect.objectContaining({
       to: email,
       text: expect.stringContaining(confirmationCode),
@@ -49,7 +51,9 @@ describe('NodemailerAdapter', () => {
   test('Should throw if sendMail throws', async() => {
     const { sut, transporterConfig } = makeSut()
     jest.spyOn(nodemailer.createTransport(transporterConfig), 'sendMail').mockRejectedValueOnce(new Error())
+
     const promise = sut.send(confirmationCode, email)
+
     await expect(promise).rejects.toThrow()
   })
 })

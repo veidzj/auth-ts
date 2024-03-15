@@ -34,7 +34,9 @@ describe('SignInController', () => {
     test('Should call Validation with correct values', async() => {
       const { sut, validationSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(validationSpy.input).toEqual(request)
     })
 
@@ -42,14 +44,18 @@ describe('SignInController', () => {
       const { sut, validationSpy } = makeSut()
       const errorMessage = faker.word.words()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new ValidationError(errorMessage) })
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.badRequest(new ValidationError(errorMessage)))
     })
 
     test('Should return serverError if Validation throws', async() => {
       const { sut, validationSpy } = makeSut()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new Error() })
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
   })
@@ -58,7 +64,9 @@ describe('SignInController', () => {
     test('Should call Authentication with correct values', async() => {
       const { sut, authenticationSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(authenticationSpy.email).toBe(request.email)
       expect(authenticationSpy.password).toBe(request.password)
     })
@@ -66,27 +74,35 @@ describe('SignInController', () => {
     test('Should return notFound if Authentication throws AccountNotFoundError', async() => {
       const { sut, authenticationSpy } = makeSut()
       jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(new AccountNotFoundError())
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
     })
 
     test('Should return unauthorized if Authentication throws InvalidCredentialsError', async() => {
       const { sut, authenticationSpy } = makeSut()
       jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(new InvalidCredentialsError())
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.unauthorized(new InvalidCredentialsError()))
     })
 
     test('Should return serverError if Authentication throws', async() => {
       const { sut, authenticationSpy } = makeSut()
       jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(new Error())
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
 
     test('Should return ok on success', async() => {
       const { sut, authenticationSpy } = makeSut()
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.ok({ accessToken: authenticationSpy.accessToken }))
     })
   })

@@ -1,15 +1,18 @@
-import { ObjectId, type Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import MockDate from 'mockdate'
+import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
 import { AddConfirmationCodeMongoRepository } from '@/infra/db/mongodb/commands'
-import { faker } from '@faker-js/faker'
 
 let codeCollection: Collection
 
 const makeSut = (): AddConfirmationCodeMongoRepository => {
   return new AddConfirmationCodeMongoRepository()
 }
+
+const confirmationCode = faker.string.alphanumeric(6)
+const accountId = faker.string.uuid()
 
 describe('AddConfirmationCodeMongoRepository', () => {
   beforeAll(async() => {
@@ -29,8 +32,6 @@ describe('AddConfirmationCodeMongoRepository', () => {
 
   test('Should add a confirmation code on success', async() => {
     const sut = makeSut()
-    const confirmationCode = faker.string.alphanumeric(6)
-    const accountId = faker.string.uuid()
     const insertedId = await sut.add(confirmationCode, accountId)
     const count = await codeCollection.countDocuments()
     const code = await codeCollection.findOne({ _id: new ObjectId(insertedId) })
@@ -41,5 +42,14 @@ describe('AddConfirmationCodeMongoRepository', () => {
     expect(code?.confirmationCode).toBe(confirmationCode)
     expect(code?.accountId).toBe(accountId)
     expect(code?.expirationDate).toEqual(expirationDate)
+  })
+
+  test('Should throw if mongo throws', async() => {
+    jest.spyOn(Collection.prototype, 'insertOne').mockRejectedValueOnce(new Error())
+    const sut = makeSut()
+
+    const promise = sut.add(confirmationCode, accountId)
+
+    await expect(promise).rejects.toThrow()
   })
 })

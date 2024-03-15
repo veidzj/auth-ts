@@ -1,6 +1,7 @@
 export * from './date-validation'
 export * from './email-validation'
 export * from './full-name-validation'
+export * from './id-validation'
 export * from './password-validation'
 export * from './profile-image-validation'
 export * from './required-field-validation'

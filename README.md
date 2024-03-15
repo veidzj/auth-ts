@@ -28,10 +28,10 @@ Auth TS is a user authentication and authorization system developed using TypeSc
 - [x] Account sign in
 - [x] Deactivate an account
 - [x] Activate an account
+- [x] Change account's email
 
 ### Features To Do
 
-- [ ] Change account's email
 - [ ] Change password
 - [ ] Change profile image
 - [ ] Check if an account has a specific permission (user or admin)

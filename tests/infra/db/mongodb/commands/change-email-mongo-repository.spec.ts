@@ -12,6 +12,8 @@ const makeSut = (): ChangeEmailMongoRepository => {
   return new ChangeEmailMongoRepository()
 }
 
+const newEmail: string = faker.internet.email()
+
 describe('ChangeEmailMongoRepository', () => {
   beforeAll(async() => {
     MockDate.set(new Date())
@@ -36,8 +38,9 @@ describe('ChangeEmailMongoRepository', () => {
     if (fakeAccount) {
       expect(fakeAccount.email).toBe(addAccountRepositoryInput.email)
       const currentEmail: string = fakeAccount.email
-      const newEmail: string = faker.internet.email()
+
       await sut.change(currentEmail, newEmail)
+
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(account?.email).toBe(newEmail)
       expect(account?.updatedAt).toEqual(new Date())
@@ -51,8 +54,11 @@ describe('ChangeEmailMongoRepository', () => {
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
       expect(fakeAccount.email).toBe(addAccountRepositoryInput.email)
+
       const newEmail: string = faker.internet.email()
+
       await sut.change(faker.internet.email(), newEmail)
+
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(account?.email).toBe(fakeAccount.email)
       expect(account?.updatedAt).toBeFalsy()
@@ -62,7 +68,9 @@ describe('ChangeEmailMongoRepository', () => {
   test('Should throw if mongo throws', async() => {
     const sut = makeSut()
     jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
+
     const promise = sut.change(faker.internet.email(), faker.internet.email())
+
     await expect(promise).rejects.toThrow()
   })
 })

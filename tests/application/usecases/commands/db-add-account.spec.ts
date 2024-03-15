@@ -50,21 +50,27 @@ describe('DbAddAccount', () => {
     test('Should call CheckAccountByEmailRepository with correct email', async() => {
       const { sut, checkAccountByEmailRepositorySpy } = makeSut()
       const input = mockInput()
+
       await sut.add(input)
+
       expect(checkAccountByEmailRepositorySpy.email).toEqual(input.email)
     })
 
     test('Should throw if CheckAccountByEmailRepository throws', async() => {
       const { sut, checkAccountByEmailRepositorySpy } = makeSut()
       jest.spyOn(checkAccountByEmailRepositorySpy, 'check').mockRejectedValueOnce(new Error())
+
       const promise = sut.add(mockInput())
+
       await expect(promise).rejects.toThrow()
     })
 
     test('Should throw AccountAlreadyExistsError if CheckAccountByEmailRepository returns true', async() => {
       const { sut, checkAccountByEmailRepositorySpy } = makeSut()
       checkAccountByEmailRepositorySpy.output = true
+
       const promise = sut.add(mockInput())
+
       await expect(promise).rejects.toThrow(new AccountAlreadyExistsError())
     })
   })
@@ -73,7 +79,9 @@ describe('DbAddAccount', () => {
     test('Should call Hasher with correct password', async() => {
       const { sut, hasherSpy } = makeSut()
       const input = mockInput()
+
       await sut.add(input)
+
       expect(hasherSpy.plainText).toBe(input.password)
     })
 
@@ -81,7 +89,9 @@ describe('DbAddAccount', () => {
       const { sut, hasherSpy } = makeSut()
       jest.spyOn(hasherSpy, 'hash').mockRejectedValueOnce(new Error())
       const input = mockInput()
+
       const promise = sut.add(input)
+
       await expect(promise).rejects.toThrow()
     })
   })
@@ -90,7 +100,9 @@ describe('DbAddAccount', () => {
     test('Should call AddAccountRepository with correct values', async() => {
       const { sut, addAccountRepositorySpy, hasherSpy } = makeSut()
       const input = mockInput()
+
       await sut.add(input)
+
       expect(addAccountRepositorySpy.input).toEqual({
         ...input,
         password: hasherSpy.digest,
@@ -103,13 +115,17 @@ describe('DbAddAccount', () => {
     test('Should throw if AddAccountRepository throws', async() => {
       const { sut, addAccountRepositorySpy } = makeSut()
       jest.spyOn(addAccountRepositorySpy, 'add').mockRejectedValueOnce(new Error())
+
       const promise = sut.add(mockInput())
+
       await expect(promise).rejects.toThrow()
     })
 
     test('Should return insertedId on success', async() => {
       const { sut, addAccountRepositorySpy } = makeSut()
+
       const insertedId = await sut.add(mockInput())
+
       expect(insertedId).toBe(addAccountRepositorySpy.insertedId)
     })
   })

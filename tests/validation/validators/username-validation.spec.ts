@@ -38,6 +38,7 @@ describe('UsernameValidation', () => {
 
   test('Should throw ValidationError if username is less than 3 characters long', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(shortUsername)
     }).toThrow(new ValidationError('Username must be between 3 and 16 characters long'))
@@ -45,6 +46,7 @@ describe('UsernameValidation', () => {
 
   test('Should throw ValidationError if username is greater than 16 characters long', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(longUsername)
     }).toThrow(new ValidationError('Username must be between 3 and 16 characters long'))
@@ -52,6 +54,7 @@ describe('UsernameValidation', () => {
 
   test('Should throw ValidationError if username starts with a number', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(usernameStartsWithNumber)
     }).toThrow(new ValidationError('Username must start with a letter'))
@@ -59,6 +62,7 @@ describe('UsernameValidation', () => {
 
   test('Should throw ValidationError if username contains a special character', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(usernameWithSpecialCharacter)
     }).toThrow(new ValidationError('Username can only contain letters, digits, underscore, hyphen and dot'))
@@ -66,13 +70,15 @@ describe('UsernameValidation', () => {
 
   test('Should throw ValidationError if username contains spaces', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(usernameWithSpaces)
     }).toThrow(new ValidationError('Username must not contain spaces'))
   })
 
-  test('Should return null if username is valid', () => {
+  test('Should not throw on success', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(validUsername)
     }).not.toThrow()
