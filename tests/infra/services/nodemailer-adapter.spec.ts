@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 import type SMTPTransport from 'nodemailer/lib/smtp-transport'
+import { faker } from '@faker-js/faker'
 
 import { NodemailerAdapter } from '@/infra/services'
 
@@ -30,12 +31,13 @@ const makeSut = (): Sut => {
   }
 }
 
+const confirmationCode: string = faker.string.alphanumeric(6)
+const email: string = faker.internet.email()
+
 describe('NodemailerAdapter', () => {
   test('Should call sendMail with correct values', async() => {
     const { sut, transporterConfig } = makeSut()
     const sendMailSpy = jest.spyOn(nodemailer.createTransport(transporterConfig), 'sendMail')
-    const confirmationCode = '123456'
-    const email = 'test@example.com'
     await sut.send(confirmationCode, email)
     expect(sendMailSpy).toHaveBeenCalledWith(expect.objectContaining({
       to: email,
