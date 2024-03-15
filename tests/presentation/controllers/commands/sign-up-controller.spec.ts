@@ -101,9 +101,12 @@ describe('SignUpController', () => {
     })
 
     test('Should return ok on success', async() => {
-      const { sut, authenticationSpy } = makeSut()
+      const { sut, addAccountSpy, authenticationSpy } = makeSut()
       const httpResponse = await sut.handle(mockRequest())
-      expect(httpResponse).toEqual(HttpHelper.ok({ accessToken: authenticationSpy.accessToken }))
+      expect(httpResponse).toEqual(HttpHelper.ok({
+        insertedId: addAccountSpy.insertedId,
+        accessToken: authenticationSpy.accessToken
+      }))
     })
   })
 })
