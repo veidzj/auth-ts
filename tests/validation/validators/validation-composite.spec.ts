@@ -23,6 +23,7 @@ describe('ValidationComposite', () => {
     const { sut, validationSpies } = makeSut()
     const errorMessage = faker.word.words()
     jest.spyOn(validationSpies[0], 'validate').mockImplementationOnce(() => { throw new ValidationError(errorMessage) })
+
     expect(() => {
       sut.validate({ username: faker.word.words() })
     }).toThrow(new ValidationError(errorMessage))
@@ -30,6 +31,7 @@ describe('ValidationComposite', () => {
 
   test('Should not throw on success', () => {
     const { sut } = makeSut()
+
     expect(() => {
       sut.validate({ username: faker.word.words() })
     }).not.toThrow()

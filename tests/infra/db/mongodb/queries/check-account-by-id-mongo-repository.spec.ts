@@ -27,7 +27,9 @@ describe('CheckAccountByIdMongoRepository', () => {
 
   test('Should return false if there is no account with the given id', async() => {
     const sut = makeSut()
+
     const accountExists = await sut.check(faker.database.mongodbObjectId())
+
     expect(accountExists).toBe(false)
   })
 
@@ -35,14 +37,18 @@ describe('CheckAccountByIdMongoRepository', () => {
     const sut = makeSut()
     const addAccountRepositoryInput = mockAddAccountRepositoryInput()
     const insertResult = await accountCollection.insertOne(addAccountRepositoryInput)
+
     const accountExists = await sut.check(insertResult.insertedId.toString())
+
     expect(accountExists).toBe(true)
   })
 
   test('Should throw if mongo throws', async() => {
     const sut = makeSut()
     jest.spyOn(Collection.prototype, 'countDocuments').mockRejectedValueOnce(new Error())
+
     const promise = sut.check(faker.database.mongodbObjectId())
+
     await expect(promise).rejects.toThrow()
   })
 })

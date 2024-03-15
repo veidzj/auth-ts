@@ -27,34 +27,44 @@ describe('DeactivateAccountController', () => {
   test('Should call DeactivateAccount with correct value', async() => {
     const { sut, deactivateAccountSpy } = makeSut()
     const request = mockRequest()
+
     await sut.handle(request)
+
     expect(deactivateAccountSpy.accountId).toBe(request.accountId)
   })
 
   test('Should return notFound if DeactivateAccount throws AccountNotFoundError', async() => {
     const { sut, deactivateAccountSpy } = makeSut()
     jest.spyOn(deactivateAccountSpy, 'deactivate').mockRejectedValueOnce(new AccountNotFoundError())
+
     const httpResponse = await sut.handle(mockRequest())
+
     expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
   })
 
   test('Should return conflict if DeactivateAccount throws AccountAlreadyDeactivatedError', async() => {
     const { sut, deactivateAccountSpy } = makeSut()
     jest.spyOn(deactivateAccountSpy, 'deactivate').mockRejectedValueOnce(new AccountAlreadyDeactivatedError())
+
     const httpResponse = await sut.handle(mockRequest())
+
     expect(httpResponse).toEqual(HttpHelper.conflict(new AccountAlreadyDeactivatedError()))
   })
 
   test('Should return serverError if DeactivateAccount throws', async() => {
     const { sut, deactivateAccountSpy } = makeSut()
     jest.spyOn(deactivateAccountSpy, 'deactivate').mockRejectedValueOnce(new Error())
+
     const httpResponse = await sut.handle(mockRequest())
+
     expect(httpResponse).toEqual(HttpHelper.serverError())
   })
 
   test('Should return noContent on success', async() => {
     const { sut } = makeSut()
+
     const httpResponse = await sut.handle(mockRequest())
+
     expect(httpResponse).toEqual(HttpHelper.noContent())
   })
 })

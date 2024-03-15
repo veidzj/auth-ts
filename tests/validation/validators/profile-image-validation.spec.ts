@@ -22,13 +22,16 @@ describe('ProfileImageValidation', () => {
   test('Should call URLValidator with correct url', () => {
     const { sut, urlValidatorSpy } = makeSut()
     const url = faker.internet.url()
+
     sut.validate({ profileImage: url })
+
     expect(urlValidatorSpy.url).toBe(url)
   })
 
   test('Should throw ValidationError if URLValidator returns false', () => {
     const { sut, urlValidatorSpy } = makeSut()
     urlValidatorSpy.islURLValid = false
+
     expect(() => {
       sut.validate({ profileImage: faker.internet.url() })
     }).toThrow(new ValidationError('Profile image must be a valid url'))
@@ -37,6 +40,7 @@ describe('ProfileImageValidation', () => {
   test('Should throw if URLValidator throws', () => {
     const { sut, urlValidatorSpy } = makeSut()
     jest.spyOn(urlValidatorSpy, 'isValid').mockImplementationOnce(() => { throw new Error() })
+
     expect(() => {
       sut.validate({ profileImage: faker.internet.url() })
     }).toThrow()
@@ -44,6 +48,7 @@ describe('ProfileImageValidation', () => {
 
   test('Should not throw on success', () => {
     const { sut } = makeSut()
+
     expect(() => {
       sut.validate({ profileImage: faker.internet.url() })
     }).not.toThrow()

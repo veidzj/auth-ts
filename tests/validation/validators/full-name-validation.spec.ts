@@ -46,6 +46,7 @@ describe('FullNameValidation', () => {
 
   test('Should throw ValidationError if full name is less than 3 characters long', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(shortFullName)
     }).toThrow(new ValidationError('Full name must be between 3 and 50 characters long'))
@@ -53,6 +54,7 @@ describe('FullNameValidation', () => {
 
   test('Should throw ValidationError if full name is greater than 50 characters long', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(longFullName)
     }).toThrow(new ValidationError('Full name must be between 3 and 50 characters long'))
@@ -60,6 +62,7 @@ describe('FullNameValidation', () => {
 
   test('Should throw ValidationError if full name starts with a lowercase letter', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(lowercaseFullName)
     }).toThrow(new ValidationError('Full name must start with an uppercase letter'))
@@ -67,6 +70,7 @@ describe('FullNameValidation', () => {
 
   test('Should throw ValidationError if full name have an invalid space between words', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(invalidSpaceBetweenFullName)
     }).toThrow(new ValidationError('Full name must be separated by a single space'))
@@ -74,6 +78,7 @@ describe('FullNameValidation', () => {
 
   test('Should throw ValidationError if full name have an invalid space after words', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(invalidSpaceAfterFullName)
     }).toThrow(new ValidationError('Full name must be separated by a single space'))
@@ -81,6 +86,7 @@ describe('FullNameValidation', () => {
 
   test('Should throw ValidationError if full name contains special character', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(fullNameWithSpecialCharacter)
     }).toThrow(new ValidationError('Full name can only contain letters and letters with accents'))
@@ -88,6 +94,7 @@ describe('FullNameValidation', () => {
 
   test('Should throw ValidationError if full name contains an isolated accent', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(fullNameWithIsolatedAccent)
     }).toThrow(new ValidationError('Full name can only contain letters and letters with accents'))
@@ -95,6 +102,7 @@ describe('FullNameValidation', () => {
 
   test('Should not throw on success', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(validFullName)
     }).not.toThrow()

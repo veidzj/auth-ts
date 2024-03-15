@@ -34,7 +34,9 @@ describe('ChangeEmailController', () => {
     test('Should call Validation with correct values', async() => {
       const { sut, validationSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(validationSpy.input).toEqual({ newEmail: request.newEmail })
     })
 
@@ -42,14 +44,18 @@ describe('ChangeEmailController', () => {
       const { sut, validationSpy } = makeSut()
       const errorMessage = faker.word.words()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new ValidationError(errorMessage) })
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.badRequest(new ValidationError(errorMessage)))
     })
 
     test('Should return serverError if Validation throws', async() => {
       const { sut, validationSpy } = makeSut()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new Error() })
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
   })
@@ -58,7 +64,9 @@ describe('ChangeEmailController', () => {
     test('Should call ChangeEmail with correct values', async() => {
       const { sut, changeEmailSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(changeEmailSpy.currentEmail).toBe(request.currentEmail)
       expect(changeEmailSpy.newEmail).toBe(request.newEmail)
     })
@@ -66,20 +74,26 @@ describe('ChangeEmailController', () => {
     test('Should return conflict if ChangeEmail throws AccountAlreadyExistsError', async() => {
       const { sut, changeEmailSpy } = makeSut()
       jest.spyOn(changeEmailSpy, 'change').mockRejectedValueOnce(new AccountAlreadyExistsError())
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.conflict(new AccountAlreadyExistsError()))
     })
 
     test('Should return serverError if ChangeEmail throws', async() => {
       const { sut, changeEmailSpy } = makeSut()
       jest.spyOn(changeEmailSpy, 'change').mockRejectedValueOnce(new Error())
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.serverError())
     })
 
     test('Should return noContent on success', async() => {
       const { sut } = makeSut()
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.noContent())
     })
   })

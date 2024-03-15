@@ -29,7 +29,9 @@ describe('GetAccountIdByTokenMongoRepository', () => {
     const sut = makeSut()
     const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: faker.word.words() }
     await accountCollection.insertOne(addAccountRepositoryInput)
+
     const accountId = await sut.get(faker.word.words(), addAccountRepositoryInput.roles[0])
+
     expect(accountId).toBeNull()
   })
 
@@ -37,7 +39,9 @@ describe('GetAccountIdByTokenMongoRepository', () => {
     const sut = makeSut()
     const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: faker.word.words() }
     await accountCollection.insertOne(addAccountRepositoryInput)
+
     const accountId = await sut.get(addAccountRepositoryInput.accessToken, faker.word.words())
+
     expect(accountId).toBeNull()
   })
 
@@ -45,14 +49,18 @@ describe('GetAccountIdByTokenMongoRepository', () => {
     const sut = makeSut()
     const addAccountRepositoryInput = { ...mockAddAccountRepositoryInput(), accessToken: faker.word.words() }
     const insertResult = await accountCollection.insertOne(addAccountRepositoryInput)
+
     const accountId = await sut.get(addAccountRepositoryInput.accessToken, addAccountRepositoryInput.roles[0])
+
     expect(accountId).toBe(insertResult.insertedId.toString())
   })
 
   test('Should throw if mongo throws', async() => {
     const sut = makeSut()
     jest.spyOn(Collection.prototype, 'findOne').mockRejectedValueOnce(new Error())
+
     const promise = sut.get(faker.word.words(), faker.word.words())
+
     await expect(promise).rejects.toThrow()
   })
 })

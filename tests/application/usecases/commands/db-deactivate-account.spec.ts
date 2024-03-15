@@ -28,21 +28,27 @@ describe('DbDeactivateAccount', () => {
   describe('CheckAccountByIdRepository', () => {
     test('Should call CheckAccountByIdRepository with correct id', async() => {
       const { sut, checkAccountByIdRepositorySpy } = makeSut()
+
       await sut.deactivate(accountId)
+
       expect(checkAccountByIdRepositorySpy.id).toBe(accountId)
     })
 
     test('Should throw AccountNotFoundError if CheckAccountByIdRepository returns false', async() => {
       const { sut, checkAccountByIdRepositorySpy } = makeSut()
       checkAccountByIdRepositorySpy.output = false
+
       const promise = sut.deactivate(accountId)
+
       await expect(promise).rejects.toThrow(new AccountNotFoundError())
     })
 
     test('Should throw if CheckAccountByIdRepository throws', async() => {
       const { sut, checkAccountByIdRepositorySpy } = makeSut()
       jest.spyOn(checkAccountByIdRepositorySpy, 'check').mockRejectedValueOnce(new Error())
+
       const promise = sut.deactivate(accountId)
+
       await expect(promise).rejects.toThrow()
     })
   })
@@ -50,27 +56,35 @@ describe('DbDeactivateAccount', () => {
   describe('DeactivateAccountRepository', () => {
     test('Should call DeactivateAccountRepository with correct value', async() => {
       const { sut, deactivateAccountRepositorySpy } = makeSut()
+
       await sut.deactivate(accountId)
+
       expect(deactivateAccountRepositorySpy.accountId).toBe(accountId)
     })
 
     test('Should throw AccountAlreadyDeactivated if DeactivateAccountRepository returns false', async() => {
       const { sut, deactivateAccountRepositorySpy } = makeSut()
       deactivateAccountRepositorySpy.output = false
+
       const promise = sut.deactivate(accountId)
+
       await expect(promise).rejects.toThrow(new AccountAlreadyDeactivatedError())
     })
 
     test('Should throw if DeactivateAccountRepository throws', async() => {
       const { sut, deactivateAccountRepositorySpy } = makeSut()
       jest.spyOn(deactivateAccountRepositorySpy, 'deactivate').mockRejectedValueOnce(new Error())
+
       const promise = sut.deactivate(accountId)
+
       await expect(promise).rejects.toThrow()
     })
 
     test('Should not throw on success', async() => {
       const { sut } = makeSut()
+
       const promise = sut.deactivate(accountId)
+
       await expect(promise).resolves.not.toThrow()
     })
   })

@@ -20,6 +20,7 @@ describe('BodyParser Middleware', () => {
     app.post(route, (req, res) => {
       res.send(req.body)
     })
+
     await request(app)
       .post(route)
       .send(data)

@@ -42,6 +42,7 @@ describe('PasswordValidation', () => {
 
   test('Should throw ValidationError if password is less than 6 characters long', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(shortPassword)
     }).toThrow(new ValidationError('Password must be between 6 and 255 characters long'))
@@ -49,6 +50,7 @@ describe('PasswordValidation', () => {
 
   test('Should throw ValidationError if password is greater than 255 characters long', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(longPassword)
     }).toThrow(new ValidationError('Password must be between 6 and 255 characters long'))
@@ -56,6 +58,7 @@ describe('PasswordValidation', () => {
 
   test('Should throw ValidationError if password does not contains a letter', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(passwordWithNoLetter)
     }).toThrow(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
@@ -63,6 +66,7 @@ describe('PasswordValidation', () => {
 
   test('Should throw ValidationError if password does not contains a number', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(passwordWithNoNumber)
     }).toThrow(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
@@ -70,6 +74,7 @@ describe('PasswordValidation', () => {
 
   test('Should throw ValidationError if password does not contains a special character', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(passwordWithNoSpecialCharacter)
     }).toThrow(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
@@ -77,6 +82,7 @@ describe('PasswordValidation', () => {
 
   test('Should throw ValidationError if password contains username', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(passwordContainsUsername)
     }).toThrow(new ValidationError('Password cannot contain personal data'))
@@ -84,6 +90,7 @@ describe('PasswordValidation', () => {
 
   test('Should throw ValidationError if password contains full name', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(passwordContainsFullName)
     }).toThrow(new ValidationError('Password cannot contain personal data'))
@@ -91,6 +98,7 @@ describe('PasswordValidation', () => {
 
   test('Should throw ValidationError if password contains email', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(passwordContainsEmail)
     }).toThrow(new ValidationError('Password cannot contain personal data'))
@@ -98,6 +106,7 @@ describe('PasswordValidation', () => {
 
   test('Should throw ValidationError if password contains birthdate', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(passwordContainsBirthdate)
     }).toThrow(new ValidationError('Password cannot contain personal data'))
@@ -105,6 +114,7 @@ describe('PasswordValidation', () => {
 
   test('Should not throw on success', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate(validPassword)
     }).not.toThrow()

@@ -24,13 +24,16 @@ describe('IdValidation', () => {
   test('Should call IdValidator with correct id', () => {
     const { sut, idValidatorSpy } = makeSut()
     const id = faker.string.uuid()
+
     sut.validate({ [fieldName]: id })
+
     expect(idValidatorSpy.id).toBe(id)
   })
 
   test('Should throw ValidationError if IdValidator returns false', () => {
     const { sut, idValidatorSpy } = makeSut()
     idValidatorSpy.isIdValid = false
+
     expect(() => {
       sut.validate({ [fieldName]: faker.string.uuid() })
     }).toThrow(new ValidationError(`${fieldName} must be a valid id`))
@@ -39,6 +42,7 @@ describe('IdValidation', () => {
   test('Should throw if IdValidator throws', () => {
     const { sut, idValidatorSpy } = makeSut()
     jest.spyOn(idValidatorSpy, 'isValid').mockImplementationOnce(() => { throw new Error() })
+
     expect(() => {
       sut.validate({ [fieldName]: faker.string.uuid() })
     }).toThrow()
@@ -46,6 +50,7 @@ describe('IdValidation', () => {
 
   test('Should not throw on success', () => {
     const { sut } = makeSut()
+
     expect(() => {
       sut.validate({ [fieldName]: faker.string.uuid() })
     }).not.toThrow()

@@ -20,6 +20,7 @@ describe('DateValidation', () => {
 
   test('Should throw ValidationError if date is in invalid format', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate({ [fieldName]: invalidDate })
     }).toThrow(new ValidationError(`${fieldName} must be in the format YYYY-MM-DD (ISO 8601)`))
@@ -27,6 +28,7 @@ describe('DateValidation', () => {
 
   test('Should not throw on success', () => {
     const sut = makeSut()
+
     expect(() => {
       sut.validate({ [fieldName]: validDate })
     }).not.toThrow()

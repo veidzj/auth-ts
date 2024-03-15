@@ -12,6 +12,7 @@ const fieldName: string = faker.word.words()
 describe('RequiredFieldValidation', () => {
   test('Should throw ValidationError if field is not provided', () => {
     const sut = makesut()
+
     expect(() => {
       sut.validate({
         [fieldName]: ''
@@ -21,6 +22,7 @@ describe('RequiredFieldValidation', () => {
 
   test('Should not throw on success', () => {
     const sut = makesut()
+
     expect(() => {
       sut.validate({
         [fieldName]: faker.word.words()
