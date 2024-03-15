@@ -1,4 +1,4 @@
-export class GetAccountByEmailRepository {
+export interface GetAccountByEmailRepository {
   get: (email: string) => Promise<GetAccountByEmailRepository.Output | null>
 }
 
