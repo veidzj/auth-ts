@@ -1,5 +1,5 @@
 export interface AddAccount {
-  add: (input: AddAccount.Input) => Promise<void>
+  add: (input: AddAccount.Input) => Promise<string>
 }
 
 export namespace AddAccount {

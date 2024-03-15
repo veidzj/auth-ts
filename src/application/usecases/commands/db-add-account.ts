@@ -11,18 +11,19 @@ export class DbAddAccount implements AddAccount {
     private readonly addAccountRepository: AddAccountRepository
   ) {}
 
-  public async add(input: AddAccount.Input): Promise<void> {
+  public async add(input: AddAccount.Input): Promise<string> {
     const accountAlreadyExists = await this.checkAccountByEmailRepository.check(input.email)
     if (accountAlreadyExists) {
       throw new AccountAlreadyExistsError()
     }
     const hashedPassword = await this.hasher.hash(input.password)
-    await this.addAccountRepository.add({
+    const insertedId = await this.addAccountRepository.add({
       ...input,
       password: hashedPassword,
       isActive: true,
       roles: ['user'],
       createdAt: new Date()
     })
+    return insertedId
   }
 }
