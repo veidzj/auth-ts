@@ -45,4 +45,11 @@ describe('NodemailerAdapter', () => {
       html: expect.stringContaining(confirmationCode)
     }))
   })
+
+  test('Should throw if sendMail throws', async() => {
+    const { sut, transporterConfig } = makeSut()
+    jest.spyOn(nodemailer.createTransport(transporterConfig), 'sendMail').mockRejectedValueOnce(new Error())
+    const promise = sut.send(confirmationCode, email)
+    await expect(promise).rejects.toThrow()
+  })
 })
