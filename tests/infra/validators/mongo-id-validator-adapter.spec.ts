@@ -23,4 +23,12 @@ describe('MongoIdValidatorAdapter', () => {
 
     expect(isMongoIdSpy).toHaveBeenCalledWith(mongoId)
   })
+
+  test('Should return true if validator returns true', () => {
+    const sut = makeSut()
+
+    const isValid = sut.isValid(faker.database.mongodbObjectId())
+
+    expect(isValid).toBe(true)
+  })
 })
