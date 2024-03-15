@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 
 import { IdValidatorSpy } from '@/tests/validation/mocks'
 import { IdValidation } from '@/validation/validators'
+import { ValidationError } from '@/validation/errors'
 
 interface Sut {
   sut: IdValidation
@@ -25,5 +26,13 @@ describe('IdValidation', () => {
     const id = faker.string.uuid()
     sut.validate({ [fieldName]: id })
     expect(idValidatorSpy.id).toBe(id)
+  })
+
+  test('Should throw ValidationError if IdValidator returns false', () => {
+    const { sut, idValidatorSpy } = makeSut()
+    idValidatorSpy.isIdValid = false
+    expect(() => {
+      sut.validate({ [fieldName]: faker.string.uuid() })
+    }).toThrow(new ValidationError(`${fieldName} must be a valid id`))
   })
 })
