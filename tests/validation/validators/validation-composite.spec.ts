@@ -28,7 +28,7 @@ describe('ValidationComposite', () => {
     }).toThrow(new ValidationError(errorMessage))
   })
 
-  test('Should not throw if all validations succeeds', () => {
+  test('Should not throw on success', () => {
     const { sut } = makeSut()
     expect(() => {
       sut.validate({ username: faker.word.words() })

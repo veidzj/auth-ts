@@ -44,7 +44,7 @@ describe('EmailValidation', () => {
     }).toThrow()
   })
 
-  test('Should not throw if EmailValidator returns true', () => {
+  test('Should not throw on success', () => {
     const { sut } = makeSut()
     expect(() => {
       sut.validate({ [fieldName]: faker.internet.email() })

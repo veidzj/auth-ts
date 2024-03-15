@@ -71,7 +71,7 @@ describe('UsernameValidation', () => {
     }).toThrow(new ValidationError('Username must not contain spaces'))
   })
 
-  test('Should return null if username is valid', () => {
+  test('Should not throw on success', () => {
     const sut = makeSut()
     expect(() => {
       sut.validate(validUsername)

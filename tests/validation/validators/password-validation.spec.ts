@@ -103,7 +103,7 @@ describe('PasswordValidation', () => {
     }).toThrow(new ValidationError('Password cannot contain personal data'))
   })
 
-  test('Should not throw if password is valid', () => {
+  test('Should not throw on success', () => {
     const sut = makeSut()
     expect(() => {
       sut.validate(validPassword)

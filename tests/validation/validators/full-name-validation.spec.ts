@@ -93,7 +93,7 @@ describe('FullNameValidation', () => {
     }).toThrow(new ValidationError('Full name can only contain letters and letters with accents'))
   })
 
-  test('Should not throw if full name is valid', () => {
+  test('Should not throw on success', () => {
     const sut = makeSut()
     expect(() => {
       sut.validate(validFullName)
