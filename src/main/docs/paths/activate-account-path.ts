@@ -14,7 +14,7 @@ export const activateAccountPath = {
       }
     }],
     responses: {
-      200: {
+      204: {
         $ref: '#/components/activateAccountOutput'
       },
       401: {

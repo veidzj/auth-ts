@@ -15,7 +15,7 @@ export const changeEmailPath = {
       }
     },
     responses: {
-      200: {
+      204: {
         $ref: '#/components/changeEmailOutput'
       },
       401: {
