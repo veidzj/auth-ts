@@ -1,13 +1,17 @@
-import { type Controller, type HttpResponse } from '@/presentation/protocols'
+import { type Controller, type HttpResponse, type Validation } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
 import { type ActivateAccount } from '@/domain/usecases/commands'
 import { AccountNotFoundError, AccountAlreadyActivatedError } from '@/domain/errors'
 
 export class ActivateAccountController implements Controller {
-  constructor(private readonly activateAccount: ActivateAccount) {}
+  constructor(
+    private readonly validation: Validation,
+    private readonly activateAccount: ActivateAccount
+  ) {}
 
   public async handle(request: ActivateAccountController.Request): Promise<HttpResponse> {
     try {
+      this.validation.validate(request)
       await this.activateAccount.activate(request.accountId)
       return HttpHelper.noContent()
     } catch (error) {
