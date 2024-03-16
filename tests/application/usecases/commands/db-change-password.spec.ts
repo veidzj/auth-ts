@@ -1,21 +1,25 @@
 import { faker } from '@faker-js/faker'
 
 import { CheckAccountByEmailRepositorySpy } from '@/tests/application/mocks/queries'
+import { ChangePasswordRepositorySpy } from '@/tests/application/mocks/commands'
 import { DbChangePassword } from '@/application/usecases/commands'
 import { AccountNotFoundError } from '@/domain/errors'
 
 interface Sut {
   sut: DbChangePassword
   checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
+  changePasswordRepositorySpy: ChangePasswordRepositorySpy
 }
 
 const makeSut = (): Sut => {
   const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
   checkAccountByEmailRepositorySpy.output = true
-  const sut = new DbChangePassword(checkAccountByEmailRepositorySpy)
+  const changePasswordRepositorySpy = new ChangePasswordRepositorySpy()
+  const sut = new DbChangePassword(checkAccountByEmailRepositorySpy, changePasswordRepositorySpy)
   return {
     sut,
-    checkAccountByEmailRepositorySpy
+    checkAccountByEmailRepositorySpy,
+    changePasswordRepositorySpy
   }
 }
 
@@ -46,8 +50,19 @@ describe('DbChangePassword', () => {
       jest.spyOn(checkAccountByEmailRepositorySpy, 'check').mockRejectedValue(new Error())
 
       const promise = sut.change(email, newPassword)
-      
+
       await expect(promise).rejects.toThrow()
+    })
+  })
+
+  describe('ChangePasswordRepository', () => {
+    test('Should call ChangePasswordRepository with correct values', async() => {
+      const { sut, changePasswordRepositorySpy } = makeSut()
+
+      await sut.change(email, newPassword)
+
+      expect(changePasswordRepositorySpy.email).toBe(email)
+      expect(changePasswordRepositorySpy.newPassword).toBe(newPassword)
     })
   })
 })
