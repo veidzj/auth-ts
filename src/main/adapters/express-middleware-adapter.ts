@@ -18,8 +18,8 @@ export class ExpressMiddlewareAdapter {
         res.status(statusCode).json({
           error: {
             status: statusCode,
-            type: body?.name,
-            message: body?.message
+            type: body.name,
+            message: body.message
           }
         })
       }
