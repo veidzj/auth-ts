@@ -51,10 +51,10 @@ export class HttpHelper {
     }
   }
 
-  public static serverError(): HttpResponse {
+  public static serverError(error: Error): HttpResponse {
     return {
       statusCode: 500,
-      body: new InternalServerError()
+      body: new InternalServerError(error.stack!)
     }
   }
 }

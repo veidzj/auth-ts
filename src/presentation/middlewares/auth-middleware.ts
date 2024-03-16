@@ -23,7 +23,7 @@ export class AuthMiddleware implements Middleware {
       if (error instanceof AccessDeniedError) {
         return HttpHelper.forbidden(error)
       }
-      return HttpHelper.serverError()
+      return HttpHelper.serverError(error as Error)
     }
   }
 }

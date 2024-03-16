@@ -25,7 +25,7 @@ export class DeactivateAccountController implements Controller {
       if (error instanceof AccountAlreadyDeactivatedError) {
         return HttpHelper.conflict(error)
       }
-      return HttpHelper.serverError()
+      return HttpHelper.serverError(error as Error)
     }
   }
 }

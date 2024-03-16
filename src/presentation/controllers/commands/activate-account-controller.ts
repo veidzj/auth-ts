@@ -25,7 +25,7 @@ export class ActivateAccountController implements Controller {
       if (error instanceof AccountAlreadyActivatedError) {
         return HttpHelper.conflict(error)
       }
-      return HttpHelper.serverError()
+      return HttpHelper.serverError(error as Error)
     }
   }
 }

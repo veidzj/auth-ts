@@ -56,7 +56,7 @@ describe('SendConfirmationCodeController', () => {
 
       const httpResponse = await sut.handle(mockRequest())
 
-      expect(httpResponse).toEqual(HttpHelper.serverError())
+      expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
     })
   })
 
@@ -86,7 +86,7 @@ describe('SendConfirmationCodeController', () => {
 
       const httpResponse = await sut.handle(mockRequest())
 
-      expect(httpResponse).toEqual(HttpHelper.serverError())
+      expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
     })
 
     test('Should return ok on success', async() => {

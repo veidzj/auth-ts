@@ -25,7 +25,7 @@ export class SendConfirmationCodeController implements Controller {
       if (error instanceof AccountNotFoundError) {
         return HttpHelper.notFound(error)
       }
-      return HttpHelper.serverError()
+      return HttpHelper.serverError(error as Error)
     }
   }
 }
