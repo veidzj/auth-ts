@@ -79,5 +79,14 @@ describe('ChangePasswordController', () => {
 
       expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
     })
+
+    test('Should return serverError if ChangePassword throws', async() => {
+      const { sut, changePasswordSpy } = makeSut()
+      jest.spyOn(changePasswordSpy, 'change').mockImplementationOnce(() => { throw new Error() })
+
+      const httpResponse = await sut.handle(mockRequest())
+
+      expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
+    })
   })
 })
