@@ -16,7 +16,7 @@ export class DbChangePassword implements ChangePassword {
     if (!accountExists) {
       throw new AccountNotFoundError()
     }
-    await this.hasher.hash(newPassword)
-    await this.changePasswordRepository.change(email, newPassword)
+    const hashedPassword = await this.hasher.hash(newPassword)
+    await this.changePasswordRepository.change(email, hashedPassword)
   }
 }
