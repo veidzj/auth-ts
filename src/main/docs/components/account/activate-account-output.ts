@@ -1,3 +1,3 @@
 export const activateAccountOutput = {
-  description: 'Sucessfully activate an account'
+  description: 'Successfully activate an account'
 }

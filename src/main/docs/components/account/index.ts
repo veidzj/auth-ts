@@ -3,6 +3,7 @@ import { signInOutput } from './sign-in-output'
 import { deactivateAccountOutput } from './deactivate-account-output'
 import { activateAccountOutput } from './activate-account-output'
 import { changeEmailOutput } from './change-email-output'
+import { changePasswordOutput } from './change-password-output'
 import { sendConfirmationCodeOutput } from './send-confirmation-code-output'
 
 export const accountComponents = {
@@ -11,5 +12,6 @@ export const accountComponents = {
   deactivateAccountOutput,
   activateAccountOutput,
   changeEmailOutput,
+  changePasswordOutput,
   sendConfirmationCodeOutput
 }
