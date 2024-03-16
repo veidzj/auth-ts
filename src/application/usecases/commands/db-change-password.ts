@@ -1,4 +1,5 @@
 import { type CheckAccountByEmailRepository } from '@/application/protocols/queries'
+import { type Hasher } from '@/application/protocols/cryptography'
 import { type ChangePasswordRepository } from '@/application/protocols/commands'
 import { type ChangePassword } from '@/domain/usecases/commands'
 import { AccountNotFoundError } from '@/domain/errors'
@@ -6,6 +7,7 @@ import { AccountNotFoundError } from '@/domain/errors'
 export class DbChangePassword implements ChangePassword {
   constructor(
     private readonly checkAccountByEmailRepository: CheckAccountByEmailRepository,
+    private readonly hasher: Hasher,
     private readonly changePasswordRepository: ChangePasswordRepository
   ) {}
 
@@ -14,6 +16,7 @@ export class DbChangePassword implements ChangePassword {
     if (!accountExists) {
       throw new AccountNotFoundError()
     }
+    await this.hasher.hash(newPassword)
     await this.changePasswordRepository.change(email, newPassword)
   }
 }
