@@ -1,5 +1,6 @@
 export * from './app'
 export * from './env'
+export * from './logger'
 export * from './middlewares'
 export * from './routes'
 export * from './swagger'
