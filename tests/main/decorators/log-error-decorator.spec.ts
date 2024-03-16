@@ -1,13 +1,13 @@
 import { faker } from '@faker-js/faker'
 
 import { ControllerSpy } from '@/tests/presentation/mocks'
-import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
+import { LogErrorDecorator } from '@/main/decorators/log-error-decorator'
 import { LogErrorRepositorySpy } from '@/tests/application/mocks/commands'
 import { HttpHelper } from '@/presentation/helpers'
 import { type HttpResponse } from '@/presentation/protocols'
 
 interface Sut {
-  sut: LogControllerDecorator
+  sut: LogErrorDecorator
   controllerSpy: ControllerSpy
   logErrorRepositorySpy: LogErrorRepositorySpy
 }
@@ -15,7 +15,7 @@ interface Sut {
 const makeSut = (): Sut => {
   const controllerSpy = new ControllerSpy()
   const logErrorRepositorySpy = new LogErrorRepositorySpy()
-  const sut = new LogControllerDecorator(controllerSpy, logErrorRepositorySpy)
+  const sut = new LogErrorDecorator(controllerSpy, logErrorRepositorySpy)
   return {
     sut,
     controllerSpy,
@@ -33,8 +33,8 @@ const mockServerError = (): HttpResponse => {
   return HttpHelper.serverError(fakeError)
 }
 
-describe('LogControllerDecorator', () => {
-  describe('Controller', () => {
+describe('LogErrorDecorator', () => {
+  describe('Request Handler (Controller)', () => {
     test('Should call Controller with correct values', async() => {
       const { sut, controllerSpy } = makeSut()
       const request = mockRequest()
