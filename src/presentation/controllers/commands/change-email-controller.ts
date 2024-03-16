@@ -22,7 +22,7 @@ export class ChangeEmailController implements Controller {
       if (error instanceof AccountAlreadyExistsError) {
         return HttpHelper.conflict(error)
       }
-      return HttpHelper.serverError()
+      return HttpHelper.serverError(error as Error)
     }
   }
 }
