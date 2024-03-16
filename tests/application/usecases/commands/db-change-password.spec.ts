@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 
 import { CheckAccountByEmailRepositorySpy } from '@/tests/application/mocks/queries'
+import { HasherSpy } from '@/tests/application/mocks/cryptography'
 import { ChangePasswordRepositorySpy } from '@/tests/application/mocks/commands'
 import { DbChangePassword } from '@/application/usecases/commands'
 import { AccountNotFoundError } from '@/domain/errors'
@@ -8,17 +9,20 @@ import { AccountNotFoundError } from '@/domain/errors'
 interface Sut {
   sut: DbChangePassword
   checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
+  hasherSpy: HasherSpy
   changePasswordRepositorySpy: ChangePasswordRepositorySpy
 }
 
 const makeSut = (): Sut => {
   const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
   checkAccountByEmailRepositorySpy.output = true
+  const hasherSpy = new HasherSpy()
   const changePasswordRepositorySpy = new ChangePasswordRepositorySpy()
-  const sut = new DbChangePassword(checkAccountByEmailRepositorySpy, changePasswordRepositorySpy)
+  const sut = new DbChangePassword(checkAccountByEmailRepositorySpy, hasherSpy, changePasswordRepositorySpy)
   return {
     sut,
     checkAccountByEmailRepositorySpy,
+    hasherSpy,
     changePasswordRepositorySpy
   }
 }
@@ -52,6 +56,16 @@ describe('DbChangePassword', () => {
       const promise = sut.change(email, newPassword)
 
       await expect(promise).rejects.toThrow()
+    })
+  })
+
+  describe('Hasher', () => {
+    test('Should call Hasher with correct password', async() => {
+      const { sut, hasherSpy } = makeSut()
+
+      await sut.change(email, newPassword)
+
+      expect(hasherSpy.plainText).toBe(newPassword)
     })
   })
 
