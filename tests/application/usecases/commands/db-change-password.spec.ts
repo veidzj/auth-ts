@@ -24,5 +24,13 @@ describe('DbChangePassword', () => {
       const promise = sut.change(email, newPassword)
       await expect(promise).rejects.toThrow(new AccountNotFoundError())
     })
+
+    test('Should throw if CheckAccountByEmailRepository throws', async() => {
+      const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
+      const sut = new DbChangePassword(checkAccountByEmailRepositorySpy)
+      jest.spyOn(checkAccountByEmailRepositorySpy, 'check').mockRejectedValue(new Error())
+      const promise = sut.change(email, newPassword)
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
