@@ -32,7 +32,7 @@ describe('ChangePasswordMongoRepository', () => {
 
   test('Should change an account password on success', async() => {
     const sut = makeSut()
-    const insertResult = await accountCollection.insertOne({ ...mockAddAccountRepositoryInput() })
+    const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
       const email: string = fakeAccount.email
@@ -47,7 +47,7 @@ describe('ChangePasswordMongoRepository', () => {
 
   test('Should not change an account password if there is no account with the given email', async() => {
     const sut = makeSut()
-    const insertResult = await accountCollection.insertOne({ ...mockAddAccountRepositoryInput() })
+    const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
       await sut.change(faker.internet.email(), newPassword)

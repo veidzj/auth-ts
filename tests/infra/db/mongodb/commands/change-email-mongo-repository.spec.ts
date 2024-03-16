@@ -32,11 +32,9 @@ describe('ChangeEmailMongoRepository', () => {
 
   test('Should change an account email on success', async() => {
     const sut = makeSut()
-    const addAccountRepositoryInput = mockAddAccountRepositoryInput()
-    const insertResult = await accountCollection.insertOne({ ...addAccountRepositoryInput })
+    const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
-      expect(fakeAccount.email).toBe(addAccountRepositoryInput.email)
       const currentEmail: string = fakeAccount.email
 
       await sut.change(currentEmail, newEmail)
@@ -49,12 +47,9 @@ describe('ChangeEmailMongoRepository', () => {
 
   test('Should not change an account email if there is no account with current email', async() => {
     const sut = makeSut()
-    const addAccountRepositoryInput = mockAddAccountRepositoryInput()
-    const insertResult = await accountCollection.insertOne({ ...addAccountRepositoryInput })
+    const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
-      expect(fakeAccount.email).toBe(addAccountRepositoryInput.email)
-
       const newEmail: string = faker.internet.email()
 
       await sut.change(faker.internet.email(), newEmail)
