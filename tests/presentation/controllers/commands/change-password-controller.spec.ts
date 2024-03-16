@@ -88,5 +88,13 @@ describe('ChangePasswordController', () => {
 
       expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
     })
+
+    test('Should return noContent on success', async() => {
+      const { sut } = makeSut()
+
+      const httpResponse = await sut.handle(mockRequest())
+
+      expect(httpResponse).toEqual(HttpHelper.noContent())
+    })
   })
 })
