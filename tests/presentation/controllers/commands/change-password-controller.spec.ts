@@ -5,6 +5,7 @@ import { ChangePasswordSpy } from '@/tests/domain/mocks/commands'
 import { ChangePasswordController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
 import { ValidationError } from '@/validation/errors'
+import { AccountNotFoundError } from '@/domain/errors'
 
 interface Sut {
   sut: ChangePasswordController
@@ -33,7 +34,9 @@ describe('ChangePasswordController', () => {
     test('Should call Validation with correct values', async() => {
       const { sut, validationSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(validationSpy.input).toEqual(request)
     })
 
@@ -41,14 +44,18 @@ describe('ChangePasswordController', () => {
       const { sut, validationSpy } = makeSut()
       const errorMessage = faker.word.words()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new ValidationError(errorMessage) })
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.badRequest(new ValidationError(errorMessage)))
     })
 
     test('Should return serverError if Validation throws', async() => {
       const { sut, validationSpy } = makeSut()
       jest.spyOn(validationSpy, 'validate').mockImplementationOnce(() => { throw new Error() })
+
       const httpResponse = await sut.handle(mockRequest())
+
       expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
     })
   })
@@ -57,9 +64,20 @@ describe('ChangePasswordController', () => {
     test('Should call ChangePassword with correct values', async() => {
       const { sut, changePasswordSpy } = makeSut()
       const request = mockRequest()
+
       await sut.handle(request)
+
       expect(changePasswordSpy.email).toBe(request.email)
       expect(changePasswordSpy.newPassword).toBe(request.newPassword)
+    })
+
+    test('Should return notFound if ChangePassword throws AccountNotFoundError', async() => {
+      const { sut, changePasswordSpy } = makeSut()
+      jest.spyOn(changePasswordSpy, 'change').mockRejectedValueOnce(new AccountNotFoundError())
+
+      const httpResponse = await sut.handle(mockRequest())
+
+      expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
     })
   })
 })
