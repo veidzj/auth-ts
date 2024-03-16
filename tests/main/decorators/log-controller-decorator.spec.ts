@@ -54,6 +54,16 @@ describe('LogControllerDecorator', () => {
   })
 
   describe('LogErrorRepositorySpy', () => {
+    test('Should not call LogErrorRepositoy if controller does not returns a server error', async() => {
+      const { sut, logErrorRepositorySpy } = makeSut()
+      jest.spyOn(logErrorRepositorySpy, 'log')
+
+      await sut.handle(mockRequest())
+
+      expect(logErrorRepositorySpy.log).toHaveBeenCalledTimes(0)
+      expect(logErrorRepositorySpy.stack).toBeUndefined()
+    })
+
     test('Should call LogErrorRepositoy with correct error if controller returns a server error', async() => {
       const { sut, controllerSpy, logErrorRepositorySpy } = makeSut()
       jest.spyOn(logErrorRepositorySpy, 'log')
