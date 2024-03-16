@@ -16,7 +16,7 @@ export class SignUpValidationFactory {
     validations.push(new UsernameValidation())
     validations.push(new FullNameValidation())
     validations.push(new EmailValidation(new EmailValidatorAdapter(), 'email'))
-    validations.push(new PasswordValidation())
+    validations.push(new PasswordValidation('password'))
     validations.push(new ProfileImageValidation(new URLValidatorAdapter()))
     validations.push(new DateValidation('birthdate'))
     return new ValidationComposite(validations)

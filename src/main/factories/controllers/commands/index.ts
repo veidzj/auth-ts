@@ -1,5 +1,6 @@
 export * from './activate-account-controller-factory'
 export * from './change-email-controller-factory'
+export * from './change-password-controller-factory'
 export * from './deactivate-account-controller-factory'
 export * from './send-confirmation-code-controller-factory'
 export * from './sign-in-controller-factory'
