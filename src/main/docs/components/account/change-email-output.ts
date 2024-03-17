@@ -1,3 +1,3 @@
 export const changeEmailOutput = {
-  description: 'Sucessfully activate an account'
+  description: 'Successfully changed an account email'
 }

@@ -1,5 +1,5 @@
 export const signInOutput = {
-  description: 'Sucessfully authentication',
+  description: 'Successfully authentication',
   content: {
     'application/json': {
       schema: {

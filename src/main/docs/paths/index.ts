@@ -3,6 +3,7 @@ import { signInPath } from './sign-in-path'
 import { activateAccountPath } from './activate-account-path'
 import { deactivateAccountPath } from './deactivate-account-path'
 import { changeEmailPath } from './change-email-path'
+import { changePasswordPath } from './change-password-path'
 import { sendConfirmationCodePath } from './send-confirmation-code-path'
 
 export const accountPaths = {
@@ -11,5 +12,6 @@ export const accountPaths = {
   activateAccountPath,
   deactivateAccountPath,
   changeEmailPath,
+  changePasswordPath,
   sendConfirmationCodePath
 }

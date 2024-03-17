@@ -1,3 +1,3 @@
 export const deactivateAccountOutput = {
-  description: 'Sucessfully deactivate an account'
+  description: 'Successfully deactivate an account'
 }

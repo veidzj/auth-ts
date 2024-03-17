@@ -4,17 +4,17 @@ import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
 import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
-import { ChangeEmailMongoRepository } from '@/infra/db/mongodb/commands'
+import { ChangePasswordMongoRepository } from '@/infra/db/mongodb/commands'
 
 let accountCollection: Collection
 
-const makeSut = (): ChangeEmailMongoRepository => {
-  return new ChangeEmailMongoRepository()
+const makeSut = (): ChangePasswordMongoRepository => {
+  return new ChangePasswordMongoRepository()
 }
 
-const newEmail: string = faker.internet.email()
+const newPassword: string = faker.internet.password()
 
-describe('ChangeEmailMongoRepository', () => {
+describe('ChangePasswordMongoRepository', () => {
   beforeAll(async() => {
     MockDate.set(new Date())
     await connectToDatabase()
@@ -30,32 +30,30 @@ describe('ChangeEmailMongoRepository', () => {
     await clearCollection(accountCollection)
   })
 
-  test('Should change an account email on success', async() => {
+  test('Should change an account password on success', async() => {
     const sut = makeSut()
     const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
-      const currentEmail: string = fakeAccount.email
+      const email: string = fakeAccount.email
 
-      await sut.change(currentEmail, newEmail)
+      await sut.change(email, newPassword)
 
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
-      expect(account?.email).toBe(newEmail)
+      expect(account?.password).toBe(newPassword)
       expect(account?.updatedAt).toEqual(new Date())
     }
   })
 
-  test('Should not change an account email if there is no account with current email', async() => {
+  test('Should not change an account password if there is no account with the given email', async() => {
     const sut = makeSut()
     const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
-      const newEmail: string = faker.internet.email()
-
-      await sut.change(faker.internet.email(), newEmail)
+      await sut.change(faker.internet.email(), newPassword)
 
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
-      expect(account?.email).toBe(fakeAccount.email)
+      expect(account?.password).toBe(fakeAccount.password)
       expect(account?.updatedAt).toBeFalsy()
     }
   })
