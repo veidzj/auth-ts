@@ -3,19 +3,17 @@ import { ValidationError } from '@/validation/errors'
 import { type Validation } from '@/presentation/protocols'
 
 export class ProfileImageValidation implements Validation {
-  constructor(private readonly urlValidator: URLValidator) {}
+  constructor(
+    private readonly urlValidator: URLValidator,
+    private readonly fieldName: string
+  ) {}
 
-  public validate(input: ProfileImageValidation.Input): void {
-    if (input.profileImage) {
-      if (!this.urlValidator.isValid(input.profileImage)) {
-        throw new ValidationError('Profile image must be a valid url')
+  public validate(input: object): void {
+    const profileImage: string = input[this.fieldName]
+    if (profileImage) {
+      if (!this.urlValidator.isValid(profileImage)) {
+        throw new ValidationError(`${this.fieldName} image must be a valid url`)
       }
     }
-  }
-}
-
-export namespace ProfileImageValidation {
-  export interface Input {
-    profileImage: string | undefined
   }
 }
