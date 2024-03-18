@@ -15,7 +15,7 @@ describe('PasswordValidation', () => {
 
     expect(() => {
       sut.validate({ [fieldName]: faker.string.alpha({ length: { min: 1, max: 5 } }) })
-    }).toThrow(new ValidationError('Password must be between 6 and 255 characters long'))
+    }).toThrow(new ValidationError(`${fieldName} must be between 6 and 255 characters long`))
   })
 
   test('Should throw ValidationError if password is greater than 255 characters long', () => {
@@ -23,7 +23,7 @@ describe('PasswordValidation', () => {
 
     expect(() => {
       sut.validate({ [fieldName]: faker.string.alpha(256) })
-    }).toThrow(new ValidationError('Password must be between 6 and 255 characters long'))
+    }).toThrow(new ValidationError(`${fieldName} must be between 6 and 255 characters long`))
   })
 
   test('Should throw ValidationError if password does not contains a letter', () => {
@@ -31,7 +31,7 @@ describe('PasswordValidation', () => {
 
     expect(() => {
       sut.validate({ [fieldName]: faker.string.numeric(6) })
-    }).toThrow(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
+    }).toThrow(new ValidationError(`${fieldName} must contain at least 1 letter, 1 digit, and 1 special character`))
   })
 
   test('Should throw ValidationError if password does not contains a number', () => {
@@ -39,7 +39,7 @@ describe('PasswordValidation', () => {
 
     expect(() => {
       sut.validate({ [fieldName]: faker.string.alpha(6) })
-    }).toThrow(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
+    }).toThrow(new ValidationError(`${fieldName} must contain at least 1 letter, 1 digit, and 1 special character`))
   })
 
   test('Should throw ValidationError if password does not contains a special character', () => {
@@ -47,7 +47,7 @@ describe('PasswordValidation', () => {
 
     expect(() => {
       sut.validate({ [fieldName]: faker.string.alpha(3) + faker.string.numeric(3) })
-    }).toThrow(new ValidationError('Password must contain at least 1 letter, 1 digit, and 1 special character'))
+    }).toThrow(new ValidationError(`${fieldName} must contain at least 1 letter, 1 digit, and 1 special character`))
   })
 
   test('Should not throw on success', () => {
