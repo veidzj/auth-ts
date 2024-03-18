@@ -37,7 +37,7 @@ describe('ChangeEmailController', () => {
 
       await sut.handle(request)
 
-      expect(validationSpy.input).toEqual({ newEmail: request.newEmail })
+      expect(validationSpy.input).toEqual(request)
     })
 
     test('Should return badRequest if Validation throws ValidationError', async() => {
