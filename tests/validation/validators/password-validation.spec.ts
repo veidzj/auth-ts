@@ -54,7 +54,7 @@ describe('PasswordValidation', () => {
     const sut = makeSut()
 
     expect(() => {
-      sut.validate({ [fieldName]: faker.internet.password({ length: 15 }) + faker.string.numeric() + faker.string.symbol() })
+      sut.validate({ [fieldName]: faker.internet.password({ length: 15 }) + faker.string.alpha() + faker.string.numeric() + faker.string.symbol() })
     }).not.toThrow()
   })
 })
