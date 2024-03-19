@@ -42,4 +42,10 @@ describe('DbVerifyConfirmationCode', () => {
     const promise = sut.verify(accountId, confirmationCode)
     await expect(promise).rejects.toThrow(new Error())
   })
+
+  test('Should not throw on success', async() => {
+    const { sut } = makeSut()
+    const promise = sut.verify(accountId, confirmationCode)
+    await expect(promise).resolves.not.toThrow()
+  })
 })
