@@ -6,8 +6,12 @@ export class VerifyConfirmationCodeMiddleware implements Middleware {
   constructor(private readonly verifyConfirmationCode: VerifyConfirmationCode) {}
 
   public async handle(request: VerifyConfirmationCodeMiddleware.Request): Promise<HttpResponse> {
-    await this.verifyConfirmationCode.verify(request.accountId, request.confirmationCode)
-    return HttpHelper.noContent()
+    try {
+      await this.verifyConfirmationCode.verify(request.accountId, request.confirmationCode)
+      return HttpHelper.noContent()
+    } catch (error) {
+      return HttpHelper.serverError(error as Error)
+    }
   }
 }
 
