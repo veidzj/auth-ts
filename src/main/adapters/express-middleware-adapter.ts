@@ -12,7 +12,7 @@ export class ExpressMiddlewareAdapter {
       }
       const httpResponse = await middleware.handle(request)
       const { statusCode, body } = httpResponse
-      if (statusCode === 200) {
+      if (statusCode >= 200 && statusCode <= 299) {
         logger.log('info', `${req.method} ${statusCode} ${req.path}`)
         Object.assign(req.body, body)
         next()
