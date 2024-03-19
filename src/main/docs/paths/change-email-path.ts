@@ -24,6 +24,9 @@ export const changeEmailPath = {
       400: {
         $ref: '#/components/badRequest'
       },
+      404: {
+        $ref: '#/components/notFound'
+      },
       409: {
         $ref: '#/components/conflict'
       },
