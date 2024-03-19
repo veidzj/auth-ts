@@ -40,4 +40,21 @@ describe('VerifyConfirmationCodeMongoRepository', () => {
 
     expect(confirmationCodeIsValid).toBe(true)
   })
+
+  test('Should return false if confirmation code is invalid', async() => {
+    const sut = makeSut()
+    const accountId = faker.database.mongodbObjectId()
+    const confirmationCode = faker.string.alphanumeric(6)
+    const expirationDate = new Date()
+    expirationDate.setMinutes(expirationDate.getMinutes() + 10)
+    await codeCollection.insertOne({
+      accountId,
+      confirmationCode,
+      expirationDate
+    })
+
+    const confirmationCodeIsValid = await sut.verify(accountId, faker.string.alphanumeric(6))
+
+    expect(confirmationCodeIsValid).toBe(false)
+  })
 })
