@@ -13,7 +13,7 @@ export class ChangePasswordController implements Controller {
   public async handle(request: ChangePasswordController.Request): Promise<HttpResponse> {
     try {
       this.validation.validate(request)
-      await this.changePassword.change(request.email, request.newPassword)
+      await this.changePassword.change(request.accountId, request.newPassword)
       return HttpHelper.noContent()
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -29,7 +29,7 @@ export class ChangePasswordController implements Controller {
 
 export namespace ChangePasswordController {
   export interface Request {
-    email: string
+    accountId: string
     newPassword: string
   }
 }

@@ -11,19 +11,21 @@ interface Sut {
 
 const makeSut = (): Sut => {
   const urlValidatorSpy = new URLValidatorSpy()
-  const sut = new ProfileImageValidation(urlValidatorSpy)
+  const sut = new ProfileImageValidation(urlValidatorSpy, fieldName)
   return {
     sut,
     urlValidatorSpy
   }
 }
 
+const fieldName: string = faker.word.words()
+
 describe('ProfileImageValidation', () => {
   test('Should call URLValidator with correct url', () => {
     const { sut, urlValidatorSpy } = makeSut()
     const url = faker.internet.url()
 
-    sut.validate({ profileImage: url })
+    sut.validate({ [fieldName]: url })
 
     expect(urlValidatorSpy.url).toBe(url)
   })
@@ -33,8 +35,8 @@ describe('ProfileImageValidation', () => {
     urlValidatorSpy.islURLValid = false
 
     expect(() => {
-      sut.validate({ profileImage: faker.internet.url() })
-    }).toThrow(new ValidationError('Profile image must be a valid url'))
+      sut.validate({ [fieldName]: faker.internet.url() })
+    }).toThrow(new ValidationError(`${fieldName} image must be a valid url`))
   })
 
   test('Should throw if URLValidator throws', () => {
@@ -42,7 +44,7 @@ describe('ProfileImageValidation', () => {
     jest.spyOn(urlValidatorSpy, 'isValid').mockImplementationOnce(() => { throw new Error() })
 
     expect(() => {
-      sut.validate({ profileImage: faker.internet.url() })
+      sut.validate({ [fieldName]: faker.internet.url() })
     }).toThrow()
   })
 
@@ -50,7 +52,7 @@ describe('ProfileImageValidation', () => {
     const { sut } = makeSut()
 
     expect(() => {
-      sut.validate({ profileImage: faker.internet.url() })
+      sut.validate({ [fieldName]: faker.internet.url() })
     }).not.toThrow()
   })
 })

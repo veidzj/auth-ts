@@ -35,9 +35,9 @@ describe('ChangePasswordMongoRepository', () => {
     const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
-      const email: string = fakeAccount.email
+      const accountId: string = fakeAccount._id.toString()
 
-      await sut.change(email, newPassword)
+      await sut.change(accountId, newPassword)
 
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(account?.password).toBe(newPassword)
@@ -50,7 +50,7 @@ describe('ChangePasswordMongoRepository', () => {
     const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
-      await sut.change(faker.internet.email(), newPassword)
+      await sut.change(faker.database.mongodbObjectId(), newPassword)
 
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(account?.password).toBe(fakeAccount.password)
@@ -62,7 +62,7 @@ describe('ChangePasswordMongoRepository', () => {
     const sut = makeSut()
     jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
 
-    const promise = sut.change(faker.internet.email(), faker.internet.email())
+    const promise = sut.change(faker.database.mongodbObjectId(), faker.internet.email())
 
     await expect(promise).rejects.toThrow()
   })
