@@ -23,4 +23,12 @@ describe('DbVerifyConfirmationCode', () => {
     const promise = sut.verify(accountId, confirmationCode)
     await expect(promise).rejects.toThrow(new InvalidOrExpiredConfirmationCodeError())
   })
+
+  test('Should throw if VerifyConfirmationCodeRepository throws', async() => {
+    const verifyConfirmationCodeRepositorySpy = new VerifyConfirmationCodeRepositorySpy()
+    jest.spyOn(verifyConfirmationCodeRepositorySpy, 'verify').mockRejectedValueOnce(new Error())
+    const sut = new DbVerifyConfirmationCode(verifyConfirmationCodeRepositorySpy)
+    const promise = sut.verify(accountId, confirmationCode)
+    await expect(promise).rejects.toThrow(new Error())
+  })
 })
