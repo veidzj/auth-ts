@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 
 import { CheckAccountByIdRepositorySpy } from '@/tests/application/mocks/queries'
 import { DbChangeProfileImage } from '@/application/usecases/commands'
+import { AccountNotFoundError } from '@/domain/errors'
 
 const accountId: string = faker.string.uuid()
 const newProfileImage: string = faker.internet.url()
@@ -15,6 +16,16 @@ describe('DbChangeProfileImage', () => {
       await sut.change(accountId, newProfileImage)
 
       expect(checkAccountByIdRepositorySpy.id).toBe(accountId)
+    })
+
+    test('Should throw AccountNotFoundError if CheckAccountByIdRepository returns false', async() => {
+      const checkAccountByIdRepositorySpy = new CheckAccountByIdRepositorySpy()
+      checkAccountByIdRepositorySpy.output = false
+      const sut = new DbChangeProfileImage(checkAccountByIdRepositorySpy)
+
+      const promise = sut.change(accountId, newProfileImage)
+
+      await expect(promise).rejects.toThrow(new AccountNotFoundError())
     })
   })
 })
