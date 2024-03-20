@@ -41,6 +41,13 @@ describe('ChangeProfileImageController', () => {
     expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
   })
 
+  test('Should return serverError if ChangeProfileImage throws', async() => {
+    const { sut, changeProfileImageSpy } = makeSut()
+    jest.spyOn(changeProfileImageSpy, 'change').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
+  })
+
   test('Should return noContent on success', async() => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
