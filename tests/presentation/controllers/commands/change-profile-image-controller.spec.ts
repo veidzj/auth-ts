@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker'
 import { ChangeProfileImageSpy } from '@/tests/domain/mocks/commands'
 import { ChangeProfileImageController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
+import { AccountNotFoundError } from '@/domain/errors'
 
 interface Sut {
   sut: ChangeProfileImageController
@@ -31,6 +32,13 @@ describe('ChangeProfileImageController', () => {
     expect(httpResponse).toEqual(HttpHelper.noContent())
     expect(changeProfileImageSpy.accountId).toBe(request.accountId)
     expect(changeProfileImageSpy.newProfileImage).toBe(request.newProfileImage)
+  })
+
+  test('Should return notFound if ChangeProfileImage throws AccountNotFoundError', async() => {
+    const { sut, changeProfileImageSpy } = makeSut()
+    jest.spyOn(changeProfileImageSpy, 'change').mockRejectedValueOnce(new AccountNotFoundError())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(HttpHelper.notFound(new AccountNotFoundError()))
   })
 
   test('Should return noContent on success', async() => {
