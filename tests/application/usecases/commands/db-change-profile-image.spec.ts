@@ -27,5 +27,15 @@ describe('DbChangeProfileImage', () => {
 
       await expect(promise).rejects.toThrow(new AccountNotFoundError())
     })
+
+    test('Should throw if CheckAccountByIdRepository throws', async() => {
+      const checkAccountByIdRepositorySpy = new CheckAccountByIdRepositorySpy()
+      jest.spyOn(checkAccountByIdRepositorySpy, 'check').mockRejectedValueOnce(new Error())
+      const sut = new DbChangeProfileImage(checkAccountByIdRepositorySpy)
+
+      const promise = sut.change(accountId, newProfileImage)
+
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
