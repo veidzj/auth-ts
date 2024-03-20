@@ -75,6 +75,7 @@ The project utilizes a variety of tools categorized based on their functionality
 - Express.js
 - JWT for authentication and authorization
 - Bcrypt for hashing passwords
+- Nodemailer
 
 ### Testing
 
@@ -92,6 +93,7 @@ The project utilizes a variety of tools categorized based on their functionality
 - Validator for data validation
 - npm-check-updates for managing dependencies
 - Module Alias for cleaner import paths
+- Winston for logging
 
 ### Documentation
 
