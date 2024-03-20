@@ -1,6 +1,7 @@
 export * from './activate-account-controller'
 export * from './change-email-controller'
 export * from './change-password-controller'
+export * from './change-profile-image-controller'
 export * from './deactivate-account-controller'
 export * from './send-confirmation-code-controller'
 export * from './sign-in-controller'
