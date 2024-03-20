@@ -1,8 +1,22 @@
 import { faker } from '@faker-js/faker'
 
+import { ChangeProfileImageSpy } from '@/tests/domain/mocks/commands'
 import { ChangeProfileImageController } from '@/presentation/controllers/commands'
 import { HttpHelper } from '@/presentation/helpers'
-import { type ChangeProfileImage } from '@/domain/usecases/commands'
+
+interface Sut {
+  sut: ChangeProfileImageController
+  changeProfileImageSpy: ChangeProfileImageSpy
+}
+
+const makeSut = (): Sut => {
+  const changeProfileImageSpy = new ChangeProfileImageSpy()
+  const sut = new ChangeProfileImageController(changeProfileImageSpy)
+  return {
+    sut,
+    changeProfileImageSpy
+  }
+}
 
 const mockRequest = (): ChangeProfileImageController.Request => ({
   accountId: faker.string.uuid(),
@@ -11,17 +25,7 @@ const mockRequest = (): ChangeProfileImageController.Request => ({
 
 describe('ChangeProfileImageController', () => {
   test('Should call ChangeProfileImage with correct values', async() => {
-    class ChangeProfileImageSpy implements ChangeProfileImage {
-      public accountId: string
-      public newProfileImage: string
-
-      public async change(accountId: string, newProfileImage: string): Promise<void> {
-        this.accountId = accountId
-        this.newProfileImage = newProfileImage
-      }
-    }
-    const changeProfileImageSpy = new ChangeProfileImageSpy()
-    const sut = new ChangeProfileImageController(changeProfileImageSpy)
+    const { sut, changeProfileImageSpy } = makeSut()
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(HttpHelper.noContent())
@@ -30,17 +34,7 @@ describe('ChangeProfileImageController', () => {
   })
 
   test('Should return noContent on success', async() => {
-    class ChangeProfileImageSpy implements ChangeProfileImage {
-      public accountId: string
-      public newProfileImage: string
-
-      public async change(accountId: string, newProfileImage: string): Promise<void> {
-        this.accountId = accountId
-        this.newProfileImage = newProfileImage
-      }
-    }
-    const changeProfileImageSpy = new ChangeProfileImageSpy()
-    const sut = new ChangeProfileImageController(changeProfileImageSpy)
+    const { sut } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(HttpHelper.noContent())
   })
