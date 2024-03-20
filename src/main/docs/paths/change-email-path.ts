@@ -18,11 +18,11 @@ export const changeEmailPath = {
       204: {
         $ref: '#/components/changeEmailOutput'
       },
-      401: {
-        $ref: '#/components/unauthorized'
-      },
       400: {
         $ref: '#/components/badRequest'
+      },
+      401: {
+        $ref: '#/components/unauthorized'
       },
       404: {
         $ref: '#/components/notFound'

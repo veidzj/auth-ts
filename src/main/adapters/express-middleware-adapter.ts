@@ -6,13 +6,15 @@ import { type Middleware } from '@/presentation/protocols'
 export class ExpressMiddlewareAdapter {
   public static readonly adapt = (middleware: Middleware): (req: Request, res: Response, next: NextFunction) => Promise<void> => {
     return async(req: Request, res: Response, next: NextFunction): Promise<void> => {
-      const request = {
+      const request: object = {
         accessToken: req.headers?.['x-access-token'],
-        ...(req.headers || {})
+        confirmationCode: req.headers?.['x-confirmation-code'],
+        ...(req.headers || {}),
+        ...(req.body || {})
       }
       const httpResponse = await middleware.handle(request)
       const { statusCode, body } = httpResponse
-      if (statusCode === 200) {
+      if (statusCode >= 200 && statusCode <= 299) {
         logger.log('info', `${req.method} ${statusCode} ${req.path}`)
         Object.assign(req.body, body)
         next()

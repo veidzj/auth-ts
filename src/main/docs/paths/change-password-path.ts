@@ -18,11 +18,11 @@ export const changePasswordPath = {
       204: {
         $ref: '#/components/changePasswordOutput'
       },
-      401: {
-        $ref: '#/components/unauthorized'
-      },
       400: {
         $ref: '#/components/badRequest'
+      },
+      401: {
+        $ref: '#/components/unauthorized'
       },
       404: {
         $ref: '#/components/notFound'

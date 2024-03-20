@@ -1,9 +1,9 @@
 import { Collection } from 'mongodb'
+import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
 import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
 import { CheckAccountByIdMongoRepository } from '@/infra/db/mongodb/queries'
-import { faker } from '@faker-js/faker'
 
 let accountCollection: Collection
 
