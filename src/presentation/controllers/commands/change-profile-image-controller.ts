@@ -1,5 +1,6 @@
 import { type Controller, type HttpResponse, type Validation } from '@/presentation/protocols'
 import { HttpHelper } from '@/presentation/helpers'
+import { ValidationError } from '@/validation/errors'
 import { type ChangeProfileImage } from '@/domain/usecases/commands'
 import { AccountNotFoundError } from '@/domain/errors'
 
@@ -15,6 +16,9 @@ export class ChangeProfileImageController implements Controller {
       await this.changeProfileImage.change(request.accountId, request.newProfileImage)
       return HttpHelper.noContent()
     } catch (error) {
+      if (error instanceof ValidationError) {
+        return HttpHelper.badRequest(error)
+      }
       if (error instanceof AccountNotFoundError) {
         return HttpHelper.notFound(error)
       }
