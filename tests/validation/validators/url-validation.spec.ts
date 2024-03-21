@@ -1,17 +1,17 @@
 import { faker } from '@faker-js/faker'
 
 import { URLValidatorSpy } from '@/tests/validation/mocks'
-import { ProfileImageValidation } from '@/validation/validators'
+import { URLValidation } from '@/validation/validators'
 import { ValidationError } from '@/validation/errors'
 
 interface Sut {
-  sut: ProfileImageValidation
+  sut: URLValidation
   urlValidatorSpy: URLValidatorSpy
 }
 
 const makeSut = (): Sut => {
   const urlValidatorSpy = new URLValidatorSpy()
-  const sut = new ProfileImageValidation(urlValidatorSpy, fieldName)
+  const sut = new URLValidation(urlValidatorSpy, fieldName)
   return {
     sut,
     urlValidatorSpy
@@ -20,7 +20,7 @@ const makeSut = (): Sut => {
 
 const fieldName: string = faker.word.words()
 
-describe('ProfileImageValidation', () => {
+describe('URLValidation', () => {
   test('Should call URLValidator with correct url', () => {
     const { sut, urlValidatorSpy } = makeSut()
     const url = faker.internet.url()
