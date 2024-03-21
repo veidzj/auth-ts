@@ -7,6 +7,7 @@ import { changePasswordPath } from './change-password-path'
 import { changeProfileImagePath } from './change-profile-image-path'
 import { sendConfirmationCodePath } from './send-confirmation-code-path'
 import { isUserPath } from './is-user-path'
+import { isAdminPath } from './is-admin-path'
 
 export const accountPaths = {
   signUpPath,
@@ -17,5 +18,6 @@ export const accountPaths = {
   changePasswordPath,
   changeProfileImagePath,
   sendConfirmationCodePath,
-  isUserPath
+  isUserPath,
+  isAdminPath
 }
