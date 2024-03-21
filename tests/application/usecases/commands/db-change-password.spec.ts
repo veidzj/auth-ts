@@ -83,7 +83,7 @@ describe('DbChangePassword', () => {
 
       await sut.change(accountId, newPassword)
 
-      expect(changePasswordRepositorySpy.email).toBe(accountId)
+      expect(changePasswordRepositorySpy.accountId).toBe(accountId)
       expect(changePasswordRepositorySpy.newPassword).toBe(hasherSpy.digest)
     })
 
