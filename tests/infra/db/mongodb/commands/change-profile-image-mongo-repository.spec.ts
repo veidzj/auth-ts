@@ -32,9 +32,28 @@ describe('ChangeProfileImageMongoRepository', () => {
 
   test('Should change an account profile image on success', async() => {
     const sut = makeSut()
-    const insertResult = await accountCollection.insertOne(mockAddAccountRepositoryInput())
+    const addAccountRepositoryInput = mockAddAccountRepositoryInput()
+    const insertResult = await accountCollection.insertOne(addAccountRepositoryInput)
     const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
     if (fakeAccount) {
+      expect(fakeAccount?.profileImage).toBe(addAccountRepositoryInput.profileImage)
+      const accountId: string = fakeAccount._id.toString()
+
+      await sut.change(accountId, newProfileImage)
+
+      const account = await accountCollection.findOne({ _id: fakeAccount._id })
+      expect(account?.profileImage).toBe(newProfileImage)
+      expect(account?.updatedAt).toEqual(new Date())
+    }
+  })
+
+  test('Should add an account profile image if it has not been defined yet', async() => {
+    const sut = makeSut()
+    const { profileImage, ...accountDataWithoutProfileImage } = mockAddAccountRepositoryInput()
+    const insertResult = await accountCollection.insertOne(accountDataWithoutProfileImage)
+    const fakeAccount = await accountCollection.findOne({ _id: insertResult.insertedId })
+    if (fakeAccount) {
+      expect(fakeAccount?.profileImage).toBeUndefined()
       const accountId: string = fakeAccount._id.toString()
 
       await sut.change(accountId, newProfileImage)
