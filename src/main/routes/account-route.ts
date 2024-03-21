@@ -22,4 +22,5 @@ export default (router: Router): void => {
   router.put('/v1/account/change-password', userAuth, verifyConfirmationCode, ExpressRouteAdapter.adapt(ChangePasswordControllerFactory.makeChangePasswordController()))
   router.put('/v1/account/change-profile-image', userAuth, ExpressRouteAdapter.adapt(ChangeProfileImageControllerFactory.makeChangeProfileImageController()))
   router.post('/v1/account/send-confirmation-code', userAuth, ExpressRouteAdapter.adapt(SendConfirmationCodeControllerFactory.makeSendConfirmationCodeController()))
+  router.post('/v1/account/is-admin', adminAuth, (_, res) => res.status(204).send())
 }
