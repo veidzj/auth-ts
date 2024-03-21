@@ -1,5 +1,5 @@
 export const isAdminPath = {
-  post: {
+  get: {
     security: [{
       apiKeyAuth: []
     }],

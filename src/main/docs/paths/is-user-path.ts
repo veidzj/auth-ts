@@ -1,5 +1,5 @@
 export const isUserPath = {
-  post: {
+  get: {
     security: [{
       apiKeyAuth: []
     }],
