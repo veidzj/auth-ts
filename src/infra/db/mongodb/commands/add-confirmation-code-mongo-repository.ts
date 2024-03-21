@@ -9,7 +9,10 @@ export class AddConfirmationCodeMongoRepository extends MongoRepository implemen
 
   private async createTTLIndex(): Promise<void> {
     const codeCollection = this.mongoHelper.getCollection('codes')
-    await codeCollection.createIndex({ expirationDate: 1 }, { expireAfterSeconds: 600 })
+    const indexExists = await codeCollection.indexExists('expirationDate_1')
+    if (!indexExists) {
+      await codeCollection.createIndex({ expirationDate: 1 }, { expireAfterSeconds: 600 })
+    }
   }
 
   public async add(confirmationCode: string, accountId: string): Promise<string> {
