@@ -72,5 +72,13 @@ describe('DbChangeProfileImage', () => {
 
       await expect(promise).rejects.toThrow()
     })
+
+    test('Should not throw on success', async() => {
+      const { sut } = makeSut()
+
+      const promise = sut.change(accountId, newProfileImage)
+
+      await expect(promise).resolves.not.toThrow()
+    })
   })
 })
