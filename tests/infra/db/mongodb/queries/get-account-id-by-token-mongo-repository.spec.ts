@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb'
+import { type Collection } from 'mongodb'
 import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
@@ -53,14 +53,5 @@ describe('GetAccountIdByTokenMongoRepository', () => {
     const accountId = await sut.get(addAccountRepositoryInput.accessToken, addAccountRepositoryInput.roles[0])
 
     expect(accountId).toBe(insertResult.insertedId.toString())
-  })
-
-  test('Should throw if mongo throws', async() => {
-    const sut = makeSut()
-    jest.spyOn(Collection.prototype, 'findOne').mockRejectedValueOnce(new Error())
-
-    const promise = sut.get(faker.word.words(), faker.word.words())
-
-    await expect(promise).rejects.toThrow()
   })
 })

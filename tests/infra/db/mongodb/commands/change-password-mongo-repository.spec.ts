@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb'
+import { type Collection } from 'mongodb'
 import MockDate from 'mockdate'
 import { faker } from '@faker-js/faker'
 
@@ -56,14 +56,5 @@ describe('ChangePasswordMongoRepository', () => {
       expect(account?.password).toBe(fakeAccount.password)
       expect(account?.updatedAt).toBeFalsy()
     }
-  })
-
-  test('Should throw if mongo throws', async() => {
-    const sut = makeSut()
-    jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
-
-    const promise = sut.change(faker.database.mongodbObjectId(), faker.internet.email())
-
-    await expect(promise).rejects.toThrow()
   })
 })

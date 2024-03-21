@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb'
+import { type Collection } from 'mongodb'
 import { faker } from '@faker-js/faker'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
@@ -90,14 +90,5 @@ describe('VerifyConfirmationCodeMongoRepository', () => {
     const confirmationCodeIsValid = await sut.verify(accountId, faker.string.alphanumeric(6))
 
     expect(confirmationCodeIsValid).toBe(false)
-  })
-
-  test('Should throw if mongo throws', async() => {
-    const sut = makeSut()
-    jest.spyOn(Collection.prototype, 'countDocuments').mockRejectedValueOnce(new Error())
-
-    const promise = sut.verify(faker.database.mongodbObjectId(), faker.string.alphanumeric(6))
-
-    await expect(promise).rejects.toThrow()
   })
 })

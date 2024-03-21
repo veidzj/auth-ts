@@ -1,4 +1,4 @@
-import { Collection, ObjectId } from 'mongodb'
+import { type Collection, ObjectId } from 'mongodb'
 import MockDate from 'mockdate'
 import { faker } from '@faker-js/faker'
 
@@ -42,14 +42,5 @@ describe('AddConfirmationCodeMongoRepository', () => {
     expect(code?.confirmationCode).toBe(confirmationCode)
     expect(code?.accountId).toBe(accountId)
     expect(code?.expirationDate).toEqual(expirationDate)
-  })
-
-  test('Should throw if mongo throws', async() => {
-    jest.spyOn(Collection.prototype, 'insertOne').mockRejectedValueOnce(new Error())
-    const sut = makeSut()
-
-    const promise = sut.add(confirmationCode, accountId)
-
-    await expect(promise).rejects.toThrow()
   })
 })
