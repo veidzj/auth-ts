@@ -31,11 +31,11 @@ Auth TS is a user authentication and authorization system developed using TypeSc
 - [x] Change account's email
 - [x] Change password
 - [x] Change profile image
+- [x] Check if an account has a specific permission (user or admin)
 
 ### Features To Do
 
-- [ ] Check if an account has a specific permission (user or admin)
-
+<!-- - [ ] New feature -->
 
 ## Standards Used
 
