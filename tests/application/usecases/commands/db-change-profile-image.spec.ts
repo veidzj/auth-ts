@@ -63,5 +63,14 @@ describe('DbChangeProfileImage', () => {
       expect(changeProfileImageRepositorySpy.accountId).toBe(accountId)
       expect(changeProfileImageRepositorySpy.newProfileImage).toBe(newProfileImage)
     })
+
+    test('Should throw if ChangeProfileImageRepository throws', async() => {
+      const { sut, changeProfileImageRepositorySpy } = makeSut()
+      jest.spyOn(changeProfileImageRepositorySpy, 'change').mockRejectedValueOnce(new Error())
+
+      const promise = sut.change(accountId, newProfileImage)
+
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
