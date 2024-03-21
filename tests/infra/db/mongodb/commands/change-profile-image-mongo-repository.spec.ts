@@ -1,4 +1,4 @@
-import { type Collection } from 'mongodb'
+import { Collection } from 'mongodb'
 import MockDate from 'mockdate'
 import { faker } from '@faker-js/faker'
 
@@ -62,5 +62,14 @@ describe('ChangeProfileImageMongoRepository', () => {
       expect(account?.profileImage).toBe(newProfileImage)
       expect(account?.updatedAt).toEqual(new Date())
     }
+  })
+
+  test('Should throw if mongo throws', async() => {
+    const sut = makeSut()
+    jest.spyOn(Collection.prototype, 'updateOne').mockImplementationOnce(() => { throw new Error() })
+
+    const promise = sut.change(faker.database.mongodbObjectId(), newProfileImage)
+
+    await expect(promise).rejects.toThrow()
   })
 })
