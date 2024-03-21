@@ -6,6 +6,7 @@ import { changeEmailOutput } from './change-email-output'
 import { changePasswordOutput } from './change-password-output'
 import { changeProfileImageOutput } from './change-profile-image-output'
 import { sendConfirmationCodeOutput } from './send-confirmation-code-output'
+import { isUserOutput } from './is-user-output'
 
 export const accountComponents = {
   signUpOutput,
@@ -15,5 +16,6 @@ export const accountComponents = {
   changeEmailOutput,
   changePasswordOutput,
   changeProfileImageOutput,
-  sendConfirmationCodeOutput
+  sendConfirmationCodeOutput,
+  isUserOutput
 }
