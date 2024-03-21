@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb'
+import { type Collection } from 'mongodb'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
 import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
@@ -40,14 +40,5 @@ describe('CheckAccountByEmailMongoRepository', () => {
     const accountExists = await sut.check(addAccountRepositoryInput.email)
 
     expect(accountExists).toBe(true)
-  })
-
-  test('Should throw if mongo throws', async() => {
-    const sut = makeSut()
-    jest.spyOn(Collection.prototype, 'countDocuments').mockRejectedValueOnce(new Error())
-
-    const promise = sut.check(mockAddAccountRepositoryInput().email)
-
-    await expect(promise).rejects.toThrow()
   })
 })

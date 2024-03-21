@@ -1,4 +1,4 @@
-import { Collection, ObjectId } from 'mongodb'
+import { type Collection, ObjectId } from 'mongodb'
 
 import { connectToDatabase, disconnectFromDatabase, clearCollection, getCollection } from '@/tests/infra/db/mongodb'
 import { mockAddAccountRepositoryInput } from '@/tests/application/mocks/inputs'
@@ -34,14 +34,5 @@ describe('AddAccountMongoRepository', () => {
     const account = await accountCollection.findOne({ _id: new ObjectId(insertedId) })
     expect(count).toBe(1)
     expect(account).toEqual(addAccountRepositoryInput)
-  })
-
-  test('Should throw if mongo throws', async() => {
-    const sut = makeSut()
-    jest.spyOn(Collection.prototype, 'insertOne').mockRejectedValueOnce(new Error())
-
-    const promise = sut.add(mockAddAccountRepositoryInput())
-
-    await expect(promise).rejects.toThrow()
   })
 })

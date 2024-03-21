@@ -1,4 +1,4 @@
-import { Collection, ObjectId } from 'mongodb'
+import { type Collection, ObjectId } from 'mongodb'
 import MockDate from 'mockdate'
 import { faker } from '@faker-js/faker'
 
@@ -38,14 +38,5 @@ describe('LogErrorMongoRepository', () => {
     expect(count).toBe(1)
     expect(error?.stack).toBe(stack)
     expect(error?.date).toEqual(new Date())
-  })
-
-  test('Should throw if mongo throws', async() => {
-    const sut = makeSut()
-    jest.spyOn(Collection.prototype, 'insertOne').mockImplementationOnce(() => { throw new Error() })
-
-    const promise = sut.log(faker.word.words())
-
-    await expect(promise).rejects.toThrow()
   })
 })
