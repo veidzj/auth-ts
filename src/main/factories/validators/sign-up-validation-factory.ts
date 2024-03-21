@@ -6,7 +6,7 @@ import {
   FullNameValidation,
   EmailValidation,
   PasswordValidation,
-  ProfileImageValidation,
+  URLValidation,
   DateValidation
 } from '@/validation/validators'
 import { EmailValidatorAdapter, URLValidatorAdapter } from '@/infra/validators'
@@ -23,7 +23,7 @@ export class SignUpValidationFactory {
     validations.push(new FullNameValidation('fullName'))
     validations.push(new EmailValidation(new EmailValidatorAdapter(), 'email'))
     validations.push(new PasswordValidation('password'))
-    validations.push(new ProfileImageValidation(new URLValidatorAdapter(), 'profileImage'))
+    validations.push(new URLValidation(new URLValidatorAdapter(), 'profileImage'))
     validations.push(new DateValidation('birthdate'))
     return new ValidationComposite(validations)
   }
