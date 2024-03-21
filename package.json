@@ -1,6 +1,6 @@
 {
   "name": "auth-ts",
-  "version": "0.14.1",
+  "version": "0.15.0",
   "description": "Authentication and Authorization service using TypeScript, TDD, DDD, SOLID, and Clean Architecture",
   "author": "João Victor Veidz",
   "license": "GPL-3.0",
