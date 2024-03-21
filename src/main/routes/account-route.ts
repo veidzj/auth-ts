@@ -9,6 +9,7 @@ import {
   ActivateAccountControllerrFactory,
   ChangeEmailControllerFactory,
   ChangePasswordControllerFactory,
+  ChangeProfileImageControllerFactory,
   SendConfirmationCodeControllerFactory
 } from '@/main/factories/controllers/commands'
 
@@ -19,5 +20,6 @@ export default (router: Router): void => {
   router.put('/v1/account/activate/:accountId', adminAuth, ExpressRouteAdapter.adapt(ActivateAccountControllerrFactory.makeActivateAccountController()))
   router.put('/v1/account/change-email', userAuth, verifyConfirmationCode, ExpressRouteAdapter.adapt(ChangeEmailControllerFactory.makeChangeEmailController()))
   router.put('/v1/account/change-password', userAuth, verifyConfirmationCode, ExpressRouteAdapter.adapt(ChangePasswordControllerFactory.makeChangePasswordController()))
+  router.put('/v1/account/change-profile-image', userAuth, ExpressRouteAdapter.adapt(ChangeProfileImageControllerFactory.makeChangeProfileImageController()))
   router.post('/v1/account/send-confirmation-code', userAuth, ExpressRouteAdapter.adapt(SendConfirmationCodeControllerFactory.makeSendConfirmationCodeController()))
 }
