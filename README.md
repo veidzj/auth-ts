@@ -117,6 +117,8 @@ npm start # To start the application
 npm run debug # To debug the application
 ```
 
+Default url is: http://localhost:5050/api/docs
+
 
 ## How to Run with Docker
 
@@ -125,6 +127,9 @@ To run the project using Docker, ensure you have Docker installed on your machin
 Then follow these commands to set up and run the application using Docker:
 
 ```bash
+npm install # To install dependencies
 npm run up # To start the application using Docker Compose
 npm run down # To stop the Docker Compose
 ```
+
+Default url is: http://localhost:5000/api/docs
