@@ -15,7 +15,8 @@
   ],
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": "off",
-    "@typescript-eslint/space-before-function-paren": ["error", "never"],
+    "space-before-function-paren": ["error", "never"],
+    "@typescript-eslint/space-before-function-paren": "off",
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/no-extraneous-class": "off",
