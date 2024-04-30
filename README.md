@@ -1,5 +1,4 @@
 # Auth TS
-
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=bugs)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=veidzj_auth-ts&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=veidzj_auth-ts)
